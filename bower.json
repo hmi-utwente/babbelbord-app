@@ -1,0 +1,20 @@
+{
+  "name": "babbelbord",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Alessandro Capra <alessandro.cpr@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/alessandrocapra/babbelbord",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}
