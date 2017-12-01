@@ -1,4 +1,10 @@
+// Essential imports we need for our project
 var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+// Created by Express generator, leave them here
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -7,11 +13,6 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-
-var app = express();
-
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+// create link to bower components, to load them in the pages we need
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
