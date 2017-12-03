@@ -14,6 +14,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var db = require('./routes/db');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
