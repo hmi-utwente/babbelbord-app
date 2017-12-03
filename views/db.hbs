@@ -1,2 +1,6 @@
 <h1>Database</h1>
-<p>Welcome to {{results}}</p>
+<p>Welcome to the database!</p>
+
+{{#each results}}
+    <li>{{this.id}} - {{this.name}}</li>
+{{/each}}
