@@ -30,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/db', db);
 
 // create link to bower components, to load them in the pages we need
 app.use(express.static(__dirname + '/bower_components'));
