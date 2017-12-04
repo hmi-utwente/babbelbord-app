@@ -14,7 +14,8 @@ var bodyParser = require('body-parser');
 // Save paths of routes in variables for later use
 var index = require('./routes/index');
 var users = require('./routes/users');
-var db = require('./routes/db');
+var questions = require('./routes/questions');
+var categories = require('./routes/categories');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/db', db);
+app.use('/categories', categories);
 
 // create link to bower components, to load them in the pages we need
 app.use(express.static(__dirname + '/bower_components'));
