@@ -24,18 +24,19 @@ module.exports = {
     //updatePatient: updatePatient,
     //removePatient: removePatient,
     //getTopics: getTopics,
+    getSingleCategory: getSingleCategory,
     getCategories: getCategories // just for testing purposes
 };
 
 // functions to extract and insert data into database
 function getQuestions(req, res, next) {
-    db.any('select * from categories')
+    db.any('select * from questions')
         .then(function (data) {
             res.status(200)
                 .json({
                     status: 'success',
                     data: data,
-                    message: 'Retrieved ALL puppies'
+                    message: 'Retrieved ALL questions'
                 });
         })
         .catch(function (err) {
@@ -50,7 +51,23 @@ function getCategories(req, res, next) {
                 .json({
                     status: 'success',
                     data: data,
-                    message: 'Retrieved ALL puppies'
+                    message: 'Retrieved ALL categories'
+                });
+        })
+        .catch(function (err) {
+            return next(err);
+        });
+}
+
+function getSingleCategory(req, res, next) {
+    var catID = parseInt(req.params.id);
+    db.one('select * from categories where id = $1', catID)
+        .then(function (data) {
+            res.status(200)
+                .json({
+                    status: 'success',
+                    data: data,
+                    message: 'Retrieved ONE category'
                 });
         })
         .catch(function (err) {
