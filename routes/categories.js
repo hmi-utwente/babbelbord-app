@@ -5,5 +5,6 @@ var router = express.Router();
 var db = require('../queries');
 
 router.get('/', db.getCategories);
+router.get('/:id', db.getSingleCategory);
 
 module.exports = router;
