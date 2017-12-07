@@ -16,7 +16,9 @@
     "eslint": "^4.12.1",
     "express": "^4.16.2",
     "morgan": "^1.9.0",
-    "nodemon": "^1.12.5"
+    "nodemon": "^1.12.5",
+    "pg": "^7.4.0",
+    "sequelize": "^4.27.0"
   },
   "devDependencies": {
     "eslint-config-standard": "^10.2.1",
