@@ -1,12 +1,4 @@
 module.exports = {
-<<<<<<< HEAD
-  db: {
-    database: process.env.DATABASE_URL
-    options: {
-      dialect: 'postgres'
-    }
-  }
-=======
   port: 8081,
   db: {
     // change this with process.env.DATABASE_URL in the future
@@ -18,6 +10,4 @@ module.exports = {
     port: 5432,
     host: 'ec2-184-73-189-190.compute-1.amazonaws.com'
   }
-
->>>>>>> temp
 }
