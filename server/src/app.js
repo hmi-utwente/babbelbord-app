@@ -3,8 +3,8 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 
-// importing routes and models declared in other files
 const {sequelize} = require('./models')
+const config = require('./config/config')
 
 const app = express()
 app.use(morgan('combined'))
@@ -15,6 +15,11 @@ require('./routes')(app)
 
 sequelize.sync()
   .then(() => {
+<<<<<<< HEAD
     app.listen(process.env.PORT || 8080)
     console.log('Server started!')
+=======
+    app.listen(config.port)
+    console.log('Server started on port ' + config.port)
+>>>>>>> temp
   })
