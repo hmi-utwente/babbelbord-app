@@ -8,5 +8,11 @@ module.exports = (app) => {
     res.send('<h1>Ciao</h1>')
   })
 
+  app.get('/players', (req, res) => {
+    res.send({
+      message: 'List all the playersss'
+    })
+  })
+
   app.get('/status', StatusController.status)
 }
