@@ -1,12 +1,25 @@
 <template>
   <div class="welcome">
-    <h1>Select players</h1>
-    <ul>
-      <li>These are</li>
-      <li>our incredible</li>
-      <li>players</li>
-    </ul>
-    <button @click="createPlayer">Create new player</button>
+    <h1>Create a new player</h1>
+
+    <input
+      type="text"
+      name="name"
+      v-model="name"
+      placeholder="Name"
+    >
+    <br>
+    <input
+      type="text"
+      name="lastname"
+      v-model="lastname"
+      placeholder="Surname"
+    >
+    <br>
+    <div class="error" v-html="error"></div>
+    <br>
+    <button>Cancel</button>
+    <button @click="register">Save</button>
   </div>
 </template>
 
@@ -15,24 +28,29 @@
   export default {
     data () {
       return {
-        players_list: []
+        name: '',
+        lastname: '',
+        error: null
       }
     },
     methods: {
-      createPlayer(){
-
+      async register(){
+        try {
+          await PlayersService.register({
+            name: this.name,
+            lastname: this.lastname
+          })
+        } catch(error) {
+          this.error = error.response.data.error
+        }
       }
-    },
-
-    // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
-    async mounted() {
-      const response = await PlayersService.getPlayers()
-      console.log(response.data)
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .error {
+    color: red ;
+  }
 </style>

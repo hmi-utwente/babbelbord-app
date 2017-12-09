@@ -5,7 +5,10 @@
 import Api from '@/services/Api'
 
 export default {
-  getPlayers () {
-    return Api().get('/players')
+  //getPlayers () {
+  //  return Api().get('/players')
+  //},
+  register (credentials){
+    return Api().post('players/create', credentials)
   }
 }
