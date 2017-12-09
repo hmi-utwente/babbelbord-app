@@ -6,6 +6,7 @@
       <li>our incredible</li>
       <li>players</li>
     </ul>
+    <button @click="createPlayer">Create new player</button>
   </div>
 </template>
 
@@ -17,6 +18,13 @@
         players_list: []
       }
     },
+    methods: {
+      createPlayer(){
+
+      }
+    },
+
+    // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async mounted() {
       const response = await PlayersService.getPlayers()
       console.log(response.data)

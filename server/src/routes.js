@@ -2,17 +2,13 @@
  * Created by ale on 08/12/2017.
  */
 const StatusController = require('./controllers/StatusController')
+const PlayerController = require('./controllers/PlayerController')
 
 module.exports = (app) => {
   app.get('/', (req, res) => {
     res.send('<h1>Ciao</h1>')
   })
 
-  app.get('/players', (req, res) => {
-    res.send({
-      message: 'List all the playersss'
-    })
-  })
-
+  app.post('/players', PlayerController.register)
   app.get('/status', StatusController.status)
 }

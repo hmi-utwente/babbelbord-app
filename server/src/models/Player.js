@@ -13,8 +13,9 @@ module.exports = (sequelize, DataTypes) =>
     },
     lastname: {
       type: DataTypes.STRING,
-    },
-    skipQuestions: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER)
     }
+    /*skipQuestions: {
+     type: DataTypes.ARRAY(DataTypes.INTEGER)
+     }*/
   })
+
