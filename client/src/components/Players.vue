@@ -10,12 +10,17 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      players_list: []
+  import PlayersService from '@/services/PlayersService'
+  export default {
+    data () {
+      return {
+        players_list: []
+      }
+    },
+    async mounted() {
+      const response = await PlayersService.getPlayers()
+      console.log(response.data)
     }
-  }
 }
 </script>
 
