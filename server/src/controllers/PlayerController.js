@@ -11,6 +11,9 @@ module.exports = {
       res.send(player.toJSON())
     } catch(err) {
       res.status(400).send({
+
+        // TODO: set unique key, so the user cannot be created twice.
+        // TODO: However, it has to be either name or lastname and potentially not the Id :(
         error: 'Name already in use!'
       })
       // user already existing?

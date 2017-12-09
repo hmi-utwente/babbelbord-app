@@ -4,11 +4,12 @@
 const StatusController = require('./controllers/StatusController')
 const PlayerController = require('./controllers/PlayerController')
 
+const PlayerControllerPolicy = require('./policies/PlayerControllerPolicy')
 module.exports = (app) => {
   app.get('/', (req, res) => {
     res.send('<h1>Ciao</h1>')
   })
 
-  app.post('/players', PlayerController.register)
+  app.post('/players', PlayerControllerPolicy.register, PlayerController.register)
   app.get('/status', StatusController.status)
 }
