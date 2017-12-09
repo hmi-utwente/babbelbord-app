@@ -8,6 +8,7 @@ module.exports = {
   async register(req, res) {
     try {
       const player = await Player.create(req.body)
+      res.send(player.toJSON())
     } catch(err) {
       res.status(400).send({
         error: 'Name already in use!'
