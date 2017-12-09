@@ -7,7 +7,7 @@ const Joi = require('joi')
 module.exports = {
   register (req, res, next) {
     const schema = {
-      name: Joi.string(),
+      name: Joi.string().regex(/^[a-zA-Z]+$/),
       lastname: Joi.string()
     }
 
