@@ -1,8 +1,4 @@
 <template>
-  <div class="welcome">
-    <v-toolbar color="amber" app>
-      <v-toolbar-title>Create new player</v-toolbar-title>
-    </v-toolbar>
     <v-content>
       <v-container fluid>
         <v-layout row justify-center>
@@ -28,28 +24,9 @@
             </v-btn>
           </v-form>
         </v-layout>
-        <!--<input
-          type="text"
-          name="name"
-          v-model="name"
-          placeholder="Name"
-        >
-        <br>
-        <input
-          type="text"
-          name="lastname"
-          v-model="lastname"
-          placeholder="Surname"
-        >-->
-        <br>
         <div class="error" v-html="error"></div>
-        <br>
-        <!--<button>Cancel</button>
-        <button @click="register">Save</button>-->
       </v-container>
     </v-content>
-    <v-footer app></v-footer>
-  </div>
 </template>
 
 <script>
@@ -59,7 +36,8 @@
       return {
         name: '',
         lastname: '',
-        error: null
+        error: null,
+        valid: true
       }
     },
     methods: {

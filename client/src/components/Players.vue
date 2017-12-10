@@ -1,5 +1,5 @@
 <template>
-  <div class="welcome">
+  <v-content>
     <h1>Select players</h1>
     <ul>
       <li>These are</li>
@@ -7,7 +7,7 @@
       <li>players</li>
     </ul>
     <button @click="createPlayer">Create new player</button>
-  </div>
+  </v-content>
 </template>
 
 <script>

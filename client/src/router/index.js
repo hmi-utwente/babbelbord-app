@@ -10,17 +10,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Welcome',
+      name: 'welcome',
       component: Welcome
     },
     {
       path: '/players',
-      name: 'Players',
+      name: 'players',
       component: Players
     },
     {
       path: '/players/create',
-      name: 'CreatePlayer',
+      name: 'createPlayer',
       component: CreatePlayer
     }
   ]
