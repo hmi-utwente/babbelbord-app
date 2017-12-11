@@ -2,7 +2,7 @@
   <v-toolbar color="amber" app>
     <v-toolbar-title>Babbelbord</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn icon router to="welcome">
+    <v-btn icon to="/">
       <v-icon>home</v-icon>
     </v-btn>
     <v-btn icon>

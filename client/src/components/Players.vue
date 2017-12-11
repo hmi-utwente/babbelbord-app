@@ -1,35 +1,30 @@
 <template>
   <v-content>
-    <h1>Select players</h1>
-    <ul>
-      <li>These are</li>
-      <li>our incredible</li>
-      <li>players</li>
-    </ul>
-    <button @click="createPlayer">Create new player</button>
+    <v-layout row justify-center>
+      <ul>
+        <li v-for="player in players_list"> {{ player.name }} {{ player.lastname }} </li>
+      </ul>
+      <v-btn @click="createPlayer" color="orange" to="/players/create">Create new player</v-btn>
+    </v-layout>
   </v-content>
 </template>
 
 <script>
   import PlayersService from '@/services/PlayersService'
+
   export default {
     data () {
       return {
         players_list: []
       }
     },
-    methods: {
-      createPlayer(){
-
-      }
-    },
-
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async mounted() {
       const response = await PlayersService.getPlayers()
       console.log(response.data)
     }
-}
+  }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
