@@ -6,7 +6,7 @@ const PlayerController = require('./controllers/PlayerController')
 const PlayerControllerPolicy = require('./policies/PlayerControllerPolicy')
 
 module.exports = (app) => {
-  app.get('/', (req, res) => {
+  app.get('/api/', (req, res) => {
     res.send('<h1>Ciao</h1>')
   })
 
@@ -14,5 +14,5 @@ module.exports = (app) => {
     PlayerControllerPolicy.register,
     PlayerController.register)
   // app.get('/players', PlayerControllerPolicy.register, PlayerController.register)
-  app.get('/status', StatusController.status)
+  app.get('/api/status', StatusController.status)
 }
