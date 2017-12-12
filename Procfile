@@ -1,2 +1,1 @@
-web: npm start --prefix client
-api: node app.js
+web: npm start server/src/app.js
