@@ -2,7 +2,7 @@
   "name": "babbelbord-app",
   "version": "0.1.0",
   "scripts": {
-    "postinstall": "npm install --prefix server && npm install --prefix client"
+    "postinstall": "npm install --prefix server"
   },
   "engines": {
     "node": "9.2.1"
