@@ -1,6 +1,5 @@
 <template>
   <v-content>
-    <v-layout row justify-center>
       <h2>Selecteer spelers</h2>
       <p>Selecteer twee spelers voor het babbelbord spel</p>
       <p>Kies een van de volgende spelers</p>
@@ -25,7 +24,6 @@
         </v-layout>
       </v-container>
       <v-btn color="orange" to="/players/create">Create new player</v-btn>
-    </v-layout>
   </v-content>
 </template>
 
