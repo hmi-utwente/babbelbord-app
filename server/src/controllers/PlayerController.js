@@ -18,5 +18,16 @@ module.exports = {
       })
       // user already existing?
     }
+  },
+  async getPlayers(req,res) {
+    try {
+      const players = await Player.findAll()
+      res.send(players.toJSON())
+    } catch(err) {
+      res.status(400).send({
+        error: 'Name already in use!'
+      })
+      // user already existing?
+    }
   }
 }

@@ -19,9 +19,9 @@
       }
     },
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
-    async mounted() {
-      //const response = await PlayersService.getPlayers()
-      //console.log(response.data)
+    async created() {
+      const response = await PlayersService.getPlayers()
+      this.players_list = response.data
     }
   }
 
