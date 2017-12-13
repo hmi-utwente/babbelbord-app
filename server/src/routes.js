@@ -10,11 +10,10 @@ module.exports = (app) => {
     res.send('<h1>Ciao</h1>')
   })
 
-  app.post('/players/create',
+  app.post('/api/players/create',
     PlayerControllerPolicy.register,
     PlayerController.register)
-  // app.get('/players', PlayerControllerPolicy.register, PlayerController.register)
 
-  app.get('/players', PlayerController.getPlayers)
+  app.get('/api/players', PlayerController.getAllPlayers)
   app.get('/api/status', StatusController.status)
 }

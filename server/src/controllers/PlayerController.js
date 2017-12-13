@@ -19,15 +19,15 @@ module.exports = {
       // user already existing?
     }
   },
-  async getPlayers(req,res) {
+  async getAllPlayers(req,res) {
     try {
+      console.log('Getting the players')
       const players = await Player.findAll()
       res.send(players.toJSON())
     } catch(err) {
       res.status(400).send({
-        error: 'Name already in use!'
+        error: 'Couldn\'t get the players!'
       })
-      // user already existing?
     }
   }
 }

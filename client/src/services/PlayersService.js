@@ -6,9 +6,9 @@ import Api from '@/services/Api'
 
 export default {
   getPlayers () {
-    return Api().get('players')
+    return Api().get('/api/players')
   },
   register (credentials){
-    return Api().post('players/create', credentials)
+    return Api().post('/api/players/create', credentials)
   }
 }
