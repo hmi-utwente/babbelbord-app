@@ -1,9 +1,29 @@
 <template>
   <v-content>
     <v-layout row justify-center>
-      <ul>
-        <li v-for="player in players_list"> {{ player.name }} {{ player.lastname }} </li>
-      </ul>
+      <h2>Selecteer spelers</h2>
+      <p>Selecteer twee spelers voor het babbelbord spel</p>
+      <p>Kies een van de volgende spelers</p>
+
+      <v-container
+        fluid
+        style="min-height: 0;"
+        grid-list-lg
+      >
+        <v-layout row wrap>
+          <v-flex v-for="player in players_list" xs12>
+            <v-card color="blue-grey darken-2" class="white--text">
+              <v-card-title primary-title>
+                <div class="headline">{{ player.name }} {{ player.lastname }}</div>
+                <div>Onderwerpen vermijden:</div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn flat dark>Listen now</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
       <v-btn color="orange" to="/players/create">Create new player</v-btn>
     </v-layout>
   </v-content>
