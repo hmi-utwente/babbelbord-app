@@ -31,6 +31,7 @@
 
 <script>
   import PlayersService from '@/services/PlayersService'
+
   export default {
     data () {
       return {
