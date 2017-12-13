@@ -4,7 +4,7 @@
       <ul>
         <li v-for="player in players_list"> {{ player.name }} {{ player.lastname }} </li>
       </ul>
-      <v-btn @click="createPlayer" color="orange" to="/players/create">Create new player</v-btn>
+      <v-btn color="orange" to="/players/create">Create new player</v-btn>
     </v-layout>
   </v-content>
 </template>
@@ -20,8 +20,8 @@
     },
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async mounted() {
-      const response = await PlayersService.getPlayers()
-      console.log(response.data)
+      //const response = await PlayersService.getPlayers()
+      //console.log(response.data)
     }
   }
 
