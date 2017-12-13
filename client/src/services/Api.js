@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-var baseUrl = 'http://localhost:8081/'
+var baseUrl = 'http://babbelbord.herokuapp.com/'
 
 export default () => {
   return axios.create({
