@@ -15,5 +15,6 @@ module.exports = (app) => {
     PlayerController.register)
 
   app.get('/api/players', PlayerController.getAllPlayers)
+
   app.get('/api/status', StatusController.status)
 }

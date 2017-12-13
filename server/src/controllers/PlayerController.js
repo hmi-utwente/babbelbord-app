@@ -21,9 +21,8 @@ module.exports = {
   },
   async getAllPlayers(req,res) {
     try {
-      console.log('Getting the players')
       const players = await Player.findAll()
-      res.send(players.toJSON())
+      res.send(players)
     } catch(err) {
       res.status(400).send({
         error: 'Couldn\'t get the players!'
