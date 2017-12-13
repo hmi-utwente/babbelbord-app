@@ -1,30 +1,30 @@
 <template>
-  <v-content>
+  <div>
       <h2>Selecteer spelers</h2>
       <p>Selecteer twee spelers voor het babbelbord spel</p>
       <p>Kies een van de volgende spelers</p>
 
-      <v-container
-        fluid
-        style="min-height: 0;"
-        grid-list-lg
-      >
-        <v-layout row wrap>
-          <v-flex v-for="player in players_list" xs12>
-            <v-card color="blue-grey darken-2" class="white--text">
-              <v-card-title primary-title>
-                <div class="headline">{{ player.name }} {{ player.lastname }}</div>
-                <div>Onderwerpen vermijden:</div>
-              </v-card-title>
-              <v-card-actions>
-                <v-btn flat dark>Listen now</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-      <v-btn color="orange" to="/players/create">Create new player</v-btn>
-  </v-content>
+    <v-container
+      fluid
+      style="min-height: 0;"
+      grid-list-lg
+    >
+      <v-layout row wrap>
+        <v-flex xs4 v-for="player in players_list">
+          <v-card color="white">
+            <v-card-title primary-title>
+              <div class="headline"> {{player.name}} {{player.lastname}} </div>
+              <div>Listen to your favorite artists and albums whenever and wherever, online and offline.</div>
+            </v-card-title>
+            <v-card-actions>
+              <v-btn dark color="deep-purple">Edit player details</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <v-btn color="orange" to="/players/create">Create new player</v-btn>
+  </div>
 </template>
 
 <script>
@@ -47,5 +47,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  v-card-title > * {
+    color: black;
+  }
 
 </style>
