@@ -23,7 +23,18 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-btn color="orange" to="/players/create">Create new player</v-btn>
+    <v-btn
+      absolute
+      dark
+      fab
+      bottom
+      right
+      color="deep-purple"
+      style="margin-bottom: 3em; margin-right: 1em;"
+      to="/players/create"
+    >
+      <v-icon>add</v-icon>
+    </v-btn>
   </div>
 </template>
 

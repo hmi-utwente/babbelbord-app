@@ -1,15 +1,31 @@
 <template>
-  <div class="welcome">
-    <h1>Welcome to Babbelbord!</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores atque blanditiis, corporis doloremque esse eum fuga id illo iusto molestiae mollitia odio quaerat ratione repudiandae sint tenetur totam ut! Non.</p>
-  </div>
+  <v-container text-xs-center>
+    <v-layout row wrap>
+      <v-flex xs12 sm10 offset-sm1>
+        <v-content>
+          <div class="welcome">
+            <h1 class="display-2">Welcome to Babbelbord!</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores atque blanditiis, corporis doloremque esse eum fuga id illo iusto molestiae mollitia odio quaerat ratione repudiandae sint tenetur totam ut! Non.</p>
+          </div>
+        </v-content>
+      </v-flex>
+      <v-flex xs12>
+        <v-btn dark color="deep-purple" to="/players">
+          Start game
+        </v-btn>
+        <v-btn dark color="deep-purple">
+          Profiles
+        </v-btn>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+
     }
   }
 }
@@ -17,18 +33,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>
