@@ -21,7 +21,11 @@ module.exports = {
   },
   async getAllPlayers(req,res) {
     try {
-      const players = await Player.findAll({order: 'name'})
+      const players = await Player.findAll({
+        order: [
+          ['name', 'ASC'],
+          ['lastname', 'ASC'],
+        ],})
       res.send(players)
     } catch(err) {
       res.status(400).send({
