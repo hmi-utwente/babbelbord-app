@@ -3,6 +3,7 @@
  */
 const StatusController = require('./controllers/StatusController')
 const PlayerController = require('./controllers/PlayerController')
+const QuestionController = require('./controllers/QuestionController')
 const PlayerControllerPolicy = require('./policies/PlayerControllerPolicy')
 
 module.exports = (app) => {
@@ -10,11 +11,18 @@ module.exports = (app) => {
     res.send('<h1>Ciao</h1>')
   })
 
+  // QUESTIONS API
+  // get all the questions
+  app.get('/api/questions', QuestionController.getAllQuestions)
+
+  // PLAYERS API
+  // get all the players
+  app.get('/api/players', PlayerController.getAllPlayers)
+
+  // create new player
   app.post('/api/players/create',
     PlayerControllerPolicy.register,
     PlayerController.register)
-
-  app.get('/api/players', PlayerController.getAllPlayers)
 
   app.get('/api/status', StatusController.status)
 }
