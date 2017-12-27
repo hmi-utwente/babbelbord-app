@@ -6,10 +6,15 @@ module.exports = (sequelize, DataTypes) =>
     question: {
       type: DataTypes.TEXT,
     },
+    subquestions: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+    },
     category: {
       type: DataTypes.INTEGER,
     },
     topics: {
      type: DataTypes.ARRAY(DataTypes.INTEGER)
     }
+  }, {
+    timestamps: false
   })

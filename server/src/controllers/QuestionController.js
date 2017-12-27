@@ -2,14 +2,12 @@
  * Created by ale on 08/12/2017.
  */
 
-const {Player} = require('../models')
-
-// TODO: set unique key, so the user cannot be created twice.
-// TODO: However, it has to be either name or lastname and potentially not the Id :(
+const {Question} = require('../models')
 
 module.exports = {
   async getAllQuestions(req,res) {
     try {
+
       const questions = await Question.findAll()
       res.send(questions)
     } catch(err) {
@@ -17,5 +15,8 @@ module.exports = {
         error: 'Couldn\'t get the questions!'
       })
     }
+
+    // TODO send the category to the tablet through socketIO
   }
 }
+
