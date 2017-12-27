@@ -4,6 +4,8 @@
 const StatusController = require('./controllers/StatusController')
 const PlayerController = require('./controllers/PlayerController')
 const QuestionController = require('./controllers/QuestionController')
+const TopicController = require('./controllers/TopicController')
+const CategoryController = require('./controllers/CategoryController')
 const PlayerControllerPolicy = require('./policies/PlayerControllerPolicy')
 
 module.exports = (app) => {
@@ -23,6 +25,12 @@ module.exports = (app) => {
   app.post('/api/players/create',
     PlayerControllerPolicy.register,
     PlayerController.register)
+
+  // TOPICS API
+  app.get('/api/topics', TopicController.getTopics)
+
+  // CATEGORIES API
+  app.get('/api/categories', CategoryController.getCategories)
 
   app.get('/api/status', StatusController.status)
 }
