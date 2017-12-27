@@ -20,7 +20,9 @@
               <div>
                 <h3 class="headline mb-0">{{player.name}} {{player.lastname}}</h3>
                 <div>Skipped topics:
-                  <span v-for="topic in player.skipQuestions"> {{topic}}, </span>
+                  <span v-for="topicPlayer in player.skipQuestions">
+                    <span v-for="topic in topics" v-if="topic.id == topicPlayer"> {{ topic.name }}, </span>
+                  </span>
                 </div>
               </div>
             </v-card-title>
@@ -48,17 +50,22 @@
 
 <script>
   import PlayersService from '@/services/PlayersService'
+  import TopicsService from '@/services/TopicsService'
 
   export default {
     data () {
       return {
-        players_list: []
+        players_list: [],
+        topics: []
       }
     },
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async created() {
-      const response = await PlayersService.getPlayers()
-      this.players_list = response.data
+      const players = await PlayersService.getPlayers()
+      this.players_list = players.data
+
+      const topics = await TopicsService.getTopics()
+      this.topics = topics.data
     }
   }
 
