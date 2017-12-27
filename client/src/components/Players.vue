@@ -10,7 +10,10 @@
       grid-list-lg
     >
       <v-layout row wrap>
-        <v-flex xs4 v-for="player in players_list">
+        <v-flex xs4
+                v-for="(player,i) in players_list"
+                :key="i"
+        >
           <v-card color="white">
             <v-card-title primary-title>
               <div class="headline"> {{player.name}} {{player.lastname}} </div>

@@ -17,12 +17,24 @@
             <v-btn @click="clear" flat color="orange">clear</v-btn>
             <v-btn
               @click="register"
-              :disabled="!valid"
+              :loading="loading"
+              @click.native="loader = 'loading'"
+              :disabled="loading"
               color="orange"
             >
               submit
             </v-btn>
           </v-form>
+
+          <v-snackbar
+            :timeout="timeout"
+            color="green"
+            v-model="snackbar"
+          >
+            Player created, taking you back to players' list in a moment.
+            <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+          </v-snackbar>
+
         </v-layout>
         <div class="error" v-html="error"></div>
       </v-container>
@@ -38,7 +50,11 @@
         name: '',
         lastname: '',
         error: null,
-        valid: true
+        loader: null,
+        valid: false,
+        loading: false,
+        snackbar: false,
+        timeout: 3000
       }
     },
     methods: {
@@ -48,12 +64,26 @@
             name: this.name,
             lastname: this.lastname
           })
+          this.snackbar = true
+          setTimeout(() => {
+            this.$router.push('/players')
+          }, 3000);
         } catch(error) {
           this.error = error.response.data.error
         }
       },
       clear () {
         this.$refs.form.reset()
+      }
+    },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 3000)
+
+        this.loader = null
       }
     }
 }
