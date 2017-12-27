@@ -14,13 +14,18 @@
                 v-for="(player,i) in players_list"
                 :key="i"
         >
-          <v-card color="white">
+
+          <v-card>
             <v-card-title primary-title>
-              <div class="headline"> {{player.name}} {{player.lastname}} </div>
-              <div>Listen to your favorite artists and albums whenever and wherever, online and offline.</div>
+              <div>
+                <h3 class="headline mb-0">{{player.name}} {{player.lastname}}</h3>
+                <div>Skipped topics:
+                  <span v-for="topic in player.skipQuestions"> {{topic}}, </span>
+                </div>
+              </div>
             </v-card-title>
             <v-card-actions>
-              <v-btn dark color="deep-purple">Edit player details</v-btn>
+              <v-btn flat color="deep-purple">Edit</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
