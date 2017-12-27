@@ -4,7 +4,7 @@ module.exports = {
 
   async getCategories(req,res) {
     try {
-      const categories = await Topic.findAll()
+      const categories = await Category.findAll()
       res.send(categories)
     } catch(err) {
       res.status(400).send({
