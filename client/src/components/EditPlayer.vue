@@ -12,21 +12,19 @@
   import TopicsService from '@/services/TopicsService'
 
   export default {
-    //props: ['topics', 'player'],
     data () {
       return {
         player: {},
         topics: []
       }
     },
-    methods: {
-      async created() {
-        const player = await PlayersService.getPlayer(this.$route.params.id)
-        this.player = player.data
+    // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
+    async created() {
+      const player = await PlayersService.getPlayer(this.$route.params.id)
+      this.player = player.data
 
-        const topics = await TopicsService.getTopics()
-        this.topics = topics.data
-      }
+      const topics = await TopicsService.getTopics()
+      this.topics = topics.data
     }
   }
 

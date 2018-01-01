@@ -8,8 +8,8 @@ export default {
   getPlayers () {
     return Api().get('/api/players')
   },
-  getPlayer (id) {
-    return Api().post('/api/player/', id)
+  getPlayer (playerId) {
+    return Api().get('/api/player/' + playerId)
   },
   register (credentials){
     return Api().post('/api/players/create', credentials)
