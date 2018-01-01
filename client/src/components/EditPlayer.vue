@@ -3,7 +3,36 @@
     <h2>Onderwerpen</h2>
     <p>Deselecteer de onderwerpen die je wilt vermijden</p>
     <p> {{ player.name }} </p>
-    <p> {{ $route.params.id }} </p>
+    <v-container
+      fluid
+      style="min-height: 0;"
+      grid-list-lg
+    >
+      <v-layout row wrap>
+        <v-flex xs4
+                v-for="(topic,i) in topics"
+                :key="i"
+        >
+
+          <v-card v-if="player.skipQuestions !== null && player.skipQuestions.includes(topic.id)" color="grey">
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">{{topic.name}}</h3>
+              </div>
+            </v-card-title>
+          </v-card>
+
+          <v-card v-else color="amber">
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">{{topic.name}}</h3>
+              </div>
+            </v-card-title>
+          </v-card>
+
+        </v-flex>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 
