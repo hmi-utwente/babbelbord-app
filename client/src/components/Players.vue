@@ -27,7 +27,7 @@
               </div>
             </v-card-title>
             <v-card-actions>
-              <v-btn flat color="deep-purple">Edit</v-btn>
+              <v-btn flat :to="`/players/edit/${player.id}`" color="deep-purple">Edit</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -59,6 +59,7 @@
         topics: []
       }
     },
+
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async created() {
       const players = await PlayersService.getPlayers()
