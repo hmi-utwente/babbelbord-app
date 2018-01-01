@@ -21,6 +21,9 @@ module.exports = (app) => {
   // get all the players
   app.get('/api/players', PlayerController.getAllPlayers)
 
+  // get a player
+  app.get('/api/player/:id', PlayerController.getPlayer)
+
   // create new player
   app.post('/api/players/create',
     PlayerControllerPolicy.register,

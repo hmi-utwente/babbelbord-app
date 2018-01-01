@@ -32,5 +32,15 @@ module.exports = {
         error: 'Couldn\'t get the players!'
       })
     }
+  },
+  async getPlayer(req,res) {
+    try {
+      const player = await Player.findOne({ where: {id: req.params.id} })
+      res.send(player)
+    } catch(err) {
+      res.status(400).send({
+        error: 'Couldn\'t get the player details!'
+      })
+    }
   }
 }

@@ -2,57 +2,30 @@
   <div>
     <h2>Onderwerpen</h2>
     <p>Deselecteer de onderwerpen die je wilt vermijden</p>
-    <p>{{ $route.params.id }}</p>
-
-    <v-container
-      fluid
-      style="min-height: 0;"
-      grid-list-lg
-    >
-      <v-layout row wrap>
-        <v-flex xs4
-                v-for="(topic,i) in topics"
-                :key="i"
-        >
-          <v-card>
-            <v-card-title primary-title>
-              <div>
-                <h3 class="headline mb-0">{{ topic }}</h3>
-              </div>
-            </v-card-title>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
+    <p> {{ player.name }} </p>
+    <p> {{ $route.params.id }} </p>
   </div>
 </template>
 
 <script>
+  import PlayersService from '@/services/PlayersService'
+  import TopicsService from '@/services/TopicsService'
+
   export default {
-    props: ['topics', 'player'],
+    //props: ['topics', 'player'],
     data () {
       return {
-        players_list: [],
+        player: {},
         topics: []
       }
     },
     methods: {
-      async register(){
-        try {
-          await PlayersService.register({
-            name: this.name,
-            lastname: this.lastname
-          })
-          this.snackbar = true
-          setTimeout(() => {
-            this.$router.push('/players')
-          }, 3000);
-        } catch(error) {
-          this.error = error.response.data.error
-        }
-      },
-      clear () {
-        this.$refs.form.reset()
+      async created() {
+        const player = await PlayersService.getPlayer(this.$route.params.id)
+        this.player = player.data
+
+        const topics = await TopicsService.getTopics()
+        this.topics = topics.data
       }
     }
   }
