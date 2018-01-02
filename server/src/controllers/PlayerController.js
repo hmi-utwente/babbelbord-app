@@ -22,8 +22,12 @@ module.exports = {
   async update(req, res) {
     try {
       console.log(req.body)
-      const updatedPlayer = await Player.update(req.body)
-      res.send(updatedPlayer)
+
+      await Player.update({
+        skipQuestions: req.body.skipQuestions
+      }, {
+        where: {id: req.body.id}
+      }).then(result => res.send(result.toJSON()))
     } catch(err) {
       res.status(400).send({
         error: 'Can\'t update player!'
