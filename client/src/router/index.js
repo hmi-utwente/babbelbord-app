@@ -28,6 +28,7 @@ export default new Router({
       path: '/players/edit/:id',
       name: 'editPlayer',
       component: EditPlayer,
+      props: true
     }
   ]
 })

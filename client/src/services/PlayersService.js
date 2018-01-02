@@ -11,7 +11,10 @@ export default {
   getPlayer (playerId) {
     return Api().get('/api/player/' + playerId)
   },
+  update (player){
+    return Api().post('/api/player/update', player)
+  },
   register (credentials){
     return Api().post('/api/players/create', credentials)
-  }
+  },
 }

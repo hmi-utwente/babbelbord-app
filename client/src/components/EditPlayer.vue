@@ -21,7 +21,7 @@
     </v-container>
 
     <div class="text-xs-center">
-      <v-btn dark :click="savePlayerDetails" color="deep-purple">Save</v-btn>
+      <v-btn dark :click="savePlayerDetails()" color="deep-purple">Save</v-btn>
     </div>
   </div>
 </template>
@@ -45,26 +45,39 @@
       async savePlayerDetails() {
         // if topic.isDeselected = false, add in skipQuestions if not already there
         // if topic.isDeselected = true, remove from skipQuestions if not already there
+        let skipQuestions = this.player.skipQuestions
+        let topic;
+
+
+        for(topic in this.topics){
+          if(skipQuestions){
+            if(skipQuestions.includes(topic.id) && topic.isDeselected) {
+              skipQuestions.splice(skipQuestions.indexOf(topic.id), 1)
+            } else if(skipQuestions.includes(topic.id) && !topic.isDeselected)
+              skipQuestions.push(topic.id)
+          } else {
+            if(!topic.isDeselected)
+              skipQuestions.push(topic.id)
+          }
+        }
+
+        console.log(this.player.skipQuestions)
+
         try {
-          await PlayersService.register({
-            name: this.name,
-            lastname: this.lastname
+          await PlayersService.update({
+            skipQuestions: this.player.skipQuestions
+          }, {
+            where: {id: this.player.id}
           })
-          this.snackbar = true
-          setTimeout(() => {
-            this.$router.push('/players')
-          }, 3000);
+          // this.snackbar = true
+          // setTimeout(() => {
+          //  this.$router.push('/players')
+          // }, 3000);
         } catch(error) {
           this.error = error.response.data.error
         }
       }
     },
-    //watch: {
-    //  '$route' (to,from) {
-        // do something when route params change
-    //  }
-    //},
-    // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async created() {
       const player = await PlayersService.getPlayer(this.id)
       this.player = player.data

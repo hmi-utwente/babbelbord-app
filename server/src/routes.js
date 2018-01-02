@@ -29,6 +29,11 @@ module.exports = (app) => {
     PlayerControllerPolicy.register,
     PlayerController.register)
 
+  // update a single player
+  // create new player
+  app.post('/api/player/update',
+    PlayerController.update)
+
   // TOPICS API
   app.get('/api/topics', TopicController.getTopics)
 
