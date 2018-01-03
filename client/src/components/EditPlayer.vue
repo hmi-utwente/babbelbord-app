@@ -21,7 +21,7 @@
     </v-container>
 
     <div class="text-xs-center">
-      <v-btn dark :click="savePlayerDetails()" color="deep-purple">Save</v-btn>
+      <v-btn dark @click="savePlayerDetails" color="deep-purple">Save</v-btn>
     </div>
   </div>
 </template>
@@ -43,32 +43,40 @@
         topic.isDeselected = !topic.isDeselected
       },
       async savePlayerDetails() {
+
         // if topic.isDeselected = false, add in skipQuestions if not already there
         // if topic.isDeselected = true, remove from skipQuestions if not already there
         let skipQuestions = this.player.skipQuestions
-        let topic;
 
-
-        for(topic in this.topics){
-          if(skipQuestions){
-            if(skipQuestions.includes(topic.id) && topic.isDeselected) {
-              skipQuestions.splice(skipQuestions.indexOf(topic.id), 1)
-            } else if(skipQuestions.includes(topic.id) && !topic.isDeselected)
-              skipQuestions.push(topic.id)
+        for(var i = 0; i < this.topics.length; i++){
+          console.log("Current topic: " + this.topics[i].id + ", isDeselected: " + this.topics[i].isDeselected)
+          if(this.player.skipQuestions.length > 0){
+            if(this.topics[i].isDeselected){
+              if(!this.player.skipQuestions.includes(this.topics[i].id)) {
+                console.log("-- isDeselected == true, not in SQ, therefore add")
+                this.player.skipQuestions.push(this.topics[i].id)
+              }
+              else {
+                console.log("-- isDeselected == true, already in SQ, do nothing")
+              }
+            }
+            else {
+              if (this.player.skipQuestions.includes(this.topics[i].id)){
+                console.log("-- isDeselected == false, in SQ, therefore remove")
+                this.player.skipQuestions.splice(this.player.skipQuestions.indexOf(this.topics[i].id), 1)
+              }
+            }
           } else {
-            if(!topic.isDeselected)
-              skipQuestions.push(topic.id)
+            if(this.topics[i].isDeselected){
+              console.log("-- empty SQ array, isDeselected == true, therefore add")
+              this.player.skipQuestions.push(this.topics[i].id)
+            }
           }
+          console.log("------ After iteration on topic " + this.topics[i].id + ", SQ situation is this one: " + this.player.skipQuestions)
         }
 
-        console.log(this.player.skipQuestions)
-
         try {
-          await PlayersService.update({
-            skipQuestions: this.player.skipQuestions
-          }, {
-            where: {id: this.player.id}
-          })
+          await PlayersService.update(this.player)
           // this.snackbar = true
           // setTimeout(() => {
           //  this.$router.push('/players')
