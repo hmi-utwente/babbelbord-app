@@ -21,7 +21,24 @@
     </v-container>
 
     <div class="text-xs-center">
-      <v-btn dark @click="savePlayerDetails" color="deep-purple">Save</v-btn>
+      <v-btn
+        @click="savePlayerDetails"
+        :loading="loading"
+        @click.native="loader = 'loading'"
+        :disabled="loading"
+        color="deep-purple"
+      >Save
+      </v-btn>
+
+      <v-snackbar
+        :timeout="timeout"
+        color="green"
+        v-model="snackbar"
+      >
+        Player updated, taking you back to players' list in a moment.
+        <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+      </v-snackbar>
+
     </div>
   </div>
 </template>
@@ -35,7 +52,11 @@
     data () {
       return {
         player: {},
-        topics: []
+        topics: [],
+        loader: null,
+        loading: false,
+        snackbar: false,
+        timeout: 3000
       }
     },
     methods: {
@@ -50,7 +71,7 @@
 
         for(var i = 0; i < this.topics.length; i++){
           console.log("Current topic: " + this.topics[i].id + ", isDeselected: " + this.topics[i].isDeselected)
-          if(this.player.skipQuestions.length > 0){
+          if(this.player.skipQuestions != null){
             if(this.topics[i].isDeselected){
               if(!this.player.skipQuestions.includes(this.topics[i].id)) {
                 console.log("-- isDeselected == true, not in SQ, therefore add")
@@ -67,6 +88,7 @@
               }
             }
           } else {
+            this.player.skipQuestions = []
             if(this.topics[i].isDeselected){
               console.log("-- empty SQ array, isDeselected == true, therefore add")
               this.player.skipQuestions.push(this.topics[i].id)
@@ -76,14 +98,24 @@
         }
 
         try {
+          this.snackbar = true
+          setTimeout(() => {
+            this.$router.push('/players')
+          }, 3000);
           await PlayersService.update(this.player)
-          // this.snackbar = true
-          // setTimeout(() => {
-          //  this.$router.push('/players')
-          // }, 3000);
         } catch(error) {
           this.error = error.response.data.error
         }
+      }
+    },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 3000)
+
+        this.loader = null
       }
     },
     async created() {
