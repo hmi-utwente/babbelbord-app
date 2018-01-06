@@ -5,15 +5,15 @@
         <v-content>
           <div class="welcome">
             <h1 class="display-2">Welcome to Babbelbord!</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores atque blanditiis, corporis doloremque esse eum fuga id illo iusto molestiae mollitia odio quaerat ratione repudiandae sint tenetur totam ut! Non.</p>
+            <p>Here we should put a brief description of the game perhaps?</p>
           </div>
         </v-content>
       </v-flex>
       <v-flex xs12>
-        <v-btn dark color="deep-purple" to="/players">
+        <v-btn dark color="deep-purple" to="/players/create">
           Start game
         </v-btn>
-        <v-btn dark color="deep-purple">
+        <v-btn dark color="deep-purple" to="/players">
           Profiles
         </v-btn>
       </v-flex>
@@ -27,6 +27,9 @@ export default {
     return {
 
     }
+  },
+  async created(){
+    Event.$emit('toolbar-data', "Babbelbord", false)
   }
 }
 </script>

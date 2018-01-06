@@ -1,8 +1,12 @@
 <template>
   <div>
-      <h2>Selecteer spelers</h2>
-      <p>Selecteer twee spelers voor het babbelbord spel</p>
-      <p>Kies een van de volgende spelers</p>
+    <h2>Selecteer spelers</h2>
+    <p>Selecteer twee spelers voor het babbelbord spel</p>
+    <p>Kies een van de volgende spelers</p>
+
+    <div class="text-xs-center">
+      <v-progress-circular v-if="loading" indeterminate :size="100" :width="3" color="deep-purple"></v-progress-circular>
+    </div>
 
     <v-container
       fluid
@@ -33,41 +37,52 @@
         </v-flex>
       </v-layout>
     </v-container>
-    <v-btn
-      absolute
-      dark
-      fab
-      bottom
-      right
-      color="deep-purple"
-      style="margin-bottom: 3em; margin-right: 1em;"
-      to="/players/create"
-    >
-      <v-icon>add</v-icon>
-    </v-btn>
+    <v-fab-transition>
+      <v-btn
+        dark
+        fab
+        fixed
+        absolute
+        bottom
+        right
+        color="deep-purple"
+        style="margin-bottom: 3em; margin-right: 1em;"
+        to="/players/create"
+      >
+        <v-icon>add</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </div>
 </template>
 
 <script>
   import PlayersService from '@/services/PlayersService'
   import TopicsService from '@/services/TopicsService'
+  import PageHeader from './Header.vue'
 
   export default {
+    components: {PageHeader},
     data () {
       return {
         players_list: [],
-        topics: []
+        topics: [],
+        loading: true
       }
     },
-
+    watch: {
+      players_list: function () {
+        this.loading = false
+      }
+    },
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async created() {
+      Event.$emit('toolbar-data', "Spelers", true)
       const players = await PlayersService.getPlayers()
-      this.players_list = players.data
-
       const topics = await TopicsService.getTopics()
+
+      this.players_list = players.data
       this.topics = topics.data
-    }
+      }
   }
 
 </script>

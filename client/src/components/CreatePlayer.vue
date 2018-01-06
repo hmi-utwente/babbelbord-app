@@ -85,6 +85,9 @@
 
         this.loader = null
       }
+    },
+    created(){
+      Event.$emit('toolbar-data', "Nieuw spel", true)
     }
 }
 </script>
