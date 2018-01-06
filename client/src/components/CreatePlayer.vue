@@ -1,27 +1,27 @@
 <template>
   <div>
     <panel title="Bestaande spelers">
-      <v-flex sm12
-              v-for="(player,i) in players_list"
-              :key="i"
-      >
-
-        <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{player.name}} {{player.lastname}}</h3>
-              <div>Topics avoided:
+      <v-list three-line>
+        <template v-for="player in players">
+          <v-list-tile avatar :key="player.id" @click="">
+            <v-list-tile-avatar>
+              <v-icon>face</v-icon>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>{{ player.name }} {{ player.lastname }} </v-list-tile-title>
+              <v-list-tile-sub-title>
                 <span v-for="topicPlayer in player.skipQuestions">
-                    <v-chip v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black">{{ topic.name }}</v-chip>
-                  </span>
-              </div>
-            </div>
-          </v-card-title>
-          <v-card-actions>
-            <v-btn flat :to="`/players/edit/${player.id}`" color="deep-purple">Edit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
+                  <span v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black">{{ topic.name }} </span>
+                </span>
+              </v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-icon color="deep-purple">mode edit</v-icon>
+            </v-list-tile-action>
+          </v-list-tile>
+          <v-divider></v-divider>
+        </template>
+      </v-list>
     </panel>
 
     <v-content>
@@ -83,7 +83,9 @@
         valid: false,
         loading: false,
         snackbar: false,
-        timeout: 3000
+        timeout: 3000,
+        players: [],
+        topics: []
       }
     },
     methods: {
@@ -117,6 +119,11 @@
     },
     created(){
       Event.$emit('toolbar-data', "Nieuw spel", true)
+
+      Event.$on('players_topics', (players, topics) => {
+        this.players = players.data
+        this.topics = topics.data
+      })
     }
 }
 </script>

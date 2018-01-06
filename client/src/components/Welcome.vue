@@ -22,16 +22,30 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
+  import PlayersService from '@/services/PlayersService'
+  import TopicsService from '@/services/TopicsService'
 
+
+  export default {
+    data () {
+      return {
+        players: [],
+        topics: []
+      }
+    },
+    async created(){
+      Event.$emit('toolbar-data', "Babbelbord", false)
+
+      const players = await PlayersService.getPlayers()
+      const topics = await TopicsService.getTopics()
+
+      this.players = players
+      this.topics = topics
+    },
+    beforeDestroy(){
+      Event.$emit('players_topics', this.players, this.topics)
     }
-  },
-  async created(){
-    Event.$emit('toolbar-data', "Babbelbord", false)
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

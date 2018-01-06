@@ -57,8 +57,6 @@
 </template>
 
 <script>
-  import PlayersService from '@/services/PlayersService'
-  import TopicsService from '@/services/TopicsService'
   import PageHeader from './Header.vue'
 
   export default {
@@ -78,11 +76,11 @@
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async created() {
       Event.$emit('toolbar-data', "Spelers", true)
-      const players = await PlayersService.getPlayers()
-      const topics = await TopicsService.getTopics()
 
-      this.players_list = players.data
-      this.topics = topics.data
+      Event.$on('players_topics', (players, topics) => {
+        this.players_list = players.data
+        this.topics = topics.data
+      })
       }
   }
 
