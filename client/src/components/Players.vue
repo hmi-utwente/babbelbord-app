@@ -4,8 +4,9 @@
     <p>Selecteer twee spelers voor het babbelbord spel</p>
     <p>Kies een van de volgende spelers</p>
 
-    <div class="text-xs-center">
-      <v-progress-circular v-if="loading" indeterminate :size="100" :width="3" color="deep-purple"></v-progress-circular>
+    <div v-if="loading" class="text-xs-center">
+      <v-progress-circular indeterminate :size="100" :width="3" color="deep-purple"></v-progress-circular>
+      <p>Retrieving players...</p>
     </div>
 
     <v-container
@@ -23,9 +24,9 @@
             <v-card-title primary-title>
               <div>
                 <h3 class="headline mb-0">{{player.name}} {{player.lastname}}</h3>
-                <div>Skipped topics:
+                <div>Topics avoided:
                   <span v-for="topicPlayer in player.skipQuestions">
-                    <span v-for="topic in topics" v-if="topic.id == topicPlayer"> {{ topic.name }}, </span>
+                    <v-chip v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black">{{ topic.name }}</v-chip>
                   </span>
                 </div>
               </div>

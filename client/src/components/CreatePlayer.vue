@@ -1,4 +1,29 @@
 <template>
+  <div>
+    <panel title="Bestaande spelers">
+      <v-flex sm12
+              v-for="(player,i) in players_list"
+              :key="i"
+      >
+
+        <v-card>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">{{player.name}} {{player.lastname}}</h3>
+              <div>Topics avoided:
+                <span v-for="topicPlayer in player.skipQuestions">
+                    <v-chip v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black">{{ topic.name }}</v-chip>
+                  </span>
+              </div>
+            </div>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn flat :to="`/players/edit/${player.id}`" color="deep-purple">Edit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </panel>
+
     <v-content>
       <v-container fluid>
         <v-layout row justify-center>
@@ -39,12 +64,16 @@
         <div class="error" v-html="error"></div>
       </v-container>
     </v-content>
+  </div>
+
 </template>
 
 <script>
   import PlayersService from '@/services/PlayersService'
+  import Panel from './Panel'
 
   export default {
+    components: {Panel},
     data () {
       return {
         name: '',
