@@ -12,6 +12,9 @@ Vue.config.productionTip = false
 
 Vue.use(Vuetify)
 
+// event bus for communication purposes
+window.Event = new Vue()
+
 //sync(store, router)
 
 /* eslint-disable no-new */

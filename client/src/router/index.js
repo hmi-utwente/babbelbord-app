@@ -4,6 +4,7 @@ import Welcome from '@/components/Welcome'
 import Players from '@/components/Players'
 import CreatePlayer from '@/components/CreatePlayer'
 import EditPlayer from '@/components/EditPlayer'
+import Game from '@/components/Game'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       name: 'editPlayer',
       component: EditPlayer,
       props: true
+    },
+    {
+      path: '/game',
+      name: 'game',
+      component: Game
     }
   ]
 })
