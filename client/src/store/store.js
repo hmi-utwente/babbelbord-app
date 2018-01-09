@@ -30,7 +30,7 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
-    async retrieveUpdatedPlayers(context) {
+    async retrievePlayers(context) {
       try {
         const players = await PlayersService.getPlayers()
         console.log('Players in retrieveUpdated function: ', players)
