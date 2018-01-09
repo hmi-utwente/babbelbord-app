@@ -30,7 +30,6 @@ module.exports = (app) => {
     PlayerController.register)
 
   // update a single player
-  // create new player
   app.post('/api/player/update',
     PlayerController.update)
 
