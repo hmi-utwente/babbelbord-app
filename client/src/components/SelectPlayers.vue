@@ -104,8 +104,14 @@
         loading: false,
         snackbar: false,
         timeout: 3000,
-        players: [],
-        topics: []
+      }
+    },
+    computed: {
+      players() {
+        return this.$store.state.players
+      },
+      topics(){
+        return this.$store.state.topics
       }
     },
     methods: {
