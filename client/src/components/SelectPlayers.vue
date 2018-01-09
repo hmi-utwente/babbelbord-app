@@ -145,11 +145,6 @@
     },
     created(){
       Event.$emit('toolbar-data', "Nieuw spel", true)
-
-      Event.$on('players_topics', (players, topics) => {
-        this.players = players.data
-        this.topics = topics.data
-      })
     }
 }
 </script>

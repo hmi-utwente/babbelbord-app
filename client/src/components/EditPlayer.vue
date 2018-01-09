@@ -89,11 +89,12 @@
         }
 
         try {
+          await PlayersService.update(this.player)
           this.snackbar = true
           setTimeout(() => {
             this.$router.go(-1)
           }, 3000);
-          await PlayersService.update(this.player)
+          this.$store.dispatch('retrieveUpdatedPlayers')
         } catch(error) {
           this.error = error.response.data.error
         }

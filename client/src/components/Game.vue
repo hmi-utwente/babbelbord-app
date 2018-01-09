@@ -24,24 +24,27 @@
 
     data () {
       return {
-        players: [{}],        // array of objects, with data passed from previous parts of game
+        currentPlayers: [{}],        // array of objects, with data passed from previous parts of game
         activePlayer: '',     // will contain the player name to display
         gameStatus: 'turn',   // can be turn or win
         cards: {
           player1: 0,
           player2: 0
         },
-        questions: [{}],
         currentQuestion: {},  // contains also current category when filtered from set of questions
-        currentSubQuestions: []   // contains also current category when filtered from set of questions
+        currentSubQuestions: [],   // contains also current category when filtered from set of questions
+        showInstructions: true,
+        showQuestions: false
+      }
+    },
+    computed: {
+      questions() {
+        return this.$store.state.questions
       }
     },
     async created () {
       // take data of the two players, patient and caregiver, from the previous screen (use Event.$on)
 
-      // get all questions from database
-      const questions = await QuestionsService.getQuestions()
-      this.questions = questions.data
     }
   }
 </script>
