@@ -94,7 +94,7 @@
           setTimeout(() => {
             this.$router.go(-1)
           }, 3000);
-          this.$store.dispatch('retrieveUpdatedPlayers')
+          this.$store.dispatch('retrievePlayers')
         } catch(error) {
           this.error = error.response.data.error
         }
