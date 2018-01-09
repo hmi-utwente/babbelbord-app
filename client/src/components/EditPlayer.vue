@@ -67,40 +67,31 @@
 
         // if topic.isDeselected = false, add in skipQuestions if not already there
         // if topic.isDeselected = true, remove from skipQuestions if not already there
-        let skipQuestions = this.player.skipQuestions
 
         for(var i = 0; i < this.topics.length; i++){
-          console.log("Current topic: " + this.topics[i].id + ", isDeselected: " + this.topics[i].isDeselected)
           if(this.player.skipQuestions != null){
             if(this.topics[i].isDeselected){
               if(!this.player.skipQuestions.includes(this.topics[i].id)) {
-                console.log("-- isDeselected == true, not in SQ, therefore add")
                 this.player.skipQuestions.push(this.topics[i].id)
-              }
-              else {
-                console.log("-- isDeselected == true, already in SQ, do nothing")
               }
             }
             else {
               if (this.player.skipQuestions.includes(this.topics[i].id)){
-                console.log("-- isDeselected == false, in SQ, therefore remove")
                 this.player.skipQuestions.splice(this.player.skipQuestions.indexOf(this.topics[i].id), 1)
               }
             }
           } else {
             this.player.skipQuestions = []
             if(this.topics[i].isDeselected){
-              console.log("-- empty SQ array, isDeselected == true, therefore add")
               this.player.skipQuestions.push(this.topics[i].id)
             }
           }
-          console.log("------ After iteration on topic " + this.topics[i].id + ", SQ situation is this one: " + this.player.skipQuestions)
         }
 
         try {
           this.snackbar = true
           setTimeout(() => {
-            this.$router.push('/players')
+            this.$router.go(-1)
           }, 3000);
           await PlayersService.update(this.player)
         } catch(error) {

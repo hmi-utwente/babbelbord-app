@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex xs12 sm4 offset-sm2>
+    <v-flex xs10 offset-xs1>
       <v-card>
         <v-card-title primary-title>
           <div>
@@ -8,10 +8,6 @@
           </div>
         </v-card-title>
         <slot></slot>
-        <v-card-actions>
-          <v-btn flat color="orange">Share</v-btn>
-          <v-btn flat color="orange">Explore</v-btn>
-        </v-card-actions>
       </v-card>
     </v-flex>
   </v-layout>
@@ -28,6 +24,8 @@
   }
 </script>
 
-<style>
-
+<style scoped>
+  v-card {
+    align-self: flex-start;
+  }
 </style>

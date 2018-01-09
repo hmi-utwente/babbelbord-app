@@ -1,28 +1,48 @@
 <template>
   <div>
-    <panel title="Bestaande spelers">
-      <v-list three-line>
-        <template v-for="player in players">
-          <v-list-tile avatar :key="player.id" @click="">
-            <v-list-tile-avatar>
-              <v-icon>face</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ player.name }} {{ player.lastname }} </v-list-tile-title>
-              <v-list-tile-sub-title>
+
+    <v-layout row wrap>
+      <panel title="Bestaande spelers">
+        <v-list three-line>
+          <template v-for="player in players">
+            <v-list-tile avatar :key="player.id" @click="">
+              <v-list-tile-avatar>
+                <v-icon>face</v-icon>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ player.name }} {{ player.lastname }} </v-list-tile-title>
+                <v-list-tile-sub-title>
                 <span v-for="topicPlayer in player.skipQuestions">
-                  <span v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black">{{ topic.name }} </span>
+                  <span v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black"> {{ topic.name }} </span>
                 </span>
-              </v-list-tile-sub-title>
+                </v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-list-tile-action>
+                <v-icon color="deep-purple">mode edit</v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+            <v-divider></v-divider>
+          </template>
+        </v-list>
+      </panel>
+
+      <panel title="Nieuwe speler">
+        <v-list>
+          <v-list-tile @click="">
+            <v-list-tile-content>
+              <v-list-tile-title>Zorgdrager</v-list-tile-title>
             </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon color="deep-purple">mode edit</v-icon>
-            </v-list-tile-action>
           </v-list-tile>
           <v-divider></v-divider>
-        </template>
-      </v-list>
-    </panel>
+          <v-list-tile @click="">
+            <v-list-tile-content>
+              <v-list-tile-title>Bewoner</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-divider></v-divider>
+        </v-list>
+      </panel>
+    </v-layout>
 
     <v-content>
       <v-container fluid>

@@ -4,11 +4,6 @@
     <p>Selecteer twee spelers voor het babbelbord spel</p>
     <p>Kies een van de volgende spelers</p>
 
-    <div v-if="loading" class="text-xs-center">
-      <v-progress-circular indeterminate :size="100" :width="3" color="deep-purple"></v-progress-circular>
-      <p>Retrieving players...</p>
-    </div>
-
     <v-container
       fluid
       style="min-height: 0;"
@@ -26,7 +21,7 @@
                 <h3 class="headline mb-0">{{player.name}} {{player.lastname}}</h3>
                 <div>Topics avoided:
                   <span v-for="topicPlayer in player.skipQuestions">
-                    <v-chip v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black">{{ topic.name }}</v-chip>
+                    <v-chip v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black" :key="topic.id">{{ topic.name }}</v-chip>
                   </span>
                 </div>
               </div>
@@ -63,8 +58,6 @@
     components: {PageHeader},
     data () {
       return {
-        players_list: [],
-        topics: [],
         loading: true
       }
     },
@@ -73,15 +66,18 @@
         this.loading = false
       }
     },
+    computed: {
+      players_list() {
+        return this.$store.state.players
+      },
+      topics() {
+        return this.$store.state.topics
+      }
+    },
     // this automatically connects to the /register endpoint in the server as soon as the component is loaded on the page
     async created() {
       Event.$emit('toolbar-data', "Spelers", true)
-
-      Event.$on('players_topics', (players, topics) => {
-        this.players_list = players.data
-        this.topics = topics.data
-      })
-      }
+    }
   }
 
 </script>

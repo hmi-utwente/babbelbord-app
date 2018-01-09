@@ -7,13 +7,19 @@
             <h1 class="display-2">Welcome to Babbelbord!</h1>
             <p>Here we should put a brief description of the game perhaps?</p>
           </div>
+
+          <div v-if="loading" class="text-xs-center">
+            <v-progress-circular indeterminate :size="100" :width="3" color="deep-purple"></v-progress-circular>
+            <p>Retrieving data...</p>
+          </div>
+
         </v-content>
       </v-flex>
       <v-flex xs12>
-        <v-btn dark color="deep-purple" to="/players/create">
+        <v-btn :disabled="loading" dark color="deep-purple" to="/players/select">
           Start game
         </v-btn>
-        <v-btn dark color="deep-purple" to="/players">
+        <v-btn :disabled="loading" dark color="deep-purple" to="/players/profiles">
           Profiles
         </v-btn>
       </v-flex>
@@ -24,25 +30,29 @@
 <script>
   import PlayersService from '@/services/PlayersService'
   import TopicsService from '@/services/TopicsService'
+  import QuestionsService from '@/services/QuestionsService'
 
 
   export default {
     data () {
       return {
-        players: [],
-        topics: []
+        loading: true
       }
     },
-    async created(){
+    async created() {
       Event.$emit('toolbar-data', "Babbelbord", false)
 
       const players = await PlayersService.getPlayers()
       const topics = await TopicsService.getTopics()
+      const questions = await QuestionsService.getQuestions()
 
-      this.players = players
-      this.topics = topics
+      this.$store.commit('initializePlayers', players)
+      this.$store.commit('initializeTopics', topics)
+      this.$store.commit('initializeQuestions', questions)
+
+      this.loading = false;
     },
-    beforeDestroy(){
+    beforeDestroy() {
       Event.$emit('players_topics', this.players, this.topics)
     }
   }

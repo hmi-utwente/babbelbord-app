@@ -6,7 +6,7 @@ import router from './router/index'
 import Vuetify from 'vuetify'
 import {sync} from 'vuex-router-sync'
 import '../node_modules/vuetify/dist/vuetify.min.css'
-//import store from './store/store'
+import {store} from './store/store'
 
 Vue.config.productionTip = false
 
@@ -21,6 +21,7 @@ window.Event = new Vue()
 new Vue({
   el: '#app',
   router,
+  store: store,
   template: '<App/>',
   components: { App }
 })

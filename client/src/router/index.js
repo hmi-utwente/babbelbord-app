@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Welcome from '@/components/Welcome'
 import Players from '@/components/Players'
-import CreatePlayer from '@/components/CreatePlayer'
+import SelectPlayers from '@/components/SelectPlayers'
 import EditPlayer from '@/components/EditPlayer'
 import Game from '@/components/Game'
 
@@ -16,14 +16,14 @@ export default new Router({
       component: Welcome
     },
     {
-      path: '/players',
+      path: '/players/profiles',
       name: 'players',
       component: Players
     },
     {
-      path: '/players/create',
-      name: 'createPlayer',
-      component: CreatePlayer
+      path: '/players/select',
+      name: 'selectPlayers',
+      component: SelectPlayers
     },
     {
       path: '/players/edit/:id',
