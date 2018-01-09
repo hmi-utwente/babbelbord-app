@@ -1,91 +1,166 @@
 <template>
-  <div>
+    <v-container fluid grid-list-md>
+      <v-layout row wrap>
 
-    <v-layout row wrap>
-      <panel title="Bestaande spelers">
-        <v-list three-line>
-          <template v-for="player in players">
-            <v-list-tile avatar :key="player.id" @click="">
-              <v-list-tile-avatar>
-                <v-icon>face</v-icon>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ player.name }} {{ player.lastname }} </v-list-tile-title>
-                <v-list-tile-sub-title>
+        <!-- Bestaande spelers -->
+        <v-flex d-flex sm5 offset-sm1>
+          <panel title="Bestaande spelers" v-if="players">
+            <v-list three-line>
+              <template v-for="player in players">
+                <v-list-tile avatar :key="player.id" @click="">
+                  <v-list-tile-avatar>
+                    <v-icon>face</v-icon>
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title>{{ player.name }} {{ player.lastname }} </v-list-tile-title>
+                    <v-list-tile-sub-title>
                 <span v-for="topicPlayer in player.skipQuestions">
                   <span v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black"> {{ topic.name }} </span>
                 </span>
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-icon color="deep-purple">mode edit</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-            <v-divider></v-divider>
-          </template>
-        </v-list>
-      </panel>
+                    </v-list-tile-sub-title>
+                  </v-list-tile-content>
+                  <v-list-tile-action>
+                    <v-btn icon ripple>
+                      <v-icon large color="deep-purple">mode_edit</v-icon>
+                    </v-btn>
+                  </v-list-tile-action>
+                </v-list-tile>
+                <v-divider></v-divider>
+              </template>
+            </v-list>
+          </panel>
+        </v-flex>
 
-      <panel title="Nieuwe speler">
-        <v-list>
-          <v-list-tile @click="">
-            <v-list-tile-content>
-              <v-list-tile-title>Zorgdrager</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-          <v-list-tile @click="">
-            <v-list-tile-content>
-              <v-list-tile-title>Bewoner</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-        </v-list>
-      </panel>
-    </v-layout>
+        <!-- Panel containing zorgdrager and bewoner plus the summary-->
+        <v-flex d-flex sm5>
+          <v-layout column>
+            <v-flex>
+              <panel title="Nieuwe speler">
+                <v-list v-show="showList">
+                  <v-list-tile avatar :disabled="caregiver.name.length > 0 " @click="switchCaregiverForm">
+                    <v-list-tile-avatar>
+                      <v-icon>accessibility</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>Zorgdrager</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
 
-    <v-content>
-      <v-container fluid>
-        <v-layout row justify-center>
-          <v-form v-model="valid" xs8>
-            <v-text-field
-              label="Name"
-              v-model="name"
-              required
-            ></v-text-field>
-            <v-text-field
-              label="Surname"
-              v-model="lastname"
-              required
-            ></v-text-field>
+                  <v-divider></v-divider>
 
-            <v-btn @click="clear" flat color="orange">clear</v-btn>
-            <v-btn
-              @click="register"
-              :loading="loading"
-              @click.native="loader = 'loading'"
-              :disabled="loading"
-              color="orange"
-            >
-              submit
-            </v-btn>
-          </v-form>
+                  <v-list-tile avatar :disabled="player" @click="switchPlayerForm">
+                    <v-list-tile-avatar>
+                      <v-icon>face</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>Bewoner</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </v-list>
 
-          <v-snackbar
-            :timeout="timeout"
-            color="green"
-            v-model="snackbar"
-          >
-            Player created, taking you back to players' list in a moment.
-            <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
-          </v-snackbar>
+                <!-- Show caregiver form -->
+                <v-content v-show="showCaregiver">
+                  <v-container fluid>
+                    <v-layout row justify-center>
+                      <v-form v-model="valid" xs8>
+                        <v-text-field
+                          label="Naam van de zorgdrager"
+                          v-model="caregiver.name"
+                          required
+                        />
 
-        </v-layout>
-        <div class="error" v-html="error"></div>
-      </v-container>
-    </v-content>
-  </div>
+                        <v-btn @click="switchCaregiverForm" flat color="orange">terug</v-btn>
+                        <v-btn
+                          @click="switchCaregiverForm"
+                          color="orange"
+                        >
+                          ok
+                        </v-btn>
+                      </v-form>
 
+                      <v-snackbar
+                        :timeout="timeout"
+                        color="green"
+                        v-model="snackbar"
+                      >
+                        Player created, taking you back to players' list in a moment.
+                        <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+                      </v-snackbar>
+
+                    </v-layout>
+                    <div class="error" v-html="error"></div>
+                  </v-container>
+                </v-content>
+
+                <!-- Show player form -->
+                <v-content v-show="showPlayer">
+                  <v-container fluid>
+                    <v-layout row justify-center>
+                      <v-form v-model="valid" xs8>
+                        <v-text-field
+                          label="Naam van de bewoner"
+                          v-model="player.name"
+                          required
+                        />
+                        <v-text-field
+                          label="Achternaam van de bewoner"
+                          v-model="player.lastname"
+                          required
+                        />
+
+                        <v-btn @click="switchPlayerForm" flat color="orange">terug</v-btn>
+                        <v-btn
+                          @click="register"
+                          :loading="loading"
+                          @click.native="loader = 'loading'"
+                          :disabled="loading"
+                          color="orange"
+                        >
+                          submit
+                        </v-btn>
+                      </v-form>
+
+                      <v-snackbar
+                        :timeout="timeout"
+                        color="green"
+                        v-model="snackbar"
+                      >
+                        Player created, taking you back to players' list in a moment.
+                        <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
+                      </v-snackbar>
+
+                    </v-layout>
+                    <div class="error" v-html="error"></div>
+                  </v-container>
+                </v-content>
+              </panel>
+            </v-flex>
+            <!-- end of zorgdrager and bewoner -->
+
+            <!-- summary -->
+            <v-flex d-flex>
+              <panel title="Summary">
+                <v-list v-show="showList">
+                  <v-list-tile avatar v-if="caregiver.name">
+                    <v-list-tile-avatar>
+                      <v-icon>accessibility</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ caregiver.name }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-btn icon ripple @click="removePlayer">
+                        <v-icon large color="red lighten-1">delete</v-icon>
+                      </v-btn>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                </v-list>
+              </panel>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -96,14 +171,22 @@
     components: {Panel},
     data () {
       return {
-        name: '',
-        lastname: '',
+        caregiver: {
+          name: ''
+        },
+        player: {
+          name: '',
+          lastname: ''
+        },
         error: null,
         loader: null,
         valid: false,
         loading: false,
         snackbar: false,
         timeout: 3000,
+        showList: true,
+        showCaregiver: false,
+        showPlayer: false
       }
     },
     computed: {
@@ -131,6 +214,17 @@
       },
       clear () {
         this.$refs.form.reset()
+      },
+      switchCaregiverForm() {
+        this.showList = !this.showList
+        this.showCaregiver = !this.showCaregiver
+      },
+      switchPlayerForm() {
+        this.showList = !this.showList
+        this.showPlayer = !this.showPlayer
+      },
+      removePlayer(){
+        this.caregiver.name = ''
       }
     },
     watch: {
