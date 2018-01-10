@@ -7,24 +7,11 @@
           <panel title="Bestaande spelers" v-if="players">
             <v-list three-line>
               <template v-for="player in players">
-                <v-list-tile avatar :key="player.id" @click="">
-                  <v-list-tile-avatar>
-                    <v-icon>face</v-icon>
-                  </v-list-tile-avatar>
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ player.name }} {{ player.lastname }} </v-list-tile-title>
-                    <v-list-tile-sub-title>
-                <span v-for="topicPlayer in player.skipQuestions">
-                  <span v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black"> {{ topic.name }} </span>
-                </span>
-                    </v-list-tile-sub-title>
-                  </v-list-tile-content>
-                  <v-list-tile-action>
-                    <v-btn icon ripple>
-                      <v-icon large color="deep-purple">mode_edit</v-icon>
-                    </v-btn>
-                  </v-list-tile-action>
-                </v-list-tile>
+                <player-list-item
+                  :player="player"
+                  :active="player.id === selectedPlayer"
+                  @click.native="addPlayer(player)"
+                />
                 <v-divider></v-divider>
               </template>
             </v-list>
@@ -37,7 +24,7 @@
             <v-flex>
               <panel title="Nieuwe speler">
                 <v-list v-show="showList">
-                  <v-list-tile avatar :disabled="caregiver.name.length > 0 " @click="switchCaregiverForm">
+                  <v-list-tile avatar :disabled="caregiver.name.length > 0" @click="switchCaregiverForm">
                     <v-list-tile-avatar>
                       <v-icon>accessibility</v-icon>
                     </v-list-tile-avatar>
@@ -48,7 +35,7 @@
 
                   <v-divider></v-divider>
 
-                  <v-list-tile avatar :disabled="player" @click="switchPlayerForm">
+                  <v-list-tile avatar :disabled="player.name.length > 0" @click="switchPlayerForm">
                     <v-list-tile-avatar>
                       <v-icon>face</v-icon>
                     </v-list-tile-avatar>
@@ -149,12 +136,29 @@
                       <v-list-tile-title>{{ caregiver.name }}</v-list-tile-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
+                      <v-btn icon ripple @click="removeCaregiver">
+                        <v-icon medium color="red lighten-1">delete</v-icon>
+                      </v-btn>
+                    </v-list-tile-action>
+                  </v-list-tile>
+
+                  <v-list-tile avatar v-if="player.name">
+                    <v-list-tile-avatar>
+                      <v-icon>face</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{ player.name }} {{ player.lastname }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
                       <v-btn icon ripple @click="removePlayer">
-                        <v-icon large color="red lighten-1">delete</v-icon>
+                        <v-icon medium color="red lighten-1">delete</v-icon>
                       </v-btn>
                     </v-list-tile-action>
                   </v-list-tile>
                 </v-list>
+                <div class="text-xs-center">
+                  <v-btn color="amber" :disabled="player.name.length === 0 || caregiver.name.length === 0">Start Game</v-btn>
+                </div>
               </panel>
             </v-flex>
           </v-layout>
@@ -166,9 +170,10 @@
 <script>
   import PlayersService from '@/services/PlayersService'
   import Panel from './Panel'
+  import PlayerListItem from './PlayerListItem'
 
   export default {
-    components: {Panel},
+    components: {Panel, PlayerListItem},
     data () {
       return {
         caregiver: {
@@ -178,6 +183,7 @@
           name: '',
           lastname: ''
         },
+        selectedPlayer: null,
         error: null,
         loader: null,
         valid: false,
@@ -192,28 +198,20 @@
     computed: {
       players() {
         return this.$store.state.players
-      },
-      topics(){
-        return this.$store.state.topics
       }
     },
     methods: {
       async register(){
         try {
           await PlayersService.register({
-            name: this.name,
-            lastname: this.lastname
+            name: this.player.name,
+            lastname: this.player.lastname
           })
+          this.$store.dispatch('retrievePlayers')
           this.snackbar = true
-          setTimeout(() => {
-            this.$router.push('/players')
-          }, 3000);
         } catch(error) {
           this.error = error.response.data.error
         }
-      },
-      clear () {
-        this.$refs.form.reset()
       },
       switchCaregiverForm() {
         this.showList = !this.showList
@@ -223,8 +221,17 @@
         this.showList = !this.showList
         this.showPlayer = !this.showPlayer
       },
-      removePlayer(){
+      addPlayer(player){
+        console.log('Adding player to summary')
+        this.player.name = player.name
+        this.player.lastname = player.lastname
+      },
+      removeCaregiver(){
         this.caregiver.name = ''
+      },
+      removePlayer(){
+        this.player.name = ''
+        this.player.lastname = ''
       }
     },
     watch: {
@@ -239,6 +246,11 @@
     },
     created(){
       Event.$emit('toolbar-data', "Nieuw spel", true)
+    },
+    mounted(){
+      Event.$on('item-selected', playerId => {
+        this.selectedPlayer = playerId
+      })
     }
 }
 </script>
