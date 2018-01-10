@@ -52,9 +52,6 @@
 
       this.loading = false;
     },
-    beforeDestroy() {
-      Event.$emit('players_topics', this.players, this.topics)
-    }
   }
 </script>
 
