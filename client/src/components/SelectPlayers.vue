@@ -127,7 +127,7 @@
             <!-- summary -->
             <v-flex d-flex>
               <panel title="Summary">
-                <v-list v-show="showList">
+                <v-list>
                   <v-list-tile avatar v-if="caregiver.name">
                     <v-list-tile-avatar>
                       <v-icon>accessibility</v-icon>
