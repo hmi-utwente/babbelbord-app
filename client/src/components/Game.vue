@@ -6,8 +6,7 @@
 
    -->
   <div>
-    <h3>It is {{ activePlayer }} turn.</h3>
-    <question :question="questions[2]" :subquestions="questions[2].subquestions"></question>
+    <question :question="questions[2]" :subquestions="questions[2].subquestions ? questions[2].subquestions : {}"/>
     <instruction></instruction>
     <!-- <scoreboard></scoreboard> -->
   </div>
@@ -17,24 +16,26 @@
 <script>
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
-  import QuestionsService from '../services/QuestionsService'
+
+  var socket = io();
 
   export default {
     components: { Question, Instruction },
 
     data () {
       return {
-        currentPlayers: [{}],        // array of objects, with data passed from previous parts of game
-        activePlayer: '',     // will contain the player name to display
+        player: {},
+        caregiver: {},
+        activePlayer: 'player',
         gameStatus: 'turn',   // can be turn or win
-        cards: {
-          player1: 0,
-          player2: 0
-        },
         currentQuestion: {},  // contains also current category when filtered from set of questions
         currentSubQuestions: [],   // contains also current category when filtered from set of questions
         showInstructions: true,
-        showQuestions: false
+        showQuestions: false,
+        instructions: [
+          {message: 'Throw the die and move your pawn on the corresponding color'},
+          {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'}
+        ]
       }
     },
     computed: {
@@ -42,9 +43,19 @@
         return this.$store.state.questions
       }
     },
-    async created () {
-      // take data of the two players, patient and caregiver, from the previous screen (use Event.$on)
+    methods: {
+      togglePlayers(){
+        if(this.activePlayer === 'player')
+          this.activePlayer = 'caregiver'
+        else
+          this.activePlayer = 'player'
+      }
+    },
+    created(){
+      Event.$emit('toolbar-data', "Match is on!", false)
 
+      this.player = this.$store.state.player
+      this.caregiver = this.$store.state.caregiver
     }
   }
 </script>
