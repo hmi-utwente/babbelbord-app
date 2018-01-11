@@ -39,5 +39,8 @@ module.exports = (app) => {
   // CATEGORIES API
   app.get('/api/categories', CategoryController.getCategories)
 
+  // communicate the category from Arduino to server
+  app.get('/api/category/:category', CategoryController.getCategoryArduino)
+
   app.get('/api/status', StatusController.status)
 }

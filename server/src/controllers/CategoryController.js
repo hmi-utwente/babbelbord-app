@@ -11,5 +11,10 @@ module.exports = {
         error: 'Couldn\'t get the categories!'
       })
     }
+  },
+  getCategoryArduino(req, res) {
+    // get data from req.params.category
+
+    // send data
   }
 }
