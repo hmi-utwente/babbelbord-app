@@ -52,11 +52,15 @@
     data () {
       return {
         player: {},
-        topics: [],
         loader: null,
         loading: false,
         snackbar: false,
         timeout: 3000
+      }
+    },
+    computed: {
+      topics(){
+        return this.$store.state.topics
       }
     },
     methods: {
@@ -64,10 +68,6 @@
         topic.isDeselected = !topic.isDeselected
       },
       async savePlayerDetails() {
-
-        // if topic.isDeselected = false, add in skipQuestions if not already there
-        // if topic.isDeselected = true, remove from skipQuestions if not already there
-
         for(var i = 0; i < this.topics.length; i++){
           if(this.player.skipQuestions != null){
             if(this.topics[i].isDeselected){
@@ -111,11 +111,8 @@
       }
     },
     async created() {
-      const player = await PlayersService.getPlayer(this.id)
-      this.player = player.data
-
-      const topics = await TopicsService.getTopics()
-      this.topics = topics.data
+      console.log('this.player before: ', this.player)
+      this.player = this.$store.getters.getPlayerById(this.id)
 
       // add isSelected to the topics array
       for (var i = 0; i < this.topics.length; i++){

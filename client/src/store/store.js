@@ -11,10 +11,19 @@ export const store = new Vuex.Store({
     players: [],
     topics: [],
     categories: [],
-    questions: []
+    questions: [],
+    player: {},
+    caregiver: {}
   },
   getters: {
     // functions to get modified data from the store
+    getPlayerById: (state) => (id) => {
+      for(var i=0; i < state.players.length; i++){
+        if(state.players[i].id == id){
+          return state.players[i]
+        }
+      }
+    }
   },
   mutations: {
     // functions to modify data on the store
@@ -28,6 +37,11 @@ export const store = new Vuex.Store({
     initializeQuestions: (state, questions) => {
         state.questions = questions.data;
     },
+    setPlayerAndCaregiver: (state, {player, caregiver}) => {
+      console.log('Caregiver: ', caregiver)
+      state.player = player
+      state.caregiver = caregiver
+    }
   },
   actions: {
     async retrievePlayers(context) {
@@ -38,6 +52,6 @@ export const store = new Vuex.Store({
       } catch (error) {
         console.log('Error in getting updated players')
       }
-    }
+    },
   }
 })

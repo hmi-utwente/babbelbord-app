@@ -12,7 +12,7 @@
       </v-list-tile-sub-title>
     </v-list-tile-content>
     <v-list-tile-action>
-      <v-btn icon ripple>
+      <v-btn icon ripple :to="`/players/edit/${player.id}`">
         <v-icon medium color="deep-purple">mode_edit</v-icon>
       </v-btn>
     </v-list-tile-action>

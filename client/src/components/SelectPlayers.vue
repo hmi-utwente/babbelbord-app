@@ -112,7 +112,7 @@
                         color="green"
                         v-model="snackbar"
                       >
-                        Player created, taking you back to players' list in a moment.
+                        Player created, you can now select it from the list.
                         <v-btn dark flat @click.native="snackbar = false">Close</v-btn>
                       </v-snackbar>
 
@@ -157,7 +157,7 @@
                   </v-list-tile>
                 </v-list>
                 <div class="text-xs-center">
-                  <v-btn color="amber" :disabled="player.name.length === 0 || caregiver.name.length === 0">Start Game</v-btn>
+                  <v-btn color="amber" :disabled="player.name.length === 0 || caregiver.name.length === 0" @click="startGame">Start Game</v-btn>
                 </div>
               </panel>
             </v-flex>
@@ -209,6 +209,7 @@
           })
           this.$store.dispatch('retrievePlayers')
           this.snackbar = true
+          this.switchPlayerForm()
         } catch(error) {
           this.error = error.response.data.error
         }
@@ -223,8 +224,9 @@
       },
       addPlayer(player){
         console.log('Adding player to summary')
-        this.player.name = player.name
-        this.player.lastname = player.lastname
+        //this.player.name = player.name
+        //this.player.lastname = player.lastname
+        this.player = player
       },
       removeCaregiver(){
         this.caregiver.name = ''
@@ -232,6 +234,12 @@
       removePlayer(){
         this.player.name = ''
         this.player.lastname = ''
+      },
+      startGame(){
+        console.log('Player: ', this.player)
+        console.log('Caregiver: ', this.caregiver)
+        this.$store.commit('setPlayerAndCaregiver', {player: this.player, caregiver: this.caregiver})
+        this.$router.push('/game')
       }
     },
     watch: {
