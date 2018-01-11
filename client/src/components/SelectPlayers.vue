@@ -224,8 +224,6 @@
       },
       addPlayer(player){
         console.log('Adding player to summary')
-        //this.player.name = player.name
-        //this.player.lastname = player.lastname
         this.player = player
       },
       removeCaregiver(){
@@ -236,8 +234,6 @@
         this.player.lastname = ''
       },
       startGame(){
-        console.log('Player: ', this.player)
-        console.log('Caregiver: ', this.caregiver)
         this.$store.commit('setPlayerAndCaregiver', {player: this.player, caregiver: this.caregiver})
         this.$router.push('/game')
       }
