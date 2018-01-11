@@ -14,19 +14,18 @@
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "eslint": "^4.12.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "express": "^4.16.2",
     "joi": "^13.0.2",
     "morgan": "^1.9.0",
     "nodemon": "^1.12.5",
     "pg": "^7.4.0",
     "sequelize": "^4.27.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "socket.io": "^2.0.4"
   },
-  "devDependencies": {
-
-  }
+  "devDependencies": {}
 }
