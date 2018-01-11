@@ -47,7 +47,6 @@ export const store = new Vuex.Store({
     async retrievePlayers(context) {
       try {
         const players = await PlayersService.getPlayers()
-        console.log('Players in retrieveUpdated function: ', players)
         context.commit('initializePlayers', players)
       } catch (error) {
         console.log('Error in getting updated players')
