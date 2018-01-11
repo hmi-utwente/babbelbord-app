@@ -8,6 +8,10 @@ import {sync} from 'vuex-router-sync'
 import '../node_modules/vuetify/dist/vuetify.min.css'
 import {store} from './store/store'
 
+// socket.io
+import socketio from 'socket.io';
+import VueSocketIO from 'vue-socket.io';
+
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)
