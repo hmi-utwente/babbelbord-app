@@ -6,8 +6,8 @@
 
    -->
   <div>
-    <question :question="questions[2]" :subquestions="questions[2].subquestions ? questions[2].subquestions : {}"/>
-    <instruction></instruction>
+    <instruction v-if="showInstructions"/>
+    <question v-else :question="questions[2]" :subquestions="questions[2].subquestions ? questions[2].subquestions : {}"/>
     <!-- <scoreboard></scoreboard> -->
   </div>
 
@@ -30,8 +30,8 @@
         gameStatus: 'turn',   // can be turn or win
         currentQuestion: {},  // contains also current category when filtered from set of questions
         currentSubQuestions: [],   // contains also current category when filtered from set of questions
+        currentCategory,
         showInstructions: true,
-        showQuestions: false,
         instructions: [
           {message: 'Throw the die and move your pawn on the corresponding color'},
           {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'}
@@ -49,6 +49,9 @@
           this.activePlayer = 'caregiver'
         else
           this.activePlayer = 'player'
+      },
+      toggleQuestionsInstructions(){
+        this.showInstructions = !this.showInstructions
       }
     },
     created(){
@@ -56,6 +59,11 @@
 
       this.player = this.$store.state.player
       this.caregiver = this.$store.state.caregiver
+    },
+    mounted(){
+      socket.on('category', function(cat){
+        this.currentCategory = cat
+      });
     }
   }
 </script>
