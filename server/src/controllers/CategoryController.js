@@ -1,4 +1,5 @@
 const {Category} = require('../models')
+import {io} from '../app'
 
 module.exports = {
 
@@ -14,7 +15,11 @@ module.exports = {
   },
   getCategoryArduino(req, res) {
     // get data from req.params.category
+    const category = req.params.category
 
-    // send data
+    // send data with socketIO
+    io.on('connection', function(socket){
+        io.emit('category', category);
+    });
   }
 }

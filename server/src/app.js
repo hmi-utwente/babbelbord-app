@@ -18,12 +18,7 @@ app.use(serveStatic(path.join(__dirname, '..', 'dist')))
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-io.on('connection', function(socket) {
-  console.log('User connected')
-
-  socket.on('disconnect', function() {
-  });
-});
+export {io}
 
 require('./routes')(app)
 
