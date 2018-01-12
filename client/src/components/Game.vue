@@ -17,7 +17,7 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  const socket = io('https://babbelbord.herokuapp.com:' + process.env.PORT || 3000);
+  var socket = io()
 
   export default {
     components: { Question, Instruction },
@@ -40,6 +40,12 @@
     computed: {
       questions() {
         return this.$store.state.questions
+      },
+      player() {
+        return this.$store.state.player
+      },
+      caregiver(){
+        return this.$store.state.caregiver
       }
     },
     methods: {
@@ -56,10 +62,6 @@
     created(){
       Event.$emit('toolbar-data', "Match is on!", false)
 
-      this.player = this.$store.state.player
-      this.caregiver = this.$store.state.caregiver
-    },
-    mounted(){
       socket.on('category', function(cat){
         this.currentCategory = cat
       });
