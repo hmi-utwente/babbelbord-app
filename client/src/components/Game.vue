@@ -6,9 +6,8 @@
 
    -->
   <div>
-    <instruction v-if="showInstructions"/>
-    <question v-else :question="questions[2]" :subquestions="questions[2].subquestions ? questions[2].subquestions : {}"/>
-    <!-- <scoreboard></scoreboard> -->
+    <instruction v-if="showInstructions" :instruction="instructions[0]"/>
+    <question v-else :question="currentQuestion"/>
   </div>
 
 </template>
@@ -17,14 +16,12 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()
+  var socket = io('http://localhost:8081')
 
   export default {
     components: { Question, Instruction },
     data () {
       return {
-        player: {},
-        caregiver: {},
         activePlayer: 'player',
         gameStatus: 'turn',   // can be turn or win
         currentQuestion: {},  // contains also current category when filtered from set of questions
@@ -41,11 +38,37 @@
       questions() {
         return this.$store.state.questions
       },
+      categories() {
+        return this.$store.state.categories
+      },
       player() {
         return this.$store.state.player
       },
       caregiver(){
         return this.$store.state.caregiver
+      }
+    },
+    watch: {
+      currentCategory: function(){
+        console.log('Current Category changed')
+
+        // keeping this as reference to access component data
+        let self = this
+        let category = this.currentCategory
+
+        // get all questions of a specific category
+        let questionsByCategory = this.questions.filter(function(obj){
+          return obj.category == category
+        })
+
+        console.log('Array of category ' + category + ': ', questionsByCategory)
+
+        this.currentQuestion = questionsByCategory[Math.floor(Math.random()*questionsByCategory.length)];
+        console.log('The random question is: ', this.currentQuestion)
+
+        // toggle between instructions and question
+        this.toggleQuestionsInstructions()
+
       }
     },
     methods: {
@@ -62,8 +85,11 @@
     created(){
       Event.$emit('toolbar-data', "Match is on!", false)
 
+      // saving this for referring to component
+      var self = this
+
       socket.on('category', function(cat){
-        this.currentCategory = cat
+        self.currentCategory = cat
       });
     }
   }

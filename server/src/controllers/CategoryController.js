@@ -15,11 +15,13 @@ module.exports = {
   },
   getCategoryArduino(req, res) {
     // get data from req.params.category
-    const category = req.params.category
+    let category = req.params.category
+
+    // Capitalize first letter to match sintax on DB
+    category = category.charAt(0).toUpperCase() + category.slice(1)
 
     // send data with socketIO
     Server.io.emit('category', category);
-
     res.send(category)
   }
 }

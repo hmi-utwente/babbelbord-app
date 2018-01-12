@@ -31,6 +31,7 @@
   import PlayersService from '@/services/PlayersService'
   import TopicsService from '@/services/TopicsService'
   import QuestionsService from '@/services/QuestionsService'
+  import CategoriesService from '@/services/CategoriesService'
 
 
   export default {
@@ -45,10 +46,12 @@
       const players = await PlayersService.getPlayers()
       const topics = await TopicsService.getTopics()
       const questions = await QuestionsService.getQuestions()
+      const categories = await CategoriesService.getCategories()
 
       this.$store.commit('initializePlayers', players)
       this.$store.commit('initializeTopics', topics)
       this.$store.commit('initializeQuestions', questions)
+      this.$store.commit('initializeCategories', categories)
 
       this.loading = false;
     },

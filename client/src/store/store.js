@@ -37,6 +37,9 @@ export const store = new Vuex.Store({
     initializeQuestions: (state, questions) => {
         state.questions = questions.data;
     },
+    initializeCategories: (state, categories) => {
+      state.categories = categories.data;
+    },
     setPlayerAndCaregiver: (state, {player, caregiver}) => {
       console.log('Caregiver: ', caregiver)
       state.player = player
