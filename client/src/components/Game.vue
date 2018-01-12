@@ -16,7 +16,7 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io('https://localhost:8081')
+  var socket = io()
 
   export default {
     components: { Question, Instruction },
