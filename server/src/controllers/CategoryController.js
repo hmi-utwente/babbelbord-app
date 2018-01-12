@@ -1,4 +1,5 @@
 const {Category} = require('../models')
+var Server = require('../app')
 
 module.exports = {
 
@@ -17,6 +18,8 @@ module.exports = {
     const category = req.params.category
 
     // send data with socketIO
-    io.emit('category', category);
+    Server.io.emit('category', category);
+
+    res.send(category)
   }
 }

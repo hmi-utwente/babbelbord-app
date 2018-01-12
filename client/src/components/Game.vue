@@ -29,7 +29,7 @@
         gameStatus: 'turn',   // can be turn or win
         currentQuestion: {},  // contains also current category when filtered from set of questions
         currentSubQuestions: [],   // contains also current category when filtered from set of questions
-        currentCategory,
+        currentCategory: '',
         showInstructions: true,
         instructions: [
           {message: 'Throw the die and move your pawn on the corresponding color'},
