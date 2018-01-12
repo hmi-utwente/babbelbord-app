@@ -17,11 +17,10 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io();
+  const socket = io('http://babbelbord.herokuapp.com');
 
   export default {
     components: { Question, Instruction },
-
     data () {
       return {
         player: {},

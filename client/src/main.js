@@ -4,13 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router/index'
 import Vuetify from 'vuetify'
-import {sync} from 'vuex-router-sync'
 import '../node_modules/vuetify/dist/vuetify.min.css'
 import {store} from './store/store'
-
-// socket.io
-import socketio from 'socket.io';
-import VueSocketIO from 'vue-socket.io';
 
 Vue.config.productionTip = false
 
@@ -18,8 +13,6 @@ Vue.use(Vuetify)
 
 // event bus for communication purposes
 window.Event = new Vue()
-
-//sync(store, router)
 
 /* eslint-disable no-new */
 new Vue({

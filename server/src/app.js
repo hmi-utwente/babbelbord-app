@@ -15,10 +15,12 @@ app.use(cors())
 app.use(serveStatic(path.join(__dirname, '..', 'dist')))
 
 // socketIO integration
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
 
-export {io}
+io.on('connection', function (socket) {
+  console.log('Client has connected to the server with SocketIO')
+})
 
 require('./routes')(app)
 
