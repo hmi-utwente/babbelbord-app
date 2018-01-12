@@ -17,7 +17,7 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  const socket = io('https://babbelbord.herokuapp.com');
+  const socket = io('https://babbelbord.herokuapp.com:' + process.env.PORT || 3000);
 
   export default {
     components: { Question, Instruction },
