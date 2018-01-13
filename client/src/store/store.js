@@ -45,6 +45,10 @@ export const store = new Vuex.Store({
       state.caregiver = caregiver
     },
     updatePlayerQuestions: (state, question) => {
+      if(state.player.skipQuestions == null){
+        state.player.skipQuestions = []
+      }
+
       state.player.skipQuestions.push(question.id)
       console.log("player.skipQuestion after update: ", state.player.skipQuestions)
     }
@@ -54,17 +58,18 @@ export const store = new Vuex.Store({
       try {
         const players = await PlayersService.getPlayers()
         context.commit('initializePlayers', players)
+        console.log("Players retrieved from server!")
       } catch (error) {
         console.log('Error in getting updated players')
       }
     },
     async updatePlayerSkippedQuestions(context, question){
+      context.commit('updatePlayerQuestions', question)
       try {
-        context.commit('updatePlayerQuestions', question)
-        await PlayersService.update(context.player)
+        await PlayersService.update(context.state.player)
         context.dispatch('retrievePlayers')
-      } catch (error) {
-        console.log('Error in getting updated players')
+      } catch(error) {
+        console.log('Error in updating the player\'s questions: ' + error.message)
       }
     },
   }

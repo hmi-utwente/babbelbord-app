@@ -64,22 +64,18 @@
         let self = this
         let category = this.currentCategory
 
-        // get all questions of a specific category
+        // get all questions of a specific category and avoiding topics / questions to skip
         let questionsByCategory = this.questions.filter(function(obj){
-          return obj.category == category
+          return obj.category == category && !self.player.skipTopics.includes(obj.topics) && !self.player.skipQuestions.includes(obj.id)
         })
 
         this.currentQuestion = questionsByCategory[Math.floor(Math.random()*questionsByCategory.length)];
 
         Event.$on('category-name', catName => {
-          console.log("Received category name: " + catName)
-
           // find color associated to category
           let currentCat = this.categoriesColors.filter(function(category){
             return category.name == catName
           })[0]
-
-          console.log("CurrentCat is ", currentCat)
 
           // send data to toolbar
           Event.$emit('toolbar-data', catName, false, currentCat.color)
