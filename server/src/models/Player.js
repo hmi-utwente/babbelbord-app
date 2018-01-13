@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) =>
     },
     skipQuestions: {
      type: DataTypes.ARRAY(DataTypes.INTEGER)
+    },
+    skipTopics: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER)
     }
   })
 
