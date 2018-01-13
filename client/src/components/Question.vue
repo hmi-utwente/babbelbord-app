@@ -46,7 +46,6 @@
       followUpQuestion: function () {
         // display the following subquestions, if any
         this.currentQuestionChild = this.question.subquestions[this.count]
-
         this.count++
       },
       nextTurn: function () {

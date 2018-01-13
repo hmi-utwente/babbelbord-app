@@ -6,7 +6,7 @@
 
    -->
   <div>
-    <instruction v-if="showInstructions" :instruction="instructions[0]"/>
+    <instruction v-if="showInstructions" :instruction="currentInstruction"/>
     <question v-else :question="currentQuestion"/>
   </div>
 
@@ -16,8 +16,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  // var socket = io()   // use this for production
-  var socket = io('http://localhost:8081')   // use this for production
+  var socket = io()   // use this for production
+  // var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -30,9 +30,14 @@
         currentCategory: '',
         showInstructions: true,
         instructions: [
-          {message: 'Throw the die and move your pawn on the corresponding color'},
-          {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'}
+          {message: 'Arrange 2 pawns on GAAN'},
+          {message: 'Throw the die'},
+          {message: 'Move on the color obtained'},
+          {message: 'Pick a card of same category'},
+          {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'},
+          {message: 'Choose the colored card you want to use'}
         ],
+        currentInstruction: {message: 'Throw the die'},
         categoriesColors: [
           {name: "Familie", color: "yellow"},
           {name: "Liefde", color: "red"},
