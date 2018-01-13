@@ -22,6 +22,7 @@ module.exports = {
   async update(req, res) {
     try {
       await Player.update({
+        skipTopics: req.body.skipTopics,
         skipQuestions: req.body.skipQuestions
       }, {
         where: {id: req.body.id}
