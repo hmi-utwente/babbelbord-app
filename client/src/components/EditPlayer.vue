@@ -69,21 +69,21 @@
       },
       async savePlayerDetails() {
         for(var i = 0; i < this.topics.length; i++){
-          if(this.player.skipQuestions != null){
+          if(this.player.skipTopics != null){
             if(this.topics[i].isDeselected){
-              if(!this.player.skipQuestions.includes(this.topics[i].id)) {
-                this.player.skipQuestions.push(this.topics[i].id)
+              if(!this.player.skipTopics.includes(this.topics[i].id)) {
+                this.player.skipTopics.push(this.topics[i].id)
               }
             }
             else {
-              if (this.player.skipQuestions.includes(this.topics[i].id)){
-                this.player.skipQuestions.splice(this.player.skipQuestions.indexOf(this.topics[i].id), 1)
+              if (this.player.skipTopics.includes(this.topics[i].id)){
+                this.player.skipTopics.splice(this.player.skipTopics.indexOf(this.topics[i].id), 1)
               }
             }
           } else {
-            this.player.skipQuestions = []
+            this.player.skipTopics = []
             if(this.topics[i].isDeselected){
-              this.player.skipQuestions.push(this.topics[i].id)
+              this.player.skipTopics.push(this.topics[i].id)
             }
           }
         }
@@ -116,10 +116,10 @@
 
       // add isSelected to the topics array
       for (var i = 0; i < this.topics.length; i++){
-        if(this.player.skipQuestions == null)
+        if(this.player.skipTopics == null)
           this.$set(this.topics[i], 'isDeselected', false)
         else {
-          if(this.player.skipQuestions.includes(this.topics[i].id))
+          if(this.player.skipTopics.includes(this.topics[i].id))
             this.$set(this.topics[i], 'isDeselected', true)
           else
             this.$set(this.topics[i], 'isDeselected', false)

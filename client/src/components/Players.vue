@@ -20,7 +20,7 @@
               <div>
                 <h3 class="headline mb-0">{{player.name}} {{player.lastname}}</h3>
                 <div>Topics avoided:
-                  <span v-for="topicPlayer in player.skipQuestions">
+                  <span v-for="topicPlayer in player.skipTopics">
                     <v-chip v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black" :key="topic.id">{{ topic.name }}</v-chip>
                   </span>
                 </div>

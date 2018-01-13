@@ -6,7 +6,7 @@
     <v-list-tile-content>
       <v-list-tile-title>{{ player.name }} {{ player.lastname }} </v-list-tile-title>
       <v-list-tile-sub-title>
-        <span v-for="topicPlayer in player.skipQuestions">
+        <span v-for="topicPlayer in player.skipTopics">
           <span v-for="topic in topics" v-if="topic.id == topicPlayer" color="amber" text-color="black"> {{ topic.name }} </span>
         </span>
       </v-list-tile-sub-title>
