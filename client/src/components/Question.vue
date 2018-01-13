@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>Category: {{ categoryName }}</h4>
-    <h2>{{ currentQuestion }}</h2>
+    <h2>{{ count > 0 ? currentQuestionChild : question.question}}</h2>
 
     <!-- if no subquestions or they are over, display instead the done button -->
     <v-btn v-if="question.subquestions && count < question.subquestions.length" @click="followUpQuestion">following question</v-btn>
@@ -16,8 +16,8 @@
     props: ['question'],
     data () {
       return {
-        currentQuestion: this.question.question,
-        count: 0
+        count: 0,
+        currentQuestionChild: this.question.question
       }
     },
     computed: {
@@ -41,11 +41,11 @@
       addToSkipQuestions: function() {
         // add the current skipped question to the player records
         this.$store.dispatch('updatePlayerSkippedQuestions', this.question)
+        Event.$emit('skipped-question', this.question)
       },
       followUpQuestion: function () {
         // display the following subquestions, if any
-        console.log("count: " + this.count)
-        this.currentQuestion = this.question.subquestions[this.count]
+        this.currentQuestionChild = this.question.subquestions[this.count]
 
         this.count++
       },

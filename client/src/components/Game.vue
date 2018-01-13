@@ -39,7 +39,8 @@
           {name: "Tienertijd", color: "cyan"},
           {name: "Kindertijd", color: "green"},
           {name: "Hobby", color: "purple"},
-        ]
+        ],
+        filteredQuestions: []
       }
     },
     computed: {
@@ -61,15 +62,26 @@
         console.log('Current Category changed')
 
         // keeping this as reference to access component data
-        let self = this
-        let category = this.currentCategory
+        var self = this
+        var category = this.currentCategory
 
         // get all questions of a specific category and avoiding topics / questions to skip
-        let questionsByCategory = this.questions.filter(function(obj){
-          return obj.category == category && !self.player.skipTopics.includes(obj.topics) && !self.player.skipQuestions.includes(obj.id)
+        this.filteredQuestions = this.questions.filter(function(obj){
+          return obj.category == category
+        }).filter(function(obj){
+          // filter by skipQuestions
+          if(self.player.skipQuestions){
+            console.log("Player has skipQuestions set")
+            return !self.player.skipQuestions.includes(obj.id)
+          }
+        }).filter(function(obj){
+          console.log("Player has skipTopics set")
+          if(self.player.skipTopics){
+            return !self.player.skipTopics.includes(obj.topics)
+          }
         })
 
-        this.currentQuestion = questionsByCategory[Math.floor(Math.random()*questionsByCategory.length)];
+        this.currentQuestion = this.filteredQuestions[Math.floor(Math.random()*this.filteredQuestions.length)];
 
         Event.$on('category-name', catName => {
           // find color associated to category
@@ -80,7 +92,6 @@
           // send data to toolbar
           Event.$emit('toolbar-data', catName, false, currentCat.color)
         })
-
 
         // toggle between instructions and question
         this.toggleQuestionsInstructions()
@@ -106,7 +117,20 @@
 
       socket.on('category', function(cat){
         self.currentCategory = cat
-      });
+      })
+
+      Event.$on('skipped-question', question => {
+        // remove the question skipped from the array of the ones that can be asked in this turn
+        let index = self.filteredQuestions.indexOf(question)
+        if (index > -1) {
+          self.filteredQuestions.splice(index, 1);
+        }
+
+        self.currentQuestion = self.filteredQuestions[Math.floor(Math.random()*self.filteredQuestions.length)];
+
+        //self.filteredQuestions.splice()
+        console.log("filtered questions after removal: ", self.filteredQuestions)
+      })
     }
   }
 </script>
