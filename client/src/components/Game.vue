@@ -16,7 +16,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -31,6 +32,13 @@
         instructions: [
           {message: 'Throw the die and move your pawn on the corresponding color'},
           {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'}
+        ],
+        categoriesColors: [
+          {name: "Familie", color: "yellow"},
+          {name: "Liefde", color: "red"},
+          {name: "Tienertijd", color: "cyan"},
+          {name: "Kindertijd", color: "green"},
+          {name: "Hobby", color: "purple"},
         ]
       }
     },
@@ -61,10 +69,22 @@
           return obj.category == category
         })
 
-        console.log('Array of category ' + category + ': ', questionsByCategory)
-
         this.currentQuestion = questionsByCategory[Math.floor(Math.random()*questionsByCategory.length)];
-        console.log('The random question is: ', this.currentQuestion)
+
+        Event.$on('category-name', catName => {
+          console.log("Received category name: " + catName)
+
+          // find color associated to category
+          let currentCat = this.categoriesColors.filter(function(category){
+            return category.name == catName
+          })[0]
+
+          console.log("CurrentCat is ", currentCat)
+
+          // send data to toolbar
+          Event.$emit('toolbar-data', catName, false, currentCat.color)
+        })
+
 
         // toggle between instructions and question
         this.toggleQuestionsInstructions()

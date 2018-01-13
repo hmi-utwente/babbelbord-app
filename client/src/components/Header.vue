@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar color="amber" app>
+  <v-toolbar v-bind:color=color app>
     <v-btn v-if="backArrow" @click="goBack" icon class="hidden-xs-only">
       <v-icon>arrow_back</v-icon>
     </v-btn>
@@ -20,6 +20,7 @@
       return {
         title: '',
         backArrow: false,
+        color: 'amber'
       }
     },
     methods: {
@@ -28,9 +29,11 @@
       }
     },
     created(){
-      Event.$on('toolbar-data', (title, backArrow) => {
+      Event.$on('toolbar-data', (title, backArrow, color) => {
         this.title = title;
         this.backArrow = backArrow
+        if(color)
+          this.color = color
       })
     }
   }
