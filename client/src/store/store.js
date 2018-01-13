@@ -29,7 +29,6 @@ export const store = new Vuex.Store({
     // functions to modify data on the store
     initializePlayers: (state, players) => {
       state.players = players.data;
-      console.log('Players set!')
     },
     initializeTopics: (state, topics) => {
       state.topics = topics.data;
@@ -44,6 +43,10 @@ export const store = new Vuex.Store({
       console.log('Caregiver: ', caregiver)
       state.player = player
       state.caregiver = caregiver
+    },
+    updatePlayerQuestions: (state, question) => {
+      state.player.skipQuestions.push(question.id)
+      console.log("player.skipQuestion after update: ", state.player.skipQuestions)
     }
   },
   actions: {
@@ -51,6 +54,15 @@ export const store = new Vuex.Store({
       try {
         const players = await PlayersService.getPlayers()
         context.commit('initializePlayers', players)
+      } catch (error) {
+        console.log('Error in getting updated players')
+      }
+    },
+    async updatePlayerSkippedQuestions(context, question){
+      try {
+        context.commit('updatePlayerQuestions', question)
+        await PlayersService.update(context.player)
+        context.dispatch('retrievePlayers')
       } catch (error) {
         console.log('Error in getting updated players')
       }

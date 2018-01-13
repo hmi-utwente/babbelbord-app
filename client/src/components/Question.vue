@@ -35,11 +35,12 @@
         Event.$emit('category-name', cat.name)
 
         return cat.name
-      }
+      },
     },
     methods: {
       addToSkipQuestions: function() {
         // add the current skipped question to the player records
+        this.$store.dispatch('updatePlayerSkippedQuestions', this.question)
       },
       followUpQuestion: function () {
         // display the following subquestions, if any
