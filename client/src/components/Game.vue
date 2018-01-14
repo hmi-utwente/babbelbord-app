@@ -7,8 +7,8 @@
    -->
   <div>
     <instruction v-if="showInstructions" :instruction="currentInstruction"/>
-    <question v-else-if="" :question="currentQuestion"/>
-    <span v-if="errorMessage.length > 0 && !showInstructions"></span>
+    <question v-else :question="currentQuestion"/>
+
   </div>
 
 </template>
@@ -17,8 +17,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  // socket = io()   // use this for production
-  socket = io('http://localhost:8081')   // use this for production
+  var socket = io()   // use this for production
+  // var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
