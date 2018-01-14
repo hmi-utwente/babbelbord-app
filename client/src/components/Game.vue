@@ -140,7 +140,7 @@
           self.errorMessage = data.error
 
           // toggle between instructions and question
-          this.toggleQuestionsInstructions()
+          self.toggleQuestionsInstructions()
 
           console.log("Error message is: " + self.errorMessage)
         }
