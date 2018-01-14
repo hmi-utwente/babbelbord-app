@@ -6,7 +6,13 @@
 
    -->
   <div>
-    <instruction v-if="showInstructions || errorMessage.length > 0" :instruction="currentInstruction"/>
+    <!-- Switch between different instructions and questions -->
+    <instruction v-if="(showInstructions || errorMessage.length > 0) && isPawnsInstruction" :instruction="instructions[0]" :error="errorMessage"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isDieInstruction" :instruction="instructions[1]" :error="errorMessage"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isMoveToColorInstruction" :instruction="instructions[2]" :error="errorMessage"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isPickCardInstruction" :instruction="instructions[3]" :error="errorMessage"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isTwoCardsSameColorInstruction" :instruction="instructions[4]" :error="errorMessage"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isChooseCardsToUse" :instruction="instructions[5]" :error="errorMessage"/>
     <question v-else :question="currentQuestion"/>
 
   </div>
@@ -47,7 +53,14 @@
           {name: "Hobby", color: "purple"},
         ],
         filteredQuestions: [],
-        errorMessage: ''
+        errorMessage: '',
+        // these boolean variables are for deciding which instruction to display
+        isPawnsInstruction: true,
+        isDieInstruction: false,
+        isMoveToColorInstruction: false,
+        isPickCardInstruction: false,
+        isTwoCardsSameColorInstruction: false,
+        isChooseCardsToUse: false
       }
     },
     computed: {
@@ -129,15 +142,17 @@
       var self = this
 
       socket.on('category', function(data){
+        self.errorMessage = ''
         console.log("Data received in socket: ", data)
+
         if(data.name) {
           console.log("Setting current category")
           self.currentCategory = data.name
           console.log("After socket, currentCategory is " + self.currentCategory)
         }
-        else if(data.error){
+        else if(data.special){
           console.log("Setting error message")
-          self.errorMessage = data.error
+          self.errorMessage = data.special
 
           // toggle between instructions and question
           self.toggleQuestionsInstructions()
