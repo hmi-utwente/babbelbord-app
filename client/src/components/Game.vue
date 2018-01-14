@@ -135,7 +135,7 @@
           self.currentCategory = data.name
           console.log("After socket, currentCategory is " + self.currentCategory)
         }
-        else {
+        else if(data.error){
           console.log("Setting error message")
           self.errorMessage = data.error
 
