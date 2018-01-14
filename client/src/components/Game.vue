@@ -6,8 +6,9 @@
 
    -->
   <div>
-    <instruction v-if="showInstructions" :instruction="currentInstruction"/>
+    <instruction v-if="showInstructions && errorMessage === ''" :instruction="currentInstruction"/>
     <question v-else :question="currentQuestion"/>
+    <span v-if="errorMessage.length > 0 && !showInstructions"></span>
   </div>
 
 </template>
@@ -16,8 +17,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -45,7 +46,8 @@
           {name: "Kindertijd", color: "green"},
           {name: "Hobby", color: "purple"},
         ],
-        filteredQuestions: []
+        filteredQuestions: [],
+        errorMessage: ''
       }
     },
     computed: {
@@ -120,8 +122,16 @@
       // saving this for referring to component
       var self = this
 
-      socket.on('category', function(cat){
-        self.currentCategory = cat
+      socket.on('category', function(data){
+        console.log("Data received in socket: ", data)
+        if(data.category) {
+          console.log("Setting current category")
+          self.currentCategory = data.category
+        }
+        else {
+          console.log("Setting error message")
+          self.errorMessage = data.error
+        }
       })
 
       Event.$on('skipped-question', question => {

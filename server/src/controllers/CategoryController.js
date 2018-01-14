@@ -13,15 +13,15 @@ module.exports = {
       })
     }
   },
-  getCategoryArduino(req, res) {
+  postCategoryArduino(req, res) {
     // get data from req.params.category
-    let category = req.params.category
+    let data = req.body
 
     // Capitalize first letter to match sintax on DB
-    category = category.charAt(0).toUpperCase() + category.slice(1)
+    //category = category.charAt(0).toUpperCase() + category.slice(1)
 
     // send data with socketIO
-    Server.io.emit('category', category);
-    res.send(category)
+    Server.io.emit('category', data);
+    res.send(data)
   }
 }
