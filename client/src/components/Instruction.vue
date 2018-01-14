@@ -1,6 +1,10 @@
 <template class="text-xs-center">
   <div class="text-xs-center">
     <h1 v-if="!error">{{instruction.message}}</h1>
+    <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
+      <h1>{{error}}</h1>
+      <v-btn>done</v-btn>
+    </div>
     <h1 v-else> {{error}} </h1>
   </div>
 </template>
