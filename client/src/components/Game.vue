@@ -130,9 +130,9 @@
 
       socket.on('category', function(data){
         console.log("Data received in socket: ", data)
-        if(data.category) {
+        if(data.name) {
           console.log("Setting current category")
-          self.currentCategory = data.category
+          self.currentCategory = data.name
           console.log("After socket, currentCategory is " + self.currentCategory)
         }
         else {
