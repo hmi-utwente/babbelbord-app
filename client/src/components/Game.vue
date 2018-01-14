@@ -6,8 +6,8 @@
 
    -->
   <div>
-    <instruction v-if="showInstructions && errorMessage === ''" :instruction="currentInstruction"/>
-    <question v-else :question="currentQuestion"/>
+    <instruction v-if="showInstructions" :instruction="currentInstruction"/>
+    <question v-else-if="" :question="currentQuestion"/>
     <span v-if="errorMessage.length > 0 && !showInstructions"></span>
   </div>
 
@@ -17,8 +17,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // socket = io()   // use this for production
+  socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -70,7 +70,13 @@
 
         // keeping this as reference to access component data
         var self = this
-        var category = this.currentCategory
+
+        // map category to its ID
+        let currentCategoryParse = this.categories.filter(function(obj){
+          return obj.name == self.currentCategory
+        })[0]
+
+        var category = currentCategoryParse.id
 
         // get all questions of a specific category and avoiding topics / questions to skip
         this.filteredQuestions = this.questions.filter(function(obj){
@@ -127,10 +133,16 @@
         if(data.category) {
           console.log("Setting current category")
           self.currentCategory = data.category
+          console.log("After socket, currentCategory is " + self.currentCategory)
         }
         else {
           console.log("Setting error message")
           self.errorMessage = data.error
+
+          // toggle between instructions and question
+          this.toggleQuestionsInstructions()
+
+          console.log("Error message is: " + self.errorMessage)
         }
       })
 

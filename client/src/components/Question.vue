@@ -32,6 +32,8 @@
           return obj.id == self.question.category
         })[0]
 
+        console.log(cat)
+
         Event.$emit('category-name', cat.name)
 
         return cat.name
@@ -51,6 +53,9 @@
       nextTurn: function () {
         // goes to the other player's turn, saves which card the player should have picked up
       }
+    },
+    mounted(){
+      console.log("Value of props passed: ", this.question)
     }
   }
 </script>
