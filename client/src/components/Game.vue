@@ -13,7 +13,7 @@
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isMoveToColorInstruction" :instruction="instructions[2]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isPickCardInstruction" :instruction="instructions[3]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isTwoCardsSameColorInstruction" :instruction="instructions[4]" :error="errorMessage"/>
-    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isChooseCardsToUse" :instruction="instructions[5]" :error="errorMessage"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isChooseCardsToUse" :instruction="instructions[5]" :error="errorMessage" :currentPlayer="activePlayer"/>
     <question v-else :question="currentQuestion" :player="activePlayer"/>
   </div>
 
@@ -23,8 +23,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -100,23 +100,16 @@
           if(this.activePlayer === 'player') {
             // get all questions of a specific category and avoiding topics / questions to skip
             this.filteredQuestions = this.questions.filter(function (obj) {
-              console.log("-------- Inside first filter, these are the objects: ", obj)
               return obj.category == category
             }).filter(function (obj) {
               // filter by skipQuestions
-              console.log("-------- Inside second filter, with skipQuestions: ", obj)
-              console.log("Player details: ", self.player)
-
               if (self.player.skipQuestions) {
-                console.log("Player has skipQuestions set")
                 return !self.player.skipQuestions.includes(obj.id)
               } else {
                 return obj
               }
             }).filter(function (obj) {
-              console.log("-------- Inside third filter, with skipTopics: ", obj)
               if (self.player.skipTopics) {
-                console.log("Player has skipTopics set")
                 return !self.player.skipTopics.includes(obj.topics)
               } else {
                 return obj
@@ -215,7 +208,7 @@
       },
       printBooleans(){
         console.log('----------------------------------------')
-        console.log('Situation of booleans for isntructions |')
+        console.log('Situation of booleans for instructions |')
         console.log('----------------------------------------')
         console.log("this.isPawnsInstruction: " + this.isPawnsInstruction)
         console.log("this.isDieInstruction: " + this.isDieInstruction)
@@ -250,7 +243,6 @@
             self.isDieInstruction = !self.isDieInstruction
             console.log("Inside both pawns are at gaan")
 
-            console.log("Changing isPawnInstructions, updated value is " + self.isPawnsInstruction)
           } else {
             self.errorMessage = data.special
 

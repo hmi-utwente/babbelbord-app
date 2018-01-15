@@ -58,7 +58,6 @@ export const store = new Vuex.Store({
       if(!state.player.categoriesCollected){
         Vue.set(state.player,'categoriesCollected', [])
         state.player.categoriesCollected.push({name: category, count: 1})
-        // Vue.set(state.player.categoriesCollected[state.player.categoriesCollected.length], {name: category, count: 1})
         console.log("---- categoriesCollected not existing before, but now: ", state.player.categoriesCollected)
       } else {
         let findCategory = state.player.categoriesCollected.filter(function(obj){ return obj.name == category})
@@ -91,6 +90,25 @@ export const store = new Vuex.Store({
     resetPlayers(state){
       state.player = {}
       state.caregiver = {}
+    },
+    removeCardsForPlayers(state, {currentPlayer, category}){
+      if(activePlayer === "player"){
+        // remove cards from player
+        let categoryToRemove = state.player.categoriesCollected.filter(function(obj){return obj.name == category})[0]
+        categoryToRemove.count = categoryToRemove.count - 2
+
+        // remove card from caregiver
+        categoryToRemove = state.caregiver.categoriesCollected.filter(function(obj){return obj.name == category})[0]
+        categoryToRemove.count = categoryToRemove.count - 1
+      } else {
+        // remove cards from player
+        let categoryToRemove = state.caregiver.categoriesCollected.filter(function(obj){return obj.name == category})[0]
+        categoryToRemove.count = categoryToRemove.count - 2
+
+        // remove card from caregiver
+        categoryToRemove = state.player.categoriesCollected.filter(function(obj){return obj.name == category})[0]
+        categoryToRemove.count = categoryToRemove.count - 1
+      }
     }
   },
   actions: {
@@ -114,6 +132,9 @@ export const store = new Vuex.Store({
     },
     setPlayerCard(context, category){
       context.commit('setCardForPlayer', category)
+    },
+    removePlayersCards(context, {currentPlayer, category}){
+      context.commit('removeCardsForPlayers', {currentPlayer: currentPlayer, category: category})
     },
     setCaregiverCard(context, category){
       context.commit('setCardForCaregiver', category)
