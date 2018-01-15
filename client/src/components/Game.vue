@@ -23,8 +23,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -172,8 +172,13 @@
             for(let i = 0; i < this.player.categoriesCollected.length; i++){
               if(this.player.categoriesCollected[i].count >= 2){
                 console.log("Patient has " + this.player.categoriesCollected[i].count + " cards of category " + this.player.categoriesCollected[i].name)
-                this.isDieInstruction = !this.isDieInstruction
+                console.log("Booleans before change:")
+                this.printBooleans()
+                // this.isDieInstruction = !this.isDieInstruction
                 this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
+                this.isPickCardInstruction = !this.isTwoCardsSameColorInstruction
+                console.log("Booleans after change:")
+                this.printBooleans()
               } else {
                 console.log("...but not enough to use the power!")
                 this.isDieInstruction = !this.isDieInstruction
@@ -191,8 +196,12 @@
             for(let i = 0; i < this.caregiver.categoriesCollected.length; i++){
               if(this.caregiver.categoriesCollected[i].count >= 2){
                 console.log("Caregiver has " + this.caregiver.categoriesCollected[i].count + " cards of category " + this.caregiver.categoriesCollected[i].name)
+                console.log("Booleans before change:")
+                this.printBooleans()
                 this.isDieInstruction = !this.isDieInstruction
                 this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
+                console.log("Booleans after change:")
+                this.printBooleans()
               } else {
                 console.log("...but not enough to use the power!")
                 this.isDieInstruction = !this.isDieInstruction
@@ -203,6 +212,18 @@
             this.isDieInstruction = !this.isDieInstruction
           }
         }
+      },
+      printBooleans(){
+        console.log('----------------------------------------')
+        console.log('Situation of booleans for isntructions |')
+        console.log('----------------------------------------')
+        console.log("this.isPawnsInstruction: " + this.isPawnsInstruction)
+        console.log("this.isDieInstruction: " + this.isDieInstruction)
+        console.log("this.isMoveToColorInstruction: " + this.isMoveToColorInstruction)
+        console.log("this.isPickCardInstruction: " + this.isPickCardInstruction)
+        console.log("this.isTwoCardsSameColorInstruction: " + this.isTwoCardsSameColorInstruction)
+        console.log("this.isChooseCardsToUse: " + this.isChooseCardsToUse)
+        console.log('----------------------------------------')
       }
     },
     created(){
