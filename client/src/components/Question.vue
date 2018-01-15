@@ -18,7 +18,7 @@
 
 <script>
   export default {
-    props: ['question'],
+    props: ['question', 'player'],
     data () {
       return {
         count: 0,
@@ -60,7 +60,13 @@
 
         // save the "card" color for the current player
         console.log("Category to be sent to setCard: " + this.categoryName)
-        this.$store.dispatch('setPlayerCard', this.categoryName)
+        if(this.player === 'player')
+          this.$store.dispatch('setPlayerCard', this.categoryName)
+        else
+          this.$store.dispatch('setCaregiverCard', this.categoryName)
+
+        // switch turn to other player
+        Event.$emit('switch-turn')
       }
     },
     mounted(){

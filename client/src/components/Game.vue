@@ -14,7 +14,7 @@
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isPickCardInstruction" :instruction="instructions[3]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isTwoCardsSameColorInstruction" :instruction="instructions[4]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isChooseCardsToUse" :instruction="instructions[5]" :error="errorMessage"/>
-    <question v-else :question="currentQuestion"/>
+    <question v-else :question="currentQuestion" :player="activePlayer"/>
 
   </div>
 
@@ -135,6 +135,14 @@
       toggleQuestionsInstructions(){
         this.showInstructions = !this.showInstructions
       },
+      resetAfterTurnChange(){
+        this.isPawnsInstruction = false
+        this.isDieInstruction = true
+        this.isMoveToColorInstruction = false
+        this.isPickCardInstruction = false
+        this.isTwoCardsSameColorInstruction = false
+        this.isChooseCardsToUse = false
+      }
     },
     created(){
       Event.$emit('toolbar-data', "Match is on!", false)
@@ -171,14 +179,15 @@
         }
       })
 
+      // go to next instruction after die has been thrown
       Event.$on('die-thrown', function() {
         // switch to next instruction
         self.isDieInstruction = !self.isDieInstruction
         self.isMoveToColorInstruction = !self.isMoveToColorInstruction
       })
 
+      // remove the skipped questions from the array that holds all the ones that can be asked in this turn
       Event.$on('skipped-question', question => {
-        // remove the question skipped from the array of the ones that can be asked in this turn
         let index = self.filteredQuestions.indexOf(question)
         if (index > -1) {
           self.filteredQuestions.splice(index, 1);
@@ -188,6 +197,13 @@
 
         //self.filteredQuestions.splice()
         console.log("filtered questions after removal: ", self.filteredQuestions)
+      })
+
+      // switch player turns
+      Event.$on('switch-turn', function(){
+        self.togglePlayers()
+        self.resetAfterTurnChange()
+        self.toggleQuestionsInstructions()
       })
     }
   }
