@@ -24,8 +24,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -51,7 +51,7 @@
           {name: "Liefde", color: "red"},
           {name: "Tienertijd", color: "cyan"},
           {name: "Kindertijd", color: "green"},
-          {name: "Hobby", color: "purple"},
+          {name: "Hobbies", color: "purple"},
         ],
         filteredQuestions: [],
         errorMessage: '',
