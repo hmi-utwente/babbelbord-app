@@ -53,7 +53,7 @@ export const store = new Vuex.Store({
       console.log("player.skipQuestion after update: ", state.player.skipQuestions)
     },
     setCardForPlayer(state, category){
-      console.log("Now in setCard")
+      console.log("Now in setCardPlayer")
       console.log("---- Category passed: " + category)
       if(!state.player.categoriesCollected){
         Vue.set(state.player,'categoriesCollected', [])
@@ -61,6 +61,10 @@ export const store = new Vuex.Store({
         // Vue.set(state.player.categoriesCollected[state.player.categoriesCollected.length], {name: category, count: 1})
         console.log("---- categoriesCollected not existing before, but now: ", state.player.categoriesCollected)
       } else {
+        let findCategory = state.player.categoriesCollected.filter(function(obj){ return obj.name == category})
+        if(findCategory.length === 0){
+          state.player.categoriesCollected.push({name: category, count: 1})
+        }
         for(var i = 0; i < state.player.categoriesCollected.length; i++){
           if(state.player.categoriesCollected[i].name === category){
             state.player.categoriesCollected[i].count++
@@ -69,7 +73,7 @@ export const store = new Vuex.Store({
       }
     },
     setCardForCaregiver(state, category){
-      console.log("Now in setCard")
+      console.log("Now in setCardCaregiver")
       console.log("---- Category passed: " + category)
       if(!state.caregiver.categoriesCollected){
         Vue.set(state.caregiver,'categoriesCollected', [])
@@ -83,6 +87,10 @@ export const store = new Vuex.Store({
           }
         }
       }
+    },
+    resetPlayers(state){
+      state.player = {}
+      state.caregiver = {}
     }
   },
   actions: {
@@ -109,6 +117,9 @@ export const store = new Vuex.Store({
     },
     setCaregiverCard(context, category){
       context.commit('setCardForCaregiver', category)
+    },
+    resetPlayerCaregiver(context){
+      context.commit('resetPlayers')
     }
   }
 })

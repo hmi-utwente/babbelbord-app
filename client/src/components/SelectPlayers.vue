@@ -249,7 +249,7 @@
       }
     },
     created(){
-      Event.$emit('toolbar-data', "Nieuw spel", true)
+      Event.$emit('toolbar-data', "Nieuw spel", true, "amber")
     },
     mounted(){
       Event.$on('item-selected', playerId => {

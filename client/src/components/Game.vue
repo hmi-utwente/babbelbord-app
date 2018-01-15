@@ -85,44 +85,46 @@
         // keeping this as reference to access component data
         var self = this
 
-        // map category to its ID
-        let currentCategoryParse = this.categories.filter(function(obj){
-          return obj.name == self.currentCategory
-        })[0]
-
-        var category = currentCategoryParse.id
-
-        // get all questions of a specific category and avoiding topics / questions to skip
-        this.filteredQuestions = this.questions.filter(function(obj){
-          return obj.category == category
-        }).filter(function(obj){
-          // filter by skipQuestions
-          if(self.player.skipQuestions){
-            console.log("Player has skipQuestions set")
-            return !self.player.skipQuestions.includes(obj.id)
-          }
-        }).filter(function(obj){
-          console.log("Player has skipTopics set")
-          if(self.player.skipTopics){
-            return !self.player.skipTopics.includes(obj.topics)
-          }
-        })
-
-        this.currentQuestion = this.filteredQuestions[Math.floor(Math.random()*this.filteredQuestions.length)];
-
-        Event.$on('category-name', catName => {
-          // find color associated to category
-          let currentCat = this.categoriesColors.filter(function(category){
-            return category.name == catName
+        // do computations only if the category has been set properly (fixing issue of same category in a row)
+        if(this.currentCategory !== 'reset'){
+          // map category to its ID
+          let currentCategoryParse = this.categories.filter(function(obj){
+            return obj.name == self.currentCategory
           })[0]
 
-          // send data to toolbar
-          Event.$emit('toolbar-data', catName, false, currentCat.color)
-        })
+          var category = currentCategoryParse.id
 
-        // toggle between instructions and question
-        this.toggleQuestionsInstructions()
+          // get all questions of a specific category and avoiding topics / questions to skip
+          this.filteredQuestions = this.questions.filter(function(obj){
+            return obj.category == category
+          }).filter(function(obj){
+            // filter by skipQuestions
+            if(self.player.skipQuestions){
+              console.log("Player has skipQuestions set")
+              return !self.player.skipQuestions.includes(obj.id)
+            }
+          }).filter(function(obj){
+            console.log("Player has skipTopics set")
+            if(self.player.skipTopics){
+              return !self.player.skipTopics.includes(obj.topics)
+            }
+          })
 
+          this.currentQuestion = this.filteredQuestions[Math.floor(Math.random()*this.filteredQuestions.length)];
+
+          Event.$on('category-name', catName => {
+            // find color associated to category
+            let currentCat = this.categoriesColors.filter(function(category){
+              return category.name == catName
+            })[0]
+
+            // send data to toolbar
+            Event.$emit('toolbar-data', catName, false, currentCat.color)
+          })
+
+          // toggle between instructions and question
+          this.toggleQuestionsInstructions()
+        }
       }
     },
     methods: {
@@ -151,13 +153,10 @@
       var self = this
 
       socket.on('category', function(data){
-        self.errorMessage = ''
-        console.log("Data received in socket: ", data)
 
         if(data.name) {
-          console.log("Setting current category")
+          console.log("Setting category")
           self.currentCategory = data.name
-          console.log("After socket, currentCategory is " + self.currentCategory)
         }
         else if(data.special){
           console.log("Setting error message")
@@ -204,6 +203,7 @@
         self.togglePlayers()
         self.resetAfterTurnChange()
         self.toggleQuestionsInstructions()
+        self.currentCategory = 'reset'
       })
     }
   }

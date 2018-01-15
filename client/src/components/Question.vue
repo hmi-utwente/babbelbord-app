@@ -39,8 +39,6 @@
 
         console.log(cat)
 
-        Event.$emit('category-name', cat.name)
-
         return cat.name
       },
     },
@@ -56,8 +54,6 @@
         this.count++
       },
       nextTurn: function () {
-        // goes to the other player's turn, saves which card the player should have picked up
-
         // save the "card" color for the current player
         console.log("Category to be sent to setCard: " + this.categoryName)
         if(this.player === 'player')
@@ -67,7 +63,13 @@
 
         // switch turn to other player
         Event.$emit('switch-turn')
+
+        // Update toolbar
+        Event.$emit('toolbar-data', "Match is on!", false, "amber")
       }
+    },
+    created(){
+      Event.$emit('category-name', this.categoryName)
     },
     mounted(){
       console.log("Value of props passed: ", this.question)

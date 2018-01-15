@@ -5,7 +5,7 @@
     </v-btn>
     <v-toolbar-title>{{ title }}</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn icon to="/">
+    <v-btn icon @click="goToHome">
       <v-icon>home</v-icon>
     </v-btn>
     <v-btn icon>
@@ -26,6 +26,12 @@
     methods: {
       goBack(){
         this.$router.go(-1)
+      },
+      goToHome(){
+        // reset player and caregiver from store
+        this.$store.dispatch('resetPlayerCaregiver')
+
+        this.$router.push('/')
       }
     },
     created(){
