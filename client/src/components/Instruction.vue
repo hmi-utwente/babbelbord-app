@@ -2,7 +2,10 @@
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
       <v-flex xs6 offset-xs3>
-        <h1 v-if="!error && instruction.message !== 'Throw the die' && instruction.message !== 'Pick a card of same category' ">{{instruction.message}}</h1>
+        <h1 v-if="!error && instruction.message !== 'Throw the die' &&
+                  instruction.message !== 'Pick a card of same category' &&
+                  instruction.message !== 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?' &&
+                  instruction.message !== 'Choose the colored card you want to use'">{{instruction.message}}</h1>
         <div v-else-if="!error && instruction.message === 'Throw the die' || instruction.message === 'Pick a card of same category'">
           <h1>{{instruction.message}}</h1>
           <v-btn @click="nextInstructionAfterThrow">Done</v-btn>
@@ -12,8 +15,22 @@
           <v-btn @click="yesUseCards">Yes</v-btn>
           <v-btn @click="noDontUseCards">No</v-btn>
         </div>
+        <div v-else-if="!error && instruction.message === 'Choose the colored card you want to use'">
+          <h1>{{instruction.message}}</h1>
+          <!-- Here I show a v-card with the same color as the category -->
+          <v-card>
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">Category name here</h3>
+              </div>
+            </v-card-title>
+            <v-card-actions>
+              <v-btn flat color="orange">Use it!</v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
-          <h1>{{error}}</h1>
+          <h1>{{error}} </h1>
           <v-btn>done</v-btn>
         </div>
         <h1 v-else> {{error}} </h1>
@@ -39,6 +56,13 @@
           Event.$emit('die-thrown')
         else
           Event.$emit('card-picked')
+      },
+      yesUseCards(){
+        // change instruction to choose cards
+        Event.$emit('choose-cards')
+      },
+      noDontUseCards(){
+
       }
     },
     updated(){

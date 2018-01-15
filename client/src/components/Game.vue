@@ -23,8 +23,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  // var socket = io()   // use this for production
-  var socket = io('http://localhost:8081')   // use this for production
+  var socket = io()   // use this for production
+  // var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -288,6 +288,12 @@
 
         //self.filteredQuestions.splice()
         console.log("filtered questions after removal: ", self.filteredQuestions)
+      })
+
+      // change to choose cards to discard
+      Event.$on('choose-cards', function(){
+        self.isTwoCardsSameColorInstruction = !self.isTwoCardsSameColorInstruction
+        self.isChooseCardsToUse = !self.isChooseCardsToUse
       })
 
       // switch player turns
