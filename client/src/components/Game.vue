@@ -5,7 +5,8 @@
   This component should keep the data about players, like collected cards.
 
    -->
-  <div>
+  <div class="text-xs-center">
+    <h2 v-if="!isPawnsInstruction">{{ activePlayer === "player" ? player.name : caregiver.name }}, it's your turn!</h2>
     <!-- Switch between different instructions and questions -->
     <instruction v-if="(showInstructions || errorMessage.length > 0) && isPawnsInstruction" :instruction="instructions[0]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isDieInstruction" :instruction="instructions[1]" :error="errorMessage"/>
@@ -23,8 +24,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -133,7 +134,7 @@
       },
       toggleQuestionsInstructions(){
         this.showInstructions = !this.showInstructions
-      }
+      },
     },
     created(){
       Event.$emit('toolbar-data', "Match is on!", false)
@@ -152,13 +153,28 @@
         }
         else if(data.special){
           console.log("Setting error message")
-          self.errorMessage = data.special
 
-          // toggle between instructions and question
-          self.toggleQuestionsInstructions()
+          // received "Both pawns are at gaan"
+          if(data.special === "Both pawns are at gaan"){
+            // switch to next instruction, throw the die
+            self.isPawnsInstruction = !self.isPawnsInstruction
+            self.isDieInstruction = !self.isDieInstruction
+            console.log("Changing isPawnInstructions, updated value is " + self.isPawnsInstruction)
+          } else {
+            self.errorMessage = data.special
+
+            // toggle between instructions and question
+            self.toggleQuestionsInstructions()
+          }
 
           console.log("Error message is: " + self.errorMessage)
         }
+      })
+
+      Event.$on('die-thrown', function() {
+        // switch to next instruction
+        self.isDieInstruction = !self.isDieInstruction
+        self.isMoveToColorInstruction = !self.isMoveToColorInstruction
       })
 
       Event.$on('skipped-question', question => {

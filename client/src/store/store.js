@@ -51,6 +51,22 @@ export const store = new Vuex.Store({
 
       state.player.skipQuestions.push(question.id)
       console.log("player.skipQuestion after update: ", state.player.skipQuestions)
+    },
+    setCard(state, category){
+      console.log("Now in setCard")
+      console.log("---- Category passed: " + category)
+      if(!state.player.categoriesCollected){
+        Vue.set(state.player,'categoriesCollected', [])
+        state.player.categoriesCollected.push({name: category, count: 1})
+        // Vue.set(state.player.categoriesCollected[state.player.categoriesCollected.length], {name: category, count: 1})
+        console.log("---- categoriesCollected not existing before, but now: ", state.player.categoriesCollected)
+      } else {
+        for(var i = 0; i < state.player.categoriesCollected.length; i++){
+          if(state.player.categoriesCollected[i].name === category){
+            state.player.categoriesCollected[i].count++
+          }
+        }
+      }
     }
   },
   actions: {
@@ -72,5 +88,8 @@ export const store = new Vuex.Store({
         console.log('Error in updating the player\'s questions: ' + error.message)
       }
     },
+    setPlayerCard(context, category){
+      context.commit('setCard', category)
+    }
   }
 })

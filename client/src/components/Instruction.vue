@@ -1,6 +1,10 @@
 <template class="text-xs-center">
   <div class="text-xs-center">
-    <h1 v-if="!error">{{instruction.message}}</h1>
+    <h1 v-if="!error && instruction.message !== 'Throw the die'">{{instruction.message}}</h1>
+    <div v-else-if="!error && instruction.message === 'Throw the die'">
+      <h1>{{instruction.message}}</h1>
+      <v-btn @click="nextInstructionAfterThrow">Done</v-btn>
+    </div>
     <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
       <h1>{{error}}</h1>
       <v-btn>done</v-btn>
@@ -18,6 +22,11 @@
           {message: "Please move the pawn a little around in the square"},
           {message: "Please remove last placed pawn, and place it back after X seconds"},
         ]
+      }
+    },
+    methods:{
+      nextInstructionAfterThrow(){
+        Event.$emit('die-thrown')
       }
     },
     updated(){

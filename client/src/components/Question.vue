@@ -1,12 +1,17 @@
 <template>
   <div>
-    <h4>Category: {{ categoryName }}</h4>
-    <h2>{{ count > 0 ? currentQuestionChild : question.question}}</h2>
+    <v-container grid-list-md text-xs-center>
+      <v-layout row wrap>
+        <v-flex xs6 offset-xs3>
+          <h1>{{ count > 0 ? currentQuestionChild : question.question}}</h1>
+        </v-flex>
+      </v-layout>
+    </v-container>
 
     <!-- if no subquestions or they are over, display instead the done button -->
+    <v-btn @click="addToSkipQuestions">skip</v-btn>
     <v-btn v-if="question.subquestions && count < question.subquestions.length" @click="followUpQuestion">following question</v-btn>
     <v-btn v-else @click="nextTurn">done</v-btn>
-    <v-btn @click="addToSkipQuestions">skip</v-btn>
   </div>
 
 </template>
@@ -52,6 +57,10 @@
       },
       nextTurn: function () {
         // goes to the other player's turn, saves which card the player should have picked up
+
+        // save the "card" color for the current player
+        console.log("Category to be sent to setCard: " + this.categoryName)
+        this.$store.dispatch('setPlayerCard', this.categoryName)
       }
     },
     mounted(){
