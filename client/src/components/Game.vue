@@ -15,7 +15,6 @@
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isTwoCardsSameColorInstruction" :instruction="instructions[4]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isChooseCardsToUse" :instruction="instructions[5]" :error="errorMessage"/>
     <question v-else :question="currentQuestion" :player="activePlayer"/>
-
   </div>
 
 </template>
@@ -80,50 +79,67 @@
     },
     watch: {
       currentCategory: function(){
-        console.log('Current Category changed')
+        console.log('Current Category changed to ' + this.currentCategory)
 
         // keeping this as reference to access component data
         var self = this
 
         // do computations only if the category has been set properly (fixing issue of same category in a row)
         if(this.currentCategory !== 'reset'){
+          console.log('---- currentCategory != reset')
           // map category to its ID
           let currentCategoryParse = this.categories.filter(function(obj){
             return obj.name == self.currentCategory
           })[0]
 
           var category = currentCategoryParse.id
+          console.log("---- Category id of " + this.currentCategory + " is " + category)
 
-          // get all questions of a specific category and avoiding topics / questions to skip
-          this.filteredQuestions = this.questions.filter(function(obj){
-            return obj.category == category
-          }).filter(function(obj){
-            // filter by skipQuestions
-            if(self.player.skipQuestions){
-              console.log("Player has skipQuestions set")
-              return !self.player.skipQuestions.includes(obj.id)
-            }
-          }).filter(function(obj){
-            console.log("Player has skipTopics set")
-            if(self.player.skipTopics){
-              return !self.player.skipTopics.includes(obj.topics)
-            }
-          })
+          if(this.activePlayer === 'player') {
+            // get all questions of a specific category and avoiding topics / questions to skip
+            this.filteredQuestions = this.questions.filter(function (obj) {
+              console.log("-------- Inside first filter, these are the objects: ", obj)
+              return obj.category == category
+            }).filter(function (obj) {
+              // filter by skipQuestions
+              console.log("-------- Inside second filter, with skipQuestions: ", obj)
+              console.log("Player details: ", self.player)
 
-          this.currentQuestion = this.filteredQuestions[Math.floor(Math.random()*this.filteredQuestions.length)];
+              if (self.player.skipQuestions) {
+                console.log("Player has skipQuestions set")
+                return !self.player.skipQuestions.includes(obj.id)
+              } else {
+                return obj
+              }
+            }).filter(function (obj) {
+              console.log("-------- Inside third filter, with skipTopics: ", obj)
+              if (self.player.skipTopics) {
+                console.log("Player has skipTopics set")
+                return !self.player.skipTopics.includes(obj.topics)
+              } else {
+                return obj
+              }
+            })
+          } else {
+            this.filteredQuestions = this.questions.filter(function (obj) {
+              return obj.category == category
+            })
+          }
 
-          Event.$on('category-name', catName => {
-            // find color associated to category
-            let currentCat = this.categoriesColors.filter(function(category){
-              return category.name == catName
-            })[0]
+            this.currentQuestion = this.filteredQuestions[Math.floor(Math.random()*this.filteredQuestions.length)];
 
-            // send data to toolbar
-            Event.$emit('toolbar-data', catName, false, currentCat.color)
-          })
+            Event.$on('category-name', catName => {
+              // find color associated to category
+              let currentCat = this.categoriesColors.filter(function(category){
+                return category.name == catName
+              })[0]
 
-          // toggle between instructions and question
-          this.toggleQuestionsInstructions()
+              // send data to toolbar
+              Event.$emit('toolbar-data', catName, false, currentCat.color)
+            })
+
+            // toggle between instructions and question
+            this.toggleQuestionsInstructions()
         }
       }
     },
@@ -139,9 +155,9 @@
       },
       resetAfterTurnChange(){
         this.isPawnsInstruction = false
-        this.isDieInstruction = true
+        this.isDieInstruction = false
         this.isMoveToColorInstruction = false
-        this.isPickCardInstruction = false
+        this.isPickCardInstruction = true
         this.isTwoCardsSameColorInstruction = false
         this.isChooseCardsToUse = false
       }
@@ -153,6 +169,8 @@
       var self = this
 
       socket.on('category', function(data){
+
+        console.log("Category received from socket is " + data.name)
 
         if(data.name) {
           console.log("Setting category")
@@ -183,6 +201,14 @@
         // switch to next instruction
         self.isDieInstruction = !self.isDieInstruction
         self.isMoveToColorInstruction = !self.isMoveToColorInstruction
+        self.isPickCardInstruction = !self.isPickCardInstruction
+      })
+
+      // go to next instruction after card has been picked up
+      Event.$on('card-picked', function() {
+        // switch to next instruction
+        self.isDieInstruction = !self.isDieInstruction
+        self.isPickCardInstruction = !self.isPickCardInstruction
       })
 
       // remove the skipped questions from the array that holds all the ones that can be asked in this turn
@@ -200,9 +226,9 @@
 
       // switch player turns
       Event.$on('switch-turn', function(){
-        self.togglePlayers()
         self.resetAfterTurnChange()
         self.toggleQuestionsInstructions()
+        self.togglePlayers()
         self.currentCategory = 'reset'
       })
     }

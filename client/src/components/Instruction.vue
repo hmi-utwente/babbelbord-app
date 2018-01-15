@@ -1,7 +1,7 @@
 <template class="text-xs-center">
   <div class="text-xs-center">
-    <h1 v-if="!error && instruction.message !== 'Throw the die'">{{instruction.message}}</h1>
-    <div v-else-if="!error && instruction.message === 'Throw the die'">
+    <h1 v-if="!error && instruction.message !== 'Throw the die' && instruction.message !== 'Pick a card of same category' ">{{instruction.message}}</h1>
+    <div v-else-if="!error && instruction.message === 'Throw the die' || instruction.message === 'Pick a card of same category'">
       <h1>{{instruction.message}}</h1>
       <v-btn @click="nextInstructionAfterThrow">Done</v-btn>
     </div>
@@ -26,7 +26,10 @@
     },
     methods:{
       nextInstructionAfterThrow(){
-        Event.$emit('die-thrown')
+        if(this.instruction.message === 'Throw the die')
+          Event.$emit('die-thrown')
+        else
+          Event.$emit('card-picked')
       }
     },
     updated(){
