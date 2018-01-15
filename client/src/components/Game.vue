@@ -81,6 +81,8 @@
       currentCategory: function(){
         console.log('Current Category changed to ' + this.currentCategory)
 
+        this.checkCards()
+
         // keeping this as reference to access component data
         var self = this
 
@@ -160,6 +162,47 @@
         this.isPickCardInstruction = true
         this.isTwoCardsSameColorInstruction = false
         this.isChooseCardsToUse = false
+      },
+      checkCards(){
+        // check cards owned by the player or caregiver
+        if(this.activePlayer === "player"){
+          console.log("Patient is active player")
+          if(this.player.categoriesCollected && this.player.categoriesCollected.length > 0){
+            console.log("Patient has collected cards")
+            for(let i = 0; i < this.player.categoriesCollected.length; i++){
+              if(this.player.categoriesCollected[i].count >= 2){
+                console.log("Patient has " + this.player.categoriesCollected[i].count + " cards of category " + this.player.categoriesCollected[i].name)
+                this.isDieInstruction = !this.isDieInstruction
+                this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
+              } else {
+                console.log("...but not enough to use the power!")
+                this.isDieInstruction = !this.isDieInstruction
+              }
+            }
+          } else {
+            console.log("Not enough cards, going to die throw screen")
+            this.isDieInstruction = !this.isDieInstruction
+          }
+        } else {
+          // for caregiver
+          console.log("Caregiver is active player")
+          if(this.caregiver.categoriesCollected && this.caregiver.categoriesCollected.length > 0){
+            console.log("Caregiver has collected cards")
+            for(let i = 0; i < this.caregiver.categoriesCollected.length; i++){
+              if(this.caregiver.categoriesCollected[i].count >= 2){
+                console.log("Caregiver has " + this.caregiver.categoriesCollected[i].count + " cards of category " + this.caregiver.categoriesCollected[i].name)
+                this.isDieInstruction = !this.isDieInstruction
+                this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
+              } else {
+                console.log("...but not enough to use the power!")
+                this.isDieInstruction = !this.isDieInstruction
+              }
+            }
+          } else {
+            console.log("Not enough cards, going to die throw screen")
+            this.isDieInstruction = !this.isDieInstruction
+          }
+        }
       }
     },
     created(){
@@ -184,6 +227,8 @@
             // switch to next instruction, throw the die
             self.isPawnsInstruction = !self.isPawnsInstruction
             self.isDieInstruction = !self.isDieInstruction
+            console.log("Inside both pawns are at gaan")
+
             console.log("Changing isPawnInstructions, updated value is " + self.isPawnsInstruction)
           } else {
             self.errorMessage = data.special
