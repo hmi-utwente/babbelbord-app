@@ -38,7 +38,7 @@
         <div v-else-if="!error && instruction.message === 'Remember to discard physical cards'">
           <h1>{{instruction.message}}</h1>
           <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} discards 2 cards, while {{ currentPlayer === "player" ? caregiver.name : player.name }} discards 1</h2>
-          <v-btn>ok</v-btn>
+          <v-btn @click="cardsDiscarded">ok</v-btn>
         </div>
 
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
@@ -86,10 +86,16 @@
       noDontUseCards(){
 
       },
+      cardsDiscarded(){
+        // now go to the throw the die instruction screen
+        Event.$emit('throw-die-after-discard')
+      },
       removeCardFromCollected(category){
         // removes 2 cards from current player and 1 from the other one
         this.$store.dispatch('removePlayersCards', {activePlayer: this.currentPlayer, category: category})
 
+        // show screen of how many cards they need to discard
+        Event.$emit('cards-discarded')
       },
       retrieveUserCards(currentPlaya){
         // look for the ones to display
@@ -107,8 +113,6 @@
         }
 
         console.log("Now collectedCards is ", this.collectedCards)
-
-        Event.$emit('discard-cards')
       }
     },
     updated(){

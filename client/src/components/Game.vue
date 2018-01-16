@@ -311,10 +311,10 @@
       })
 
       // change to choose cards to discard
-      Event.$on('discard-cards', function(){
-        console.log("\nI am now inside discard-cards event")
-        // self.isChooseCardsToUse = !self.isChooseCardsToUse
-        // self.isDiscardPhysicalCards = !self.isDiscardPhysicalCards
+      Event.$on('cards-discarded', function(){
+        console.log("\nI am now inside cards-discarded event")
+        self.isChooseCardsToUse = false
+        self.isDiscardPhysicalCards = true
       })
 
       // switch player turns
@@ -326,6 +326,13 @@
         self.printBooleans()
         self.togglePlayers()
         self.currentCategory = 'reset'
+      })
+
+      // Go back to throw die after the users confirmend they discarded the physical cards
+      Event.$on('throw-die-after-discard', function(){
+        console.log("\nI am now inside throw-die-after-discard event")
+        self.isDiscardPhysicalCards = false
+        self.isDieInstruction = true
       })
     }
   }
