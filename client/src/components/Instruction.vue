@@ -73,7 +73,7 @@
       }
     },
     methods:{
-      nextInstructionAfterThrow(){
+       nextInstructionAfterThrow(){
         if(this.instruction.message === 'Throw the die')
           Event.$emit('die-thrown')
         else

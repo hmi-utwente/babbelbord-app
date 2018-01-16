@@ -6,7 +6,7 @@
 
    -->
   <div class="text-xs-center">
-    <h2 v-if="!isPawnsInstruction">{{ activePlayer === "player" ? player.name : caregiver.name }}, it's your turn!</h2>
+    <h2 v-if="!isPawnsInstruction && !isPickCardInstruction">{{ activePlayer === "player" ? player.name : caregiver.name }}, it's your turn!</h2>
     <!-- Switch between different instructions and questions -->
     <instruction v-if="(showInstructions || errorMessage.length > 0) && isPawnsInstruction" :instruction="instructions[0]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isDieInstruction" :instruction="instructions[1]" :error="errorMessage"/>
@@ -82,7 +82,7 @@
     },
     watch: {
       currentCategory: function(){
-        console.log('Current Category changed to ' + this.currentCategory)
+        console.log('\nCurrent Category watcher: changed to ' + this.currentCategory)
 
         this.checkCards()
 
@@ -98,7 +98,6 @@
           })[0]
 
           var category = currentCategoryParse.id
-          console.log("---- Category id of " + this.currentCategory + " is " + category)
 
           if(this.activePlayer === 'player') {
             // get all questions of a specific category and avoiding topics / questions to skip
@@ -143,15 +142,18 @@
     },
     methods: {
       togglePlayers(){
+        console.log("\nI am inside togglePlayers()")
         if(this.activePlayer === 'player')
           this.activePlayer = 'caregiver'
         else
           this.activePlayer = 'player'
       },
       toggleQuestionsInstructions(){
+        console.log("\nI am inside toggleQuestionsInstructions()")
         this.showInstructions = !this.showInstructions
       },
       resetAfterTurnChange(){
+        console.log("\nI am inside resetTurnAfterChange()")
         this.isPawnsInstruction = false
         this.isDieInstruction = false
         this.isMoveToColorInstruction = false
@@ -161,57 +163,58 @@
         this.isDiscardPhysicalCards = false
       },
       checkCards(){
+        console.log("\nI am inside checkCards()")
         // check cards owned by the player or caregiver
         if(this.activePlayer === "player"){
-          console.log("Patient is active player")
+          console.log("---- Patient is active player")
           if(this.player.categoriesCollected && this.player.categoriesCollected.length > 0){
-            console.log("Patient has collected cards")
+            console.log("---- Patient has collected cards")
             for(let i = 0; i < this.player.categoriesCollected.length; i++){
               if(this.player.categoriesCollected[i].count >= 2){
-                console.log("Patient has " + this.player.categoriesCollected[i].count + " cards of category " + this.player.categoriesCollected[i].name)
-                console.log("Booleans before change:")
+                console.log("---- Patient has " + this.player.categoriesCollected[i].count + " cards of category " + this.player.categoriesCollected[i].name)
+                console.log("---- Booleans before change:")
                 this.printBooleans()
                 // this.isDieInstruction = !this.isDieInstruction
                 this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
                 this.isPickCardInstruction = !this.isTwoCardsSameColorInstruction
-                console.log("Booleans after change:")
+                console.log("---- Booleans after change:")
                 this.printBooleans()
               } else {
-                console.log("...but not enough to use the power!")
+                console.log("---- ...but not enough to use the power!")
                 // this.isDieInstruction = !this.isDieInstruction
               }
             }
           } else {
-            console.log("Not enough cards, going to die throw screen")
             //this.isDieInstruction = !this.isDieInstruction
+            // console.log("Not enough cards, going to die throw screen")
           }
         } else {
           // for caregiver
-          console.log("Caregiver is active player")
+          console.log("---- Caregiver is active player")
           if(this.caregiver.categoriesCollected && this.caregiver.categoriesCollected.length > 0){
-            console.log("Caregiver has collected cards")
+            console.log("---- Caregiver has collected cards")
             for(let i = 0; i < this.caregiver.categoriesCollected.length; i++){
               if(this.caregiver.categoriesCollected[i].count >= 2){
-                console.log("Caregiver has " + this.caregiver.categoriesCollected[i].count + " cards of category " + this.caregiver.categoriesCollected[i].name)
-                console.log("Booleans before change:")
+                console.log("---- Caregiver has " + this.caregiver.categoriesCollected[i].count + " cards of category " + this.caregiver.categoriesCollected[i].name)
+                console.log("---- Booleans before change:")
                 this.printBooleans()
                 this.isDieInstruction = !this.isDieInstruction
                 this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
-                console.log("Booleans after change:")
+                console.log("---- Booleans after change:")
                 this.printBooleans()
               } else {
-                console.log("...but not enough to use the power!")
+                console.log("---- ...but not enough to use the power!")
                 //this.isDieInstruction = !this.isDieInstruction
               }
             }
           } else {
-            console.log("Not enough cards, going to die throw screen")
-            //this.isDieInstruction = !this.isDieInstruction
+            // console.log("Not enough cards, going to die throw screen")
+            // this.isDieInstruction = !this.isDieInstruction
           }
         }
       },
       printBooleans(){
-        console.log('----------------------------------------')
+        console.log('\n----------------------------------------')
         console.log('Situation of booleans for instructions |')
         console.log('----------------------------------------')
         console.log("this.isPawnsInstruction: " + this.isPawnsInstruction)
@@ -231,19 +234,20 @@
       var self = this
 
       socket.on('category', function(data){
+        console.log("\nI am now inside category(socket) event")
 
-        console.log("Category received from socket is " + data.name)
+        console.log("---- Category received from socket is " + data.name)
 
         // reset booleans to show the next correct screen
         self.isMoveToColorInstruction = !self.isMoveToColorInstruction
 
         if(data.name) {
-          console.log("Setting category")
+          console.log("---- Setting category")
           self.currentCategory = data.name
           self.isDieInstruction = !self.isDieInstruction
         }
         else if(data.special){
-          console.log("Setting error message")
+          console.log("---- Setting error message")
 
           // received "Both pawns are at gaan"
           if(data.special === "Both pawns are at gaan"){
@@ -251,7 +255,7 @@
             self.isPawnsInstruction = !self.isPawnsInstruction
             self.isDieInstruction = !self.isDieInstruction
             self.isMoveToColorInstruction= !self.isMoveToColorInstruction
-            console.log("Inside both pawns are at gaan")
+            console.log("---- Inside both pawns are at gaan")
 
           } else {
             self.errorMessage = data.special
@@ -260,12 +264,13 @@
             self.toggleQuestionsInstructions()
           }
 
-          console.log("Error message is: " + self.errorMessage)
+          console.log("---- Error message is: " + self.errorMessage)
         }
       })
 
       // go to next instruction after die has been thrown
       Event.$on('die-thrown', function() {
+        console.log("\nI am now inside die-thrown event")
         // switch to next instruction
         self.isDieInstruction = !self.isDieInstruction
         self.isMoveToColorInstruction = !self.isMoveToColorInstruction
@@ -274,6 +279,7 @@
 
       // go to next instruction after card has been picked up
       Event.$on('card-picked', function() {
+        console.log("\nI am now inside card-picked event")
         // switch to next instruction
         self.isDieInstruction = !self.isDieInstruction
         self.isPickCardInstruction = !self.isPickCardInstruction
@@ -281,6 +287,7 @@
 
       // remove the skipped questions from the array that holds all the ones that can be asked in this turn
       Event.$on('skipped-question', question => {
+        console.log("\nI am now in skipped-question event")
         let index = self.filteredQuestions.indexOf(question)
         if (index > -1) {
           self.filteredQuestions.splice(index, 1);
@@ -289,30 +296,33 @@
         self.currentQuestion = self.filteredQuestions[Math.floor(Math.random()*self.filteredQuestions.length)];
 
         //self.filteredQuestions.splice()
-        console.log("filtered questions after removal: ", self.filteredQuestions)
+        console.log("---- filtered questions after removal: ", self.filteredQuestions)
       })
 
       // change to choose cards to discard
       Event.$on('choose-cards', function(){
-        console.log("Inside choose-cards on: before")
+        console.log("\nInside choose-cards event: before...")
         self.printBooleans()
-        self.isChooseCardsToUse = !self.isChooseCardsToUse
-        self.isTwoCardsSameColorInstruction = !self.isTwoCardsSameColorInstruction
+        self.isChooseCardsToUse = true
+        self.isTwoCardsSameColorInstruction = false
+        self.isPickCardInstruction = false
         console.log("...and after")
         self.printBooleans()
       })
 
       // change to choose cards to discard
       Event.$on('discard-cards', function(){
-        self.isChooseCardsToUse = !self.isChooseCardsToUse
-        self.isDiscardPhysicalCards = !self.isDiscardPhysicalCards
+        console.log("\nI am now inside discard-cards event")
+        // self.isChooseCardsToUse = !self.isChooseCardsToUse
+        // self.isDiscardPhysicalCards = !self.isDiscardPhysicalCards
       })
 
       // switch player turns
       Event.$on('switch-turn', function(){
+        console.log("\nI am now inside switch-turn event")
         self.toggleQuestionsInstructions()
         self.resetAfterTurnChange()
-        console.log("Situation after switch-turn")
+        console.log("---- Situation after switch-turn")
         self.printBooleans()
         self.togglePlayers()
         self.currentCategory = 'reset'
