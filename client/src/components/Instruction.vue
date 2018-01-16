@@ -84,7 +84,8 @@
         Event.$emit('choose-cards')
       },
       noDontUseCards(){
-
+         // go bck to normal flow, throw the die
+        Event.$emit('throw-die-after-discard')
       },
       cardsDiscarded(){
         // now go to the throw the die instruction screen
