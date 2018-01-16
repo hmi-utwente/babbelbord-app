@@ -242,7 +242,7 @@
 
         if(data.name) {
           console.log("---- Setting category")
-          self.currentCategory = message
+          self.currentCategory = data.name
           self.isDieInstruction = !self.isDieInstruction
         }
         else if(data.special){
