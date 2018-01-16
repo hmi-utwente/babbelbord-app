@@ -235,7 +235,6 @@
 
       socket.on('category', function(data){
         console.log("\nI am now inside category(socket) event")
-
         console.log("---- Category received from socket is " + data.name)
 
         // reset booleans to show the next correct screen
@@ -243,11 +242,29 @@
 
         if(data.name) {
           console.log("---- Setting category")
-          self.currentCategory = data.name
+          self.currentCategory = message
           self.isDieInstruction = !self.isDieInstruction
         }
         else if(data.special){
           console.log("---- Setting error message")
+
+          let message = data.special
+
+          // map the old values with the new keywords
+          if(message === "Het"){
+            message = "Het is je geluksdag er gebeurt niks"
+          } else if(message === "Ga"){
+            message = "Ga terug naar je vorige kleurvak"
+          } else if(message === "Verwijder") {
+            message = "Verwijder een verdiende kleurkaart"
+          } else if(message === "Geef") {
+            message = "Geef de laast verdiende kaart aan de vorige spelerq"
+          } else if(message === "START") {
+            message = "Both pawns are at gaan"
+          } else if(message === "MOVEPAWN"){
+            message = "Please move the pawn a little around in the square"
+          } else if(message === "MOVEDPAWNTOOFAST")
+            message = "Please remove last placed pawn, and place it back after X seconds"
 
           // received "Both pawns are at gaan"
           if(data.special === "Both pawns are at gaan"){
@@ -258,7 +275,7 @@
             console.log("---- Inside both pawns are at gaan")
 
           } else {
-            self.errorMessage = data.special
+            self.errorMessage = message
 
             // toggle between instructions and question
             self.toggleQuestionsInstructions()
