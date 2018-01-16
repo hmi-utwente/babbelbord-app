@@ -37,8 +37,7 @@
           return obj.id == self.question.category
         })[0]
 
-        console.log(cat)
-
+        console.log("Inside categoryName in Question component, value: ", cat)
         return cat.name
       },
     },

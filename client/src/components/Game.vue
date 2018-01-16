@@ -6,9 +6,11 @@
 
    -->
   <div class="text-xs-center">
-    <h2 v-if="!isPawnsInstruction && !isPickCardInstruction">{{ activePlayer === "player" ? player.name : caregiver.name }}, it's your turn!</h2>
+    <h2 v-if="!isPawnsInstruction && !isPickCardInstruction && errorMessage.length === 0">{{ activePlayer === "player" ? player.name : caregiver.name }}, it's your turn!</h2>
+
     <!-- Switch between different instructions and questions -->
-    <instruction v-if="(showInstructions || errorMessage.length > 0) && isPawnsInstruction" :instruction="instructions[0]" :error="errorMessage"/>
+    <instruction v-if="showInstructions && errorMessage.length > 0" :instruction="instructions[7]" :error="errorMessage"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isPawnsInstruction" :instruction="instructions[0]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isDieInstruction" :instruction="instructions[1]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isMoveToColorInstruction" :instruction="instructions[2]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isPickCardInstruction" :instruction="instructions[3]" :error="errorMessage"/>
@@ -24,8 +26,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -44,7 +46,8 @@
           {message: 'Pick a card of same category'},
           {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'},
           {message: 'Choose the colored card you want to use'},
-          {message: 'Remember to discard physical cards'}
+          {message: 'Remember to discard physical cards'},
+          {message: 'Prova'}
         ],
         currentInstruction: {message: 'Throw the die'},
         categoriesColors: [
@@ -235,12 +238,18 @@
 
       socket.on('category', function(data){
         console.log("\nI am now inside category(socket) event")
-        console.log("---- Category received from socket is " + data.name)
+        console.log("---- Category received from socket is " + (data.name ? data.name : data.special))
 
         // reset booleans to show the next correct screen
         self.isMoveToColorInstruction = !self.isMoveToColorInstruction
 
         if(data.name) {
+
+          if(self.errorMessage){
+            self.errorMessage = ''
+            self.isMoveToColorInstruction = true
+          }
+
           console.log("---- Setting category")
           self.currentCategory = data.name
           self.isDieInstruction = !self.isDieInstruction
@@ -258,30 +267,30 @@
           } else if(message === "Verwijder") {
             message = "Verwijder een verdiende kleurkaart"
           } else if(message === "Geef") {
-            message = "Geef de laast verdiende kaart aan de vorige spelerq"
+            message = "Geef de laast verdiende kaart aan de vorige speler"
           } else if(message === "START") {
             message = "Both pawns are at gaan"
           } else if(message === "MOVEPAWN"){
             message = "Please move the pawn a little around in the square"
-          } else if(message === "MOVEDPAWNTOOFAST")
+          } else if(message === "MOVEDPAWNTOOFAST") {
             message = "Please remove last placed pawn, and place it back after X seconds"
+          }
+
+          console.log("After checking the data received, message is now " + message)
 
           // received "Both pawns are at gaan"
           if(message === "Both pawns are at gaan"){
             // switch to next instruction, throw the die
-            self.isPawnsInstruction = !self.isPawnsInstruction
-            self.isDieInstruction = !self.isDieInstruction
-            self.isMoveToColorInstruction= !self.isMoveToColorInstruction
+            self.isPawnsInstruction = false
+            self.isDieInstruction = true
+            self.isMoveToColorInstruction= false
             console.log("---- Inside both pawns are at gaan")
-
-          } else {
+          } else if(message === "Please move the pawn a little around in the square") {
             self.errorMessage = message
-
-            // toggle between instructions and question
-            self.toggleQuestionsInstructions()
+            console.log("---- Inside move pawn square")
+            // self.toggleQuestionsInstructions()
           }
-
-          console.log("---- Error message is: " + self.errorMessage)
+          console.log("---- Error message is: " + (self.errorMessage ? self.errorMessage : "No error, pawns at gaan"))
         }
       })
 
@@ -289,8 +298,8 @@
       Event.$on('die-thrown', function() {
         console.log("\nI am now inside die-thrown event")
         // switch to next instruction
-        self.isDieInstruction = !self.isDieInstruction
-        self.isMoveToColorInstruction = !self.isMoveToColorInstruction
+        self.isDieInstruction = false
+        self.isMoveToColorInstruction = true
         //self.isPickCardInstruction = !self.isPickCardInstruction
       })
 

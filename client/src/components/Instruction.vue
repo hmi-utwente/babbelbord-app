@@ -7,21 +7,21 @@
                   instruction.message !== 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?' &&
                   instruction.message !== 'Choose the colored card you want to use' &&
                   instruction.message !== 'Remember to discard physical cards'"
-        >{{instruction.message}}</h1>
+        >{{instruction.message}} </h1>
 
         <div v-else-if="!error && instruction.message === 'Throw the die' || instruction.message === 'Pick a card of same category'">
-          <h1>{{instruction.message}}</h1>
+          <h1>{{instruction.message}} </h1>
           <v-btn @click="nextInstructionAfterThrow">Done</v-btn>
         </div>
 
         <div v-else-if="!error && instruction.message === 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'">
-          <h1>{{instruction.message}}</h1>
+          <h1>{{instruction.message}} </h1>
           <v-btn @click="yesUseCards">Yes</v-btn>
           <v-btn @click="noDontUseCards">No</v-btn>
         </div>
 
         <div v-else-if="!error && instruction.message === 'Choose the colored card you want to use'">
-          <h1>{{instruction.message}}</h1>
+          <h1>{{instruction.message}} </h1>
           <!-- Here I show a v-card with the same color as the category -->
           <v-card v-for="card in collectedCards" :key="card.name">
             <v-card-title primary-title>
@@ -36,17 +36,18 @@
         </div>
 
         <div v-else-if="!error && instruction.message === 'Remember to discard physical cards'">
-          <h1>{{instruction.message}}</h1>
+          <h1>{{instruction.message}} </h1>
           <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} discards 2 cards, while {{ currentPlayer === "player" ? caregiver.name : player.name }} discards 1</h2>
           <v-btn @click="cardsDiscarded">ok</v-btn>
         </div>
 
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
-          <h1>{{error}} </h1>
+          <h1>{{error}} 7 if</h1>
           <v-btn>done</v-btn>
         </div>
 
         <h1 v-else> {{error}} </h1>
+
       </v-flex>
     </v-layout>
   </v-container>
@@ -121,7 +122,7 @@
       var self = this
 
       if(this.error){
-        console.log("There is an error message @created")
+        console.log("There is an error message @updated")
         if(this.errors.filter(function(e){
           return e.message === self.error
           }).length > 0){
