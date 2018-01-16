@@ -91,16 +91,25 @@ export const store = new Vuex.Store({
       state.player = {}
       state.caregiver = {}
     },
-    removeCardsForPlayers(state, {currentPlayer, category}){
+    removeCardsForPlayers(state, {activePlayer, category}){
+      console.log("ActivePlayer is " + activePlayer)
+      var categoryToRemove = {}
       if(activePlayer === "player"){
+
+        console.log("Inside player")
         // remove cards from player
-        let categoryToRemove = state.player.categoriesCollected.filter(function(obj){return obj.name == category})[0]
+        categoryToRemove = state.player.categoriesCollected.filter(function(obj){return obj.name == category})[0]
+        console.log("---- This is the category to remove found for player: ", categoryToRemove)
         categoryToRemove.count = categoryToRemove.count - 2
+        console.log("---- Updated count: ", categoryToRemove.count)
 
         // remove card from caregiver
         categoryToRemove = state.caregiver.categoriesCollected.filter(function(obj){return obj.name == category})[0]
+        console.log("---- This is the category to remove found for caregiver: ", categoryToRemove)
         categoryToRemove.count = categoryToRemove.count - 1
+        console.log("---- Updated count: ", categoryToRemove.count)
       } else {
+        console.log("Inside caregiver")
         // remove cards from player
         let categoryToRemove = state.caregiver.categoriesCollected.filter(function(obj){return obj.name == category})[0]
         categoryToRemove.count = categoryToRemove.count - 2
@@ -133,8 +142,8 @@ export const store = new Vuex.Store({
     setPlayerCard(context, category){
       context.commit('setCardForPlayer', category)
     },
-    removePlayersCards(context, {currentPlayer, category}){
-      context.commit('removeCardsForPlayers', {currentPlayer: currentPlayer, category: category})
+    removePlayersCards(context, {activePlayer, category}){
+      context.commit('removeCardsForPlayers', {activePlayer: activePlayer, category: category})
     },
     setCaregiverCard(context, category){
       context.commit('setCardForCaregiver', category)

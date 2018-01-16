@@ -55,7 +55,6 @@
       },
       nextTurn: function () {
         // save the "card" color for the current player
-        console.log("Category to be sent to setCard: " + this.categoryName)
         if(this.player === 'player')
           this.$store.dispatch('setPlayerCard', this.categoryName)
         else

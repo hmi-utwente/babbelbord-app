@@ -14,6 +14,7 @@
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isPickCardInstruction" :instruction="instructions[3]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isTwoCardsSameColorInstruction" :instruction="instructions[4]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isChooseCardsToUse" :instruction="instructions[5]" :error="errorMessage" :currentPlayer="activePlayer"/>
+    <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isDiscardPhysicalCards" :instruction="instructions[6]" :error="errorMessage" :currentPlayer="activePlayer"/>
     <question v-else :question="currentQuestion" :player="activePlayer"/>
   </div>
 
@@ -42,7 +43,8 @@
           {message: 'Move on the color obtained'},
           {message: 'Pick a card of same category'},
           {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'},
-          {message: 'Choose the colored card you want to use'}
+          {message: 'Choose the colored card you want to use'},
+          {message: 'Remember to discard physical cards'}
         ],
         currentInstruction: {message: 'Throw the die'},
         categoriesColors: [
@@ -60,7 +62,8 @@
         isMoveToColorInstruction: false,
         isPickCardInstruction: false,
         isTwoCardsSameColorInstruction: false,
-        isChooseCardsToUse: false
+        isChooseCardsToUse: false,
+        isDiscardPhysicalCards: false
       }
     },
     computed: {
@@ -155,6 +158,7 @@
         this.isPickCardInstruction = true
         this.isTwoCardsSameColorInstruction = false
         this.isChooseCardsToUse = false
+        this.isDiscardPhysicalCards = false
       },
       checkCards(){
         // check cards owned by the player or caregiver
@@ -174,12 +178,12 @@
                 this.printBooleans()
               } else {
                 console.log("...but not enough to use the power!")
-                this.isDieInstruction = !this.isDieInstruction
+                // this.isDieInstruction = !this.isDieInstruction
               }
             }
           } else {
             console.log("Not enough cards, going to die throw screen")
-            this.isDieInstruction = !this.isDieInstruction
+            //this.isDieInstruction = !this.isDieInstruction
           }
         } else {
           // for caregiver
@@ -197,12 +201,12 @@
                 this.printBooleans()
               } else {
                 console.log("...but not enough to use the power!")
-                this.isDieInstruction = !this.isDieInstruction
+                //this.isDieInstruction = !this.isDieInstruction
               }
             }
           } else {
             console.log("Not enough cards, going to die throw screen")
-            this.isDieInstruction = !this.isDieInstruction
+            //this.isDieInstruction = !this.isDieInstruction
           }
         }
       },
@@ -216,6 +220,7 @@
         console.log("this.isPickCardInstruction: " + this.isPickCardInstruction)
         console.log("this.isTwoCardsSameColorInstruction: " + this.isTwoCardsSameColorInstruction)
         console.log("this.isChooseCardsToUse: " + this.isChooseCardsToUse)
+        console.log("this.isDiscardPhysicalCards: " + this.isDiscardPhysicalCards)
         console.log('----------------------------------------')
       }
     },
@@ -229,9 +234,13 @@
 
         console.log("Category received from socket is " + data.name)
 
+        // reset booleans to show the next correct screen
+        self.isMoveToColorInstruction = !self.isMoveToColorInstruction
+
         if(data.name) {
           console.log("Setting category")
           self.currentCategory = data.name
+          self.isDieInstruction = !self.isDieInstruction
         }
         else if(data.special){
           console.log("Setting error message")
@@ -241,6 +250,7 @@
             // switch to next instruction, throw the die
             self.isPawnsInstruction = !self.isPawnsInstruction
             self.isDieInstruction = !self.isDieInstruction
+            self.isMoveToColorInstruction= !self.isMoveToColorInstruction
             console.log("Inside both pawns are at gaan")
 
           } else {
@@ -259,7 +269,7 @@
         // switch to next instruction
         self.isDieInstruction = !self.isDieInstruction
         self.isMoveToColorInstruction = !self.isMoveToColorInstruction
-        self.isPickCardInstruction = !self.isPickCardInstruction
+        //self.isPickCardInstruction = !self.isPickCardInstruction
       })
 
       // go to next instruction after card has been picked up
@@ -284,14 +294,26 @@
 
       // change to choose cards to discard
       Event.$on('choose-cards', function(){
-        self.isTwoCardsSameColorInstruction = !self.isTwoCardsSameColorInstruction
+        console.log("Inside choose-cards on: before")
+        self.printBooleans()
         self.isChooseCardsToUse = !self.isChooseCardsToUse
+        self.isTwoCardsSameColorInstruction = !self.isTwoCardsSameColorInstruction
+        console.log("...and after")
+        self.printBooleans()
+      })
+
+      // change to choose cards to discard
+      Event.$on('discard-cards', function(){
+        self.isChooseCardsToUse = !self.isChooseCardsToUse
+        self.isDiscardPhysicalCards = !self.isDiscardPhysicalCards
       })
 
       // switch player turns
       Event.$on('switch-turn', function(){
-        self.resetAfterTurnChange()
         self.toggleQuestionsInstructions()
+        self.resetAfterTurnChange()
+        console.log("Situation after switch-turn")
+        self.printBooleans()
         self.togglePlayers()
         self.currentCategory = 'reset'
       })

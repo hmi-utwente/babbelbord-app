@@ -5,7 +5,9 @@
         <h1 v-if="!error && instruction.message !== 'Throw the die' &&
                   instruction.message !== 'Pick a card of same category' &&
                   instruction.message !== 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?' &&
-                  instruction.message !== 'Choose the colored card you want to use'">{{instruction.message}}</h1>
+                  instruction.message !== 'Choose the colored card you want to use' &&
+                  instruction.message !== 'Remember to discard physical cards'"
+        >{{instruction.message}}</h1>
 
         <div v-else-if="!error && instruction.message === 'Throw the die' || instruction.message === 'Pick a card of same category'">
           <h1>{{instruction.message}}</h1>
@@ -31,6 +33,12 @@
               <v-btn flat color="orange" @click="removeCardFromCollected(card.name)">Use this power</v-btn>
             </v-card-actions>
           </v-card>
+        </div>
+
+        <div v-else-if="!error && instruction.message === 'Remember to discard physical cards'">
+          <h1>{{instruction.message}}</h1>
+          <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} discards 2 cards, while {{ currentPlayer === "player" ? caregiver.name : player.name }} discards 1</h2>
+          <v-btn>ok</v-btn>
         </div>
 
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
@@ -80,7 +88,8 @@
       },
       removeCardFromCollected(category){
         // removes 2 cards from current player and 1 from the other one
-        this.$store.dispatch('removePlayersCards', {currentPlayer: this.currentPlayer, category: category})
+        this.$store.dispatch('removePlayersCards', {activePlayer: this.currentPlayer, category: category})
+
       },
       retrieveUserCards(currentPlaya){
         // look for the ones to display
