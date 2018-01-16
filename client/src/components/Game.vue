@@ -267,7 +267,7 @@
             message = "Please remove last placed pawn, and place it back after X seconds"
 
           // received "Both pawns are at gaan"
-          if(data.special === "Both pawns are at gaan"){
+          if(message === "Both pawns are at gaan"){
             // switch to next instruction, throw the die
             self.isPawnsInstruction = !self.isPawnsInstruction
             self.isDieInstruction = !self.isDieInstruction
