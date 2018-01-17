@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 offset-sm1>
         <v-content>
           <div class="welcome">
-            <h1 class="display-2">Welkom bij het Babbelbord</h1>
+            <h1 class="display-3">Welkom bij het Babbelbord</h1>
             <p>Het Babbelbord is een spel voor de familie om herinneringen op te halen en elkaar beter te leren kennen.
               <br>
               Voor het starten van het spel, klik Start het spel <br>

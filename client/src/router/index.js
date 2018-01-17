@@ -5,6 +5,7 @@ import Players from '@/components/Players'
 import SelectPlayers from '@/components/SelectPlayers'
 import EditPlayer from '@/components/EditPlayer'
 import Game from '@/components/Game'
+import AddPlayer from '@/components/AddPlayer'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/game',
       name: 'game',
       component: Game
+    },
+    {
+      path: '/players/add',
+      name: 'addPlayer',
+      component: AddPlayer
     }
   ]
 })

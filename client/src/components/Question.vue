@@ -9,9 +9,9 @@
     </v-container>
 
     <!-- if no subquestions or they are over, display instead the done button -->
-    <v-btn @click="addToSkipQuestions">Sla deze vraag over</v-btn>
-    <v-btn v-if="question.subquestions && count < question.subquestions.length" @click="followUpQuestion">Volgende vraag </v-btn>
-    <v-btn v-else @click="nextTurn">klaar</v-btn>
+    <v-btn color="deep-purple" dark @click="addToSkipQuestions">Sla deze vraag over</v-btn>
+    <v-btn color="deep-purple" dark v-if="question.subquestions && count < question.subquestions.length" @click="followUpQuestion">Volgende vraag </v-btn>
+    <v-btn color="deep-purple" dark v-else @click="nextTurn">klaar</v-btn>
   </div>
 
 </template>
@@ -76,5 +76,7 @@
 </script>
 
 <style>
-
+  h1 {
+    font-size: 3em;
+  }
 </style>

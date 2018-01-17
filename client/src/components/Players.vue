@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Selecteer spelers</h2>
+    <h1>Selecteer spelers</h1>
     <p>Selecteer twee spelers voor het babbelbord spel</p>
     <p>Kies een van de volgende spelers</p>
 
@@ -43,7 +43,7 @@
         right
         color="deep-purple"
         style="margin-bottom: 3em; margin-right: 1em;"
-        to="/players/create"
+        to="/players/add"
       >
         <v-icon>add</v-icon>
       </v-btn>

@@ -11,13 +11,13 @@
 
         <div v-else-if="!error && instruction.message === 'Gooi de dobbelsteen opnieuw' || instruction.message === 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)'">
           <h1>{{instruction.message}} </h1>
-          <v-btn @click="nextInstructionAfterThrow">Klaar</v-btn>
+          <v-btn color="deep-purple" dark @click="nextInstructionAfterThrow">Klaar</v-btn>
         </div>
 
         <div v-else-if="!error && instruction.message === 'Je hebt twee kaarten van dezelfde kleur/ categorie. Wil je deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit het dek van je tegenstander?'">
           <h1>{{instruction.message}} </h1>
-          <v-btn @click="yesUseCards">Ja</v-btn>
-          <v-btn @click="noDontUseCards">Nee</v-btn>
+          <v-btn color="deep-purple" dark @click="yesUseCards">Ja</v-btn>
+          <v-btn color="deep-purple" dark @click="noDontUseCards">Nee</v-btn>
         </div>
 
         <div v-else-if="!error && instruction.message === 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.'">
@@ -30,7 +30,7 @@
               </div>
             </v-card-title>
             <v-card-actions>
-              <v-btn flat color="orange" @click="removeCardFromCollected(card.name)">Lever deze twee kaarten in</v-btn>
+              <v-btn color="deep-purple" dark @click="removeCardFromCollected(card.name)">Lever deze twee kaarten in</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -38,13 +38,13 @@
         <div v-else-if="!error && instruction.message === 'Remember to discard physical cards'">
           <h1>{{instruction.message}} </h1>
           <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} legt twee kaarten af. {{ currentPlayer === "player" ? caregiver.name : player.name }} legt een kaart af.</h2>
-          <v-btn @click="cardsDiscarded">ok</v-btn>
+          <v-btn color="deep-purple" dark @click="cardsDiscarded">ok</v-btn>
         </div>
 
         <!-- used generally for special squares -->
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error !== 'Ga terug naar je vorige kleurvak' && error !== 'Verwijder een verdiende kleurkaart' && error !== 'Geef de laast verdiende kaart aan de vorige speler'">
           <h1> {{error}} </h1>
-          <v-btn @click="goToThrowDie">Klaar</v-btn>
+          <v-btn color="deep-purple" dark @click="goToThrowDie">Klaar</v-btn>
         </div>
 
         <!-- used generally for special squares, but this one especially for Verwijder.. -->
@@ -57,7 +57,7 @@
           <div v-if="currentPlayer === 'player'">
             <div v-if="!player.categoriesCollected">
               <h2>No cards to discard, go on and play!</h2>
-              <v-btn @click="goToThrowDie">Klaar</v-btn>
+              <v-btn color="deep-purple" dark @click="goToThrowDie">Klaar</v-btn>
             </div>
             <v-layout v-else row wrap>
               <v-flex xs12 sm12>
@@ -68,7 +68,7 @@
                     </div>
                   </v-card-title>
                   <v-card-actions>
-                    <v-btn flat color="orange" @click="discardCardSpecial(player.name, category.name)">Discard</v-btn>
+                    <v-btn color="deep-purple" dark @click="discardCardSpecial(player.name, category.name)">Discard</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>
@@ -78,7 +78,7 @@
           <div v-else>
             <div v-if="!caregiver.categoriesCollected">
               <h2>No cards to discard, go on and play!</h2>
-              <v-btn @click="goToThrowDie">Klaar</v-btn>
+              <v-btn color="deep-purple" dark @click="goToThrowDie">Klaar</v-btn>
             </div>
             <v-layout v-else row wrap>
               <v-flex xs12 sm12>
@@ -89,7 +89,7 @@
                     </div>
                   </v-card-title>
                   <v-card-actions>
-                    <v-btn flat color="orange" @click="discardCardSpecial(caregiver.name, category.name)">Discard</v-btn>
+                    <v-btn color="deep-purple" dark @click="discardCardSpecial(caregiver.name, category.name)">Discard</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>
@@ -101,7 +101,7 @@
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error === 'Geef de laast verdiende kaart aan de vorige speler'">
           <h1> {{error}} </h1>
           <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} gives to {{ currentPlayer === "player" ? caregiver.name : player.name }} one {{ currentPlayer === "player" ? player.lastItem : caregiver.lastItem }} card.</h2>
-          <v-btn flat color="orange" @click="giveOneCardToOtherPlayer">Klaar</v-btn>
+          <v-btn color="deep-purple" dark @click="giveOneCardToOtherPlayer">Klaar</v-btn>
         </div>
 
         <!-- used generally for special squares, but this one especially for Ga terug.. -->
@@ -214,10 +214,10 @@
           return e.message === self.error
           }).length > 0){
           console.log("Changing toolbar to attention!")
-          Event.$emit('toolbar-data', "Attention!", false, "amber")
+          Event.$emit('toolbar-data', "Attentie!", false, "amber")
         } else {
           console.log("Changing toolbar to special square!")
-          Event.$emit('toolbar-data', "Special square", false, "orange")
+          Event.$emit('toolbar-data', "Speciale categorie", false, "orange")
         }
       }
 
@@ -238,5 +238,7 @@
 </script>
 
 <style>
-
+  h1 {
+    font-size: 3em;
+  }
 </style>
