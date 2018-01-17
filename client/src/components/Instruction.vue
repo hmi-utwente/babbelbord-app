@@ -6,7 +6,7 @@
                   instruction.message !== 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)' &&
                   instruction.message !== 'Je hebt twee kaarten van dezelfde kleur/ categorie. Wil je deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit het dek van je tegenstander?' &&
                   instruction.message !== 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.' &&
-                  instruction.message !== 'Remember to discard physical cards'"
+                  instruction.message !== 'Remember to discard physical card'"
         >{{instruction.message}} </h1>
 
         <div v-else-if="!error && instruction.message === 'Gooi de dobbelsteen opnieuw' || instruction.message === 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)'">
@@ -35,7 +35,7 @@
           </v-card>
         </div>
 
-        <div v-else-if="!error && instruction.message === 'Remember to discard physical cards'">
+        <div v-else-if="!error && instruction.message === 'Vergeet niet om de kaarten in te leveren'">
           <h1>{{instruction.message}} </h1>
           <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} legt twee kaarten af. {{ currentPlayer === "player" ? caregiver.name : player.name }} legt een kaart af.</h2>
           <v-btn color="deep-purple" dark @click="cardsDiscarded">ok</v-btn>
@@ -56,7 +56,7 @@
           <!-- for patient: -->
           <div v-if="currentPlayer === 'player'">
             <div v-if="!player.categoriesCollected">
-              <h2>No cards to discard, go on and play!</h2>
+              <h2>Je hebt geen kaarten om in te leveren, dus ga vooral door met spelen!</h2>
               <v-btn color="deep-purple" dark @click="goToThrowDie">Klaar</v-btn>
             </div>
             <v-layout v-else row wrap>
@@ -68,7 +68,7 @@
                     </div>
                   </v-card-title>
                   <v-card-actions>
-                    <v-btn color="deep-purple" dark @click="discardCardSpecial(player.name, category.name)">Discard</v-btn>
+                    <v-btn color="deep-purple" dark @click="discardCardSpecial(player.name, category.name)">Verwijder</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>
@@ -77,7 +77,7 @@
           <!-- else show instruction for caregiver -->
           <div v-else>
             <div v-if="!caregiver.categoriesCollected">
-              <h2>No cards to discard, go on and play!</h2>
+              <h2>Je hebt geen kaarten om in te leveren, dus ga vooral door met spelen!</h2>
               <v-btn color="deep-purple" dark @click="goToThrowDie">Klaar</v-btn>
             </div>
             <v-layout v-else row wrap>
@@ -89,7 +89,7 @@
                     </div>
                   </v-card-title>
                   <v-card-actions>
-                    <v-btn color="deep-purple" dark @click="discardCardSpecial(caregiver.name, category.name)">Discard</v-btn>
+                    <v-btn color="deep-purple" dark @click="discardCardSpecial(caregiver.name, category.name)">Verwijder</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>
@@ -100,7 +100,7 @@
         <!-- used generally for special squares, but this one especially for Geef de laast verdiende kaart aan de vorige speler -->
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error === 'Geef de laast verdiende kaart aan de vorige speler'">
           <h1> {{error}} </h1>
-          <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} gives to {{ currentPlayer === "player" ? caregiver.name : player.name }} one {{ currentPlayer === "player" ? player.lastItem : caregiver.lastItem }} card.</h2>
+          <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} geeft {{ currentPlayer === "player" ? caregiver.name : player.name }} 1 {{ currentPlayer === "player" ? player.lastItem : caregiver.lastItem }} kaart.</h2>
           <v-btn color="deep-purple" dark @click="giveOneCardToOtherPlayer">Klaar</v-btn>
         </div>
 

@@ -46,7 +46,7 @@
           {message: 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)'},
           {message: 'Je hebt twee kaarten van dezelfde kleur/ categorie. Wil je deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit het dek van je tegenstander?'},
           {message: 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.'},
-          {message: 'Remember to discard physical cards'},
+          {message: 'Vergeet niet om de kaarten in te leveren'},
           {message: 'Prova'}
         ],
         currentInstruction: {message: 'Gooi de dobbelsteen opnieuw'},
