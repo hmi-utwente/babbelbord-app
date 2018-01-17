@@ -2,25 +2,25 @@
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
       <v-flex xs6 offset-xs3>
-        <h1 v-if="!error && instruction.message !== 'Throw the die' &&
-                  instruction.message !== 'Pick a card of same category' &&
-                  instruction.message !== 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?' &&
-                  instruction.message !== 'Choose the colored card you want to use' &&
+        <h1 v-if="!error && instruction.message !== 'Gooi de dobbelsteen opnieuw' &&
+                  instruction.message !== 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)' &&
+                  instruction.message !== 'Je hebt twee kaarten van dezelfde kleur/ categorie. Wil je deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit het dek van je tegenstander?' &&
+                  instruction.message !== 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.' &&
                   instruction.message !== 'Remember to discard physical cards'"
         >{{instruction.message}} </h1>
 
-        <div v-else-if="!error && instruction.message === 'Throw the die' || instruction.message === 'Pick a card of same category'">
+        <div v-else-if="!error && instruction.message === 'Gooi de dobbelsteen opnieuw' || instruction.message === 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)'">
           <h1>{{instruction.message}} </h1>
-          <v-btn @click="nextInstructionAfterThrow">Done</v-btn>
+          <v-btn @click="nextInstructionAfterThrow">Klaar</v-btn>
         </div>
 
-        <div v-else-if="!error && instruction.message === 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'">
+        <div v-else-if="!error && instruction.message === 'Je hebt twee kaarten van dezelfde kleur/ categorie. Wil je deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit het dek van je tegenstander?'">
           <h1>{{instruction.message}} </h1>
-          <v-btn @click="yesUseCards">Yes</v-btn>
-          <v-btn @click="noDontUseCards">No</v-btn>
+          <v-btn @click="yesUseCards">Ja</v-btn>
+          <v-btn @click="noDontUseCards">Nee</v-btn>
         </div>
 
-        <div v-else-if="!error && instruction.message === 'Choose the colored card you want to use'">
+        <div v-else-if="!error && instruction.message === 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.'">
           <h1>{{instruction.message}} </h1>
           <!-- Here I show a v-card with the same color as the category -->
           <v-card v-for="card in collectedCards" :key="card.name">
@@ -30,20 +30,20 @@
               </div>
             </v-card-title>
             <v-card-actions>
-              <v-btn flat color="orange" @click="removeCardFromCollected(card.name)">Use this power</v-btn>
+              <v-btn flat color="orange" @click="removeCardFromCollected(card.name)">Lever deze twee kaarten in</v-btn>
             </v-card-actions>
           </v-card>
         </div>
 
         <div v-else-if="!error && instruction.message === 'Remember to discard physical cards'">
           <h1>{{instruction.message}} </h1>
-          <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} discards 2 cards, while {{ currentPlayer === "player" ? caregiver.name : player.name }} discards 1</h2>
+          <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} legt twee kaarten af. {{ currentPlayer === "player" ? caregiver.name : player.name }} legt een kaart af.</h2>
           <v-btn @click="cardsDiscarded">ok</v-btn>
         </div>
 
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
           <h1>{{error}} 7 if</h1>
-          <v-btn>done</v-btn>
+          <v-btn>Klaar</v-btn>
         </div>
 
         <h1 v-else> {{error}} </h1>
@@ -59,8 +59,8 @@
     data () {
       return {
         errors: [
-          {message: "Please move the pawn a little around in the square"},
-          {message: "Please remove last placed pawn, and place it back after X seconds"},
+          {message: "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje"},
+          {message: "Haal de laatst geplaatste pion alsjeblieft 10 seconden even van het vakje  en plaats het daarna terug"},
         ],
         collectedCards: []
       }
@@ -75,7 +75,7 @@
     },
     methods:{
        nextInstructionAfterThrow(){
-        if(this.instruction.message === 'Throw the die')
+        if(this.instruction.message === 'Gooi de dobbelsteen opnieuw')
           Event.$emit('die-thrown')
         else
           Event.$emit('card-picked')
@@ -135,7 +135,7 @@
       }
 
       // retrieve information to display cards possessed by player or caregiver
-      if(this.instruction.message === 'Choose the colored card you want to use' && this.collectedCards < 5){
+      if(this.instruction.message === 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.' && this.collectedCards < 5){
         console.log("currentPlayer is " + this.currentPlayer)
         if(this.currentPlayer === "player"){
           this.retrieveUserCards(this.player)

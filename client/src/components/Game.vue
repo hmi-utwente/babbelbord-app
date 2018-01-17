@@ -6,7 +6,7 @@
 
    -->
   <div class="text-xs-center">
-    <h2 v-if="!isPawnsInstruction && !isPickCardInstruction && errorMessage.length === 0">{{ activePlayer === "player" ? player.name : caregiver.name }}, it's your turn!</h2>
+    <h2 v-if="!isPawnsInstruction && !isPickCardInstruction && errorMessage.length === 0">{{ activePlayer === "player" ? player.name : caregiver.name }}, het is jouw beurt!</h2>
 
     <!-- Switch between different instructions and questions -->
     <instruction v-if="showInstructions && errorMessage.length > 0" :instruction="instructions[7]" :error="errorMessage"/>
@@ -26,8 +26,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // ar socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for production
 
   export default {
     components: { Question, Instruction },
@@ -40,16 +40,16 @@
         currentCategory: '',
         showInstructions: true,
         instructions: [
-          {message: 'Arrange 2 pawns on GAAN'},
-          {message: 'Throw the die'},
-          {message: 'Move on the color obtained'},
-          {message: 'Pick a card of same category'},
-          {message: 'You have two cards of the same color. Do you want to use them to steal a card from your opponent?'},
-          {message: 'Choose the colored card you want to use'},
+          {message: 'Zet de twee pionnen op het vakje “gaan”'},
+          {message: 'Gooi de dobbelsteen opnieuw'},
+          {message: 'Zet de pion naar de bijpassende kleur op de dobbelsteen'},
+          {message: 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)'},
+          {message: 'Je hebt twee kaarten van dezelfde kleur/ categorie. Wil je deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit het dek van je tegenstander?'},
+          {message: 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.'},
           {message: 'Remember to discard physical cards'},
           {message: 'Prova'}
         ],
-        currentInstruction: {message: 'Throw the die'},
+        currentInstruction: {message: 'Gooi de dobbelsteen opnieuw'},
         categoriesColors: [
           {name: "Familie", color: "yellow"},
           {name: "Liefde", color: "red"},
@@ -166,7 +166,12 @@
         this.isDiscardPhysicalCards = false
       },
       checkCards(){
+
+        // keep scope of component
+        var self = this
+
         console.log("\nI am inside checkCards()")
+
         // check cards owned by the player or caregiver
         if(this.activePlayer === "player"){
           console.log("---- Patient is active player")
@@ -175,13 +180,24 @@
             for(let i = 0; i < this.player.categoriesCollected.length; i++){
               if(this.player.categoriesCollected[i].count >= 2){
                 console.log("---- Patient has " + this.player.categoriesCollected[i].count + " cards of category " + this.player.categoriesCollected[i].name)
-                console.log("---- Booleans before change:")
-                this.printBooleans()
-                // this.isDieInstruction = !this.isDieInstruction
-                this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
-                this.isPickCardInstruction = !this.isTwoCardsSameColorInstruction
-                console.log("---- Booleans after change:")
-                this.printBooleans()
+
+                // check if caregiver has collected at least one card of the same category
+                if(this.caregiver.categoriesCollected.length > 0){
+                  let sameCategory = this.caregiver.categoriesCollected.filter(function(obj){
+                    console.log("-------- obj.name is " + obj.name + ", while current player category is " + self.player.categoriesCollected[i].name)
+                    return obj.name == self.player.categoriesCollected[i].name
+                  })
+
+                  console.log("sameCategory: ", sameCategory)
+
+                  if(sameCategory.length > 0){
+                    if(sameCategory[0].count >= 1){
+                      this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
+                      // this.isPickCardInstruction = !this.isTwoCardsSameColorInstruction
+                      this.isPickCardInstruction = !this.isPickCardInstruction
+                    }
+                  }
+                }
               } else {
                 console.log("---- ...but not enough to use the power!")
                 // this.isDieInstruction = !this.isDieInstruction
@@ -199,12 +215,29 @@
             for(let i = 0; i < this.caregiver.categoriesCollected.length; i++){
               if(this.caregiver.categoriesCollected[i].count >= 2){
                 console.log("---- Caregiver has " + this.caregiver.categoriesCollected[i].count + " cards of category " + this.caregiver.categoriesCollected[i].name)
-                console.log("---- Booleans before change:")
-                this.printBooleans()
-                this.isDieInstruction = !this.isDieInstruction
-                this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
-                console.log("---- Booleans after change:")
-                this.printBooleans()
+
+                // check if player has collected at least one card of the same category
+                if(this.player.categoriesCollected.length > 0){
+                  let sameCategory = this.player.categoriesCollected.filter(function(obj){
+                    console.log("-------- obj.name is " + obj.name + ", while current player category is " + self.caregiver.categoriesCollected[i].name)
+                    return obj.name == self.caregiver.categoriesCollected[i].name
+                  })
+
+                  console.log("sameCategory: ", sameCategory)
+
+                  if(sameCategory.length > 0){
+                    if(sameCategory[0].count >= 1){
+                      this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
+                      this.isPickCardInstruction = !this.isPickCardInstruction
+                    }
+                  }
+                }
+
+                // Instruction switch probably wrong from before, just using the same as player before
+
+                // this.isDieInstruction = !this.isDieInstruction
+                // this.isTwoCardsSameColorInstruction = !this.isTwoCardsSameColorInstruction
+
               } else {
                 console.log("---- ...but not enough to use the power!")
                 //this.isDieInstruction = !this.isDieInstruction
@@ -231,7 +264,7 @@
       }
     },
     created(){
-      Event.$emit('toolbar-data', "Match is on!", false)
+      Event.$emit('toolbar-data', "Babbelbord", false)
 
       // saving this for referring to component
       var self = this
@@ -271,9 +304,9 @@
           } else if(message === "START") {
             message = "Both pawns are at gaan"
           } else if(message === "MOVEPAWN"){
-            message = "Please move the pawn a little around in the square"
+            message = "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje"
           } else if(message === "MOVEDPAWNTOOFAST") {
-            message = "Please remove last placed pawn, and place it back after X seconds"
+            message = "Haal de laatst geplaatste pion alsjeblieft 10 seconden even van het vakje  en plaats het daarna terug"
           }
 
           console.log("After checking the data received, message is now " + message)
@@ -285,7 +318,7 @@
             self.isDieInstruction = true
             self.isMoveToColorInstruction= false
             console.log("---- Inside both pawns are at gaan")
-          } else if(message === "Please move the pawn a little around in the square") {
+          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje") {
             self.errorMessage = message
             console.log("---- Inside move pawn square")
             // self.toggleQuestionsInstructions()

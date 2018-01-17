@@ -2,6 +2,7 @@
     <v-container fluid grid-list-md>
       <v-layout row wrap>
 
+        <p>Creëer of selecteer hier een (nieuwe) profiel voor jou en je tegenspeler in het menu.Als een Zorgdrager en een Bewoner geselecteerd zijn, klik op Start Spel</p>
         <!-- Bestaande spelers -->
         <v-flex d-flex sm5 offset-sm1>
           <panel title="Bestaande spelers" v-if="players">
@@ -22,7 +23,7 @@
         <v-flex d-flex sm5>
           <v-layout column>
             <v-flex>
-              <panel title="Nieuwe speler">
+              <panel title="Maak een nieuwe speler ">
                 <v-list v-show="showList">
                   <v-list-tile avatar :disabled="caregiver.name.length > 0" @click="switchCaregiverForm">
                     <v-list-tile-avatar>
@@ -126,7 +127,7 @@
 
             <!-- summary -->
             <v-flex d-flex>
-              <panel title="Summary">
+              <panel title="Spelers die het spel gaan spelen ">
                 <v-list>
                   <v-list-tile avatar v-if="caregiver.name">
                     <v-list-tile-avatar>
@@ -157,7 +158,7 @@
                   </v-list-tile>
                 </v-list>
                 <div class="text-xs-center">
-                  <v-btn color="amber" :disabled="player.name.length === 0 || caregiver.name.length === 0" @click="startGame">Start Game</v-btn>
+                  <v-btn color="amber" :disabled="player.name.length === 0 || caregiver.name.length === 0" @click="startGame">Start nieuw spel</v-btn>
                 </div>
               </panel>
             </v-flex>

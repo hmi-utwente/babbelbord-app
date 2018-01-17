@@ -9,9 +9,9 @@
     </v-container>
 
     <!-- if no subquestions or they are over, display instead the done button -->
-    <v-btn @click="addToSkipQuestions">skip</v-btn>
-    <v-btn v-if="question.subquestions && count < question.subquestions.length" @click="followUpQuestion">following question</v-btn>
-    <v-btn v-else @click="nextTurn">done</v-btn>
+    <v-btn @click="addToSkipQuestions">Sla deze vraag over</v-btn>
+    <v-btn v-if="question.subquestions && count < question.subquestions.length" @click="followUpQuestion">Volgende vraag </v-btn>
+    <v-btn v-else @click="nextTurn">klaar</v-btn>
   </div>
 
 </template>

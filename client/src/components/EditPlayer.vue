@@ -1,8 +1,8 @@
 <template>
   <div>
+    <h1> {{ player.name }} </h1>
+    <p>Klik de onderwerpen aan, die liever vermeden worden binnen het spel. Vervolgens klik op opslaan om aanpassingen te bewaren.</p>
     <h2>Onderwerpen</h2>
-    <p>Deselecteer de onderwerpen die je wilt vermijden</p>
-    <p> {{ player.name }} </p>
     <v-container
       fluid
       style="min-height: 0;"
@@ -23,11 +23,12 @@
     <div class="text-xs-center">
       <v-btn
         @click="savePlayerDetails"
+        dark
         :loading="loading"
         @click.native="loader = 'loading'"
         :disabled="loading"
         color="deep-purple"
-      >Save
+      >Opslaan
       </v-btn>
 
       <v-snackbar

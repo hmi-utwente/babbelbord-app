@@ -4,8 +4,12 @@
       <v-flex xs12 sm10 offset-sm1>
         <v-content>
           <div class="welcome">
-            <h1 class="display-2">Welcome to Babbelbord!</h1>
-            <p>Here we should put a brief description of the game perhaps?</p>
+            <h1 class="display-2">Welkom bij het Babbelbord</h1>
+            <p>Het Babbelbord is een spel voor de familie om herinneringen op te halen en elkaar beter te leren kennen.
+              <br>
+              Voor het starten van het spel, klik Start het spel <br>
+              Voor het aanpassen of aanmaken van een profiel van een bewoner, klik Profielen
+            </p>
           </div>
 
           <div v-if="loading" class="text-xs-center">
@@ -17,10 +21,10 @@
       </v-flex>
       <v-flex xs12>
         <v-btn :disabled="loading" dark color="deep-purple" to="/players/select">
-          Start game
+          Start het spel
         </v-btn>
         <v-btn :disabled="loading" dark color="deep-purple" to="/players/profiles">
-          Profiles
+          Profielen
         </v-btn>
       </v-flex>
     </v-layout>

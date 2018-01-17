@@ -18,12 +18,12 @@ module.exports = {
       {
         case 'name':
           res.status(400).send({
-            error: 'The name must contain only letters'
+            error: 'De naam mag alleen letters bevatten '
           })
           break
         case 'lastname':
           res.status(400).send({
-            error: 'The surname must contain only letters'
+            error: 'De achternaam mag alleen letters bevatten '
           })
           break
         default:
