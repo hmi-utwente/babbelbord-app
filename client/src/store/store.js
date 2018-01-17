@@ -129,6 +129,20 @@ export const store = new Vuex.Store({
         categoryToRemove = state.player.categoriesCollected.filter(function(obj){return obj.name == category})[0]
         categoryToRemove.count = categoryToRemove.count - 1
       }
+    },
+    removeOneCardPlayer(state, category){
+      for(let i = 0; i < state.player.categoriesCollected.length; i++){
+        if(state.player.categoriesCollected[i].name == category && state.player.categoriesCollected[i].count > 0){
+          state.player.categoriesCollected[i].count--
+        }
+      }
+    },
+    removeOneCardCaregiver(state, category){
+      for(let i = 0; i < state.caregiver.categoriesCollected.length; i++){
+        if(state.caregiver.categoriesCollected[i].name == category && state.caregiver.categoriesCollected[i].count > 0){
+          state.caregiver.categoriesCollected[i].count--
+        }
+      }
     }
   },
   actions: {
@@ -161,6 +175,12 @@ export const store = new Vuex.Store({
     },
     resetPlayerCaregiver(context){
       context.commit('resetPlayers')
+    },
+    removeOneCardPlayer(context, category){
+      context.commit('removeOneCardPlayer', category)
+    },
+    removeOneCardCaregiver(context, category){
+      context.commit('removeOneCardCaregiver', category)
     }
   }
 })

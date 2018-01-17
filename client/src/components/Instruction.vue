@@ -42,14 +42,65 @@
         </div>
 
         <!-- used generally for special squares -->
-        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error !== 'Ga terug naar je vorige kleurvak'">
+        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error !== 'Ga terug naar je vorige kleurvak' && error !== 'Verwijder een verdiende kleurkaart'">
           <h1> {{error}} </h1>
           <v-btn>Klaar</v-btn>
         </div>
 
-        <!-- used generally for special squares, but this one especially for Ga terug.. -->
-        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
+        <!-- used generally for special squares, but this one especially for Verwijder.. -->
+        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error === 'Verwijder een verdiende kleurkaart'">
           <h1> {{error}} </h1>
+
+          <!-- showing the right cards owned by current player -->
+
+          <!-- for patient: -->
+          <div v-if="currentPlayer === 'player'">
+            <div v-if="!player.categoriesCollected">
+              <h2>No cards to discard, go on and play!</h2>
+              <v-btn @click="goToThrowDie">Klaar</v-btn>
+            </div>
+            <v-layout v-else row wrap>
+              <v-flex xs12 sm12>
+                <v-card v-for="category in player.categoriesCollected" :key="category.name" class="mb-3">
+                  <v-card-title primary-title>
+                    <div>
+                      <h3 class="headline mb-0">{{ category.name }}</h3>
+                    </div>
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-btn flat color="orange" @click="discardCardSpecial(player.name, category.name)">Discard</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </div>
+          <!-- else show instruction for caregiver -->
+          <div v-else>
+            <div v-if="!caregiver.categoriesCollected">
+              <h2>No cards to discard, go on and play!</h2>
+              <v-btn @click="goToThrowDie">Klaar</v-btn>
+            </div>
+            <v-layout v-else row wrap>
+              <v-flex xs12 sm12>
+                <v-card v-for="category in caregiver.categoriesCollected" :key="category.name" class="mb-3">
+                  <v-card-title primary-title>
+                    <div>
+                      <h3 class="headline mb-0">{{ category.name }}</h3>
+                    </div>
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-btn flat color="orange" @click="discardCardSpecial(caregiver.name, category.name)">Discard</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </div>
+          </div>
+        </div>
+
+        <!-- used generally for special squares, but this one especially for Ga terug.. -->
+        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error === 'Ga terug naar je vorige kleurvak'">
+          <h1> {{error}} ga terug</h1>
         </div>
 
         <h1 v-else> {{error}} </h1>
@@ -121,6 +172,21 @@
         }
 
         console.log("Now collectedCards is ", this.collectedCards)
+      },
+      discardCardSpecial(playerName, categoryName){
+        // discard the card either from player or caregiver
+        if(playerName === this.player.name){
+          // send action to store to remove one card for player
+          this.$store.dispatch('removeOneCardPlayer', categoryName)
+        } else {
+          // ... or for the caregiver
+          this.$store.dispatch('removeOneCardCaregiver', categoryName)
+        }
+
+        Event.$emit('switch-turn-verwijder')
+      },
+      goToThrowDie(){
+        Event.$emit('switch-turn-verwijder')
       }
     },
     updated(){

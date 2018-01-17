@@ -9,7 +9,7 @@
     <h2 v-if="!isPawnsInstruction && !isPickCardInstruction && errorMessage.length === 0">{{ activePlayer === "player" ? player.name : caregiver.name }}, het is jouw beurt!</h2>
 
     <!-- Switch between different instructions and questions -->
-    <instruction v-if="showInstructions && errorMessage.length > 0" :instruction="instructions[7]" :error="errorMessage"/>
+    <instruction v-if="showInstructions && errorMessage.length > 0" :instruction="instructions[7]" :error="errorMessage" :currentPlayer="activePlayer"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isPawnsInstruction" :instruction="instructions[0]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isDieInstruction" :instruction="instructions[1]" :error="errorMessage"/>
     <instruction v-else-if="(showInstructions || errorMessage.length > 0) && isMoveToColorInstruction" :instruction="instructions[2]" :error="errorMessage"/>
@@ -319,7 +319,7 @@
             self.isDieInstruction = true
             self.isMoveToColorInstruction= false
             console.log("---- Inside both pawns are at gaan")
-          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje" || message === "Ga terug naar je vorige kleurvak") {
+          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje" || message === "Ga terug naar je vorige kleurvak" || message === "Verwijder een verdiende kleurkaart") {
             self.errorMessage = message
             console.log("---- Inside move pawn square")
             // self.toggleQuestionsInstructions()
@@ -388,10 +388,37 @@
         self.currentCategory = 'reset'
       })
 
+      // switch player turns, special case for verwijder since it has to go to throw die and not to pick card instruction
+      Event.$on('switch-turn-verwijder', function(){
+        console.log("\nI am now inside switch-turn-verwijder event")
+        //self.toggleQuestionsInstructions()
+        self.resetAfterTurnChange()
+
+        self.isPickCardInstruction = false
+        self.isDieInstruction = true
+
+        console.log("---- Situation after switch-turn-verwijder")
+        self.printBooleans()
+        self.togglePlayers()
+        self.currentCategory = 'reset'
+
+        self.errorMessage = ''
+        console.log("After resettin, error message is: " + self.errorMessage)
+
+        Event.$emit('toolbar-data', "Babbelbord", false, "amber")
+      })
+
       // Go back to throw die after the users confirmend they discarded the physical cards
       Event.$on('throw-die-after-discard', function(){
         console.log("\nI am now inside throw-die-after-discard event")
         self.isDiscardPhysicalCards = false
+        self.isDieInstruction = true
+      })
+
+      // Go back to throw die after the no cards to discard from verwijder special square
+      Event.$on('throw-die-after-verwijder', function(){
+        console.log("\nI am now inside throw-die-after-verwijder event")
+        // self.isDiscardPhysicalCards = false
         self.isDieInstruction = true
       })
     }
