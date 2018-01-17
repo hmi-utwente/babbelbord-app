@@ -63,7 +63,7 @@
         Event.$emit('switch-turn')
 
         // Update toolbar
-        Event.$emit('toolbar-data', "Match is on!", false, "amber")
+        Event.$emit('toolbar-data', "Babbelbord", false, "amber")
       }
     },
     created(){

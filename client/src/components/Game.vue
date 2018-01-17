@@ -26,8 +26,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for production
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for local
 
   export default {
     components: { Question, Instruction },
@@ -95,6 +95,7 @@
         // do computations only if the category has been set properly (fixing issue of same category in a row)
         if(this.currentCategory !== 'reset'){
           console.log('---- currentCategory != reset')
+
           // map category to its ID
           let currentCategoryParse = this.categories.filter(function(obj){
             return obj.name == self.currentCategory
@@ -318,7 +319,7 @@
             self.isDieInstruction = true
             self.isMoveToColorInstruction= false
             console.log("---- Inside both pawns are at gaan")
-          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje") {
+          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje" || message === "Ga terug naar je vorige kleurvak") {
             self.errorMessage = message
             console.log("---- Inside move pawn square")
             // self.toggleQuestionsInstructions()

@@ -41,9 +41,15 @@
           <v-btn @click="cardsDiscarded">ok</v-btn>
         </div>
 
-        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
-          <h1>{{error}} 7 if</h1>
+        <!-- used generally for special squares -->
+        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error !== 'Ga terug naar je vorige kleurvak'">
+          <h1> {{error}} </h1>
           <v-btn>Klaar</v-btn>
+        </div>
+
+        <!-- used generally for special squares, but this one especially for Ga terug.. -->
+        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0">
+          <h1> {{error}} </h1>
         </div>
 
         <h1 v-else> {{error}} </h1>
