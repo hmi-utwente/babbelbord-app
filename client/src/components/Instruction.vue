@@ -42,9 +42,9 @@
         </div>
 
         <!-- used generally for special squares -->
-        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error !== 'Ga terug naar je vorige kleurvak' && error !== 'Verwijder een verdiende kleurkaart'">
+        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error !== 'Ga terug naar je vorige kleurvak' && error !== 'Verwijder een verdiende kleurkaart' && error !== 'Geef de laast verdiende kaart aan de vorige speler'">
           <h1> {{error}} </h1>
-          <v-btn>Klaar</v-btn>
+          <v-btn @click="goToThrowDie">Klaar</v-btn>
         </div>
 
         <!-- used generally for special squares, but this one especially for Verwijder.. -->
@@ -95,12 +95,18 @@
               </v-flex>
             </v-layout>
           </div>
-          </div>
+        </div>
+
+        <!-- used generally for special squares, but this one especially for Geef de laast verdiende kaart aan de vorige speler -->
+        <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error === 'Geef de laast verdiende kaart aan de vorige speler'">
+          <h1> {{error}} </h1>
+          <h2> {{ currentPlayer === "player" ? player.name : caregiver.name }} gives to {{ currentPlayer === "player" ? caregiver.name : player.name }} one {{ currentPlayer === "player" ? player.lastItem : caregiver.lastItem }} card.</h2>
+          <v-btn flat color="orange" @click="giveOneCardToOtherPlayer">Klaar</v-btn>
         </div>
 
         <!-- used generally for special squares, but this one especially for Ga terug.. -->
         <div v-else-if="errors.filter(function(e){ return e.message === error}).length === 0 && error === 'Ga terug naar je vorige kleurvak'">
-          <h1> {{error}} ga terug</h1>
+          <h1> {{error}} </h1>
         </div>
 
         <h1 v-else> {{error}} </h1>
@@ -186,6 +192,15 @@
         Event.$emit('switch-turn-verwijder')
       },
       goToThrowDie(){
+        Event.$emit('switch-turn-verwijder')
+      },
+      giveOneCardToOtherPlayer(){
+         if(this.currentPlayer === "player"){
+           this.$store.dispatch("giveCardToCaregiver")
+         } else {
+           this.$store.dispatch("giveCardToPlayer")
+         }
+
         Event.$emit('switch-turn-verwijder')
       }
     },

@@ -26,8 +26,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  var socket = io()   // use this for production
-  // var socket = io('http://localhost:8081')   // use this for local
+  // var socket = io()   // use this for production
+  var socket = io('http://localhost:8081')   // use this for local
 
   export default {
     components: { Question, Instruction },
@@ -100,6 +100,8 @@
           let currentCategoryParse = this.categories.filter(function(obj){
             return obj.name == self.currentCategory
           })[0]
+
+          console.log("currentCategoryParse is ", currentCategoryParse)
 
           var category = currentCategoryParse.id
 
@@ -319,7 +321,7 @@
             self.isDieInstruction = true
             self.isMoveToColorInstruction= false
             console.log("---- Inside both pawns are at gaan")
-          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje" || message === "Ga terug naar je vorige kleurvak" || message === "Verwijder een verdiende kleurkaart") {
+          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje" || message === "Ga terug naar je vorige kleurvak" || message === "Verwijder een verdiende kleurkaart" || message === "Geef de laast verdiende kaart aan de vorige speler" || message === "Het is je geluksdag er gebeurt niks") {
             self.errorMessage = message
             console.log("---- Inside move pawn square")
             // self.toggleQuestionsInstructions()
