@@ -60,14 +60,16 @@ export const store = new Vuex.Store({
         state.player.categoriesCollected.push({name: category, count: 1})
         console.log("---- categoriesCollected not existing before, but now: ", state.player.categoriesCollected)
       } else {
-        let findCategory = state.player.categoriesCollected.filter(function(obj){ return obj.name == category})
-        if(findCategory.length === 0){
-          state.player.categoriesCollected.push({name: category, count: 1})
-        }
         for(var i = 0; i < state.player.categoriesCollected.length; i++){
           if(state.player.categoriesCollected[i].name === category){
             state.player.categoriesCollected[i].count++
           }
+        }
+        let findCategory = state.player.categoriesCollected.filter(function(obj){ return obj.name == category})
+        if(findCategory.length === 0){
+          console.log("-------- Category " + category + " still not in array, adding it!")
+          state.player.categoriesCollected.push({name: category, count: 1})
+          console.log("-------- Situation after adding new category: ", state.player.categoriesCollected)
         }
       }
     },
@@ -77,13 +79,22 @@ export const store = new Vuex.Store({
       if(!state.caregiver.categoriesCollected){
         Vue.set(state.caregiver,'categoriesCollected', [])
         state.caregiver.categoriesCollected.push({name: category, count: 1})
-        // Vue.set(state.player.categoriesCollected[state.player.categoriesCollected.length], {name: category, count: 1})
         console.log("---- categoriesCollected not existing before, but now: ", state.caregiver.categoriesCollected)
       } else {
+        console.log("---- categoriesCollected for caregiver existing, going through existing array")
+
         for(var i = 0; i < state.caregiver.categoriesCollected.length; i++){
+          console.log("-------- current item looped: ", state.caregiver.categoriesCollected[i])
           if(state.caregiver.categoriesCollected[i].name === category){
             state.caregiver.categoriesCollected[i].count++
           }
+        }
+
+        let findCategoryCaregiver = state.caregiver.categoriesCollected.filter(function(obj){ return obj.name == category})
+        if(findCategoryCaregiver.length === 0){
+          console.log("-------- Category " + category + " still not in array, adding it!")
+          state.caregiver.categoriesCollected.push({name: category, count: 1})
+          console.log("-------- Situation after adding new category: ", state.player.categoriesCollected)
         }
       }
     },
