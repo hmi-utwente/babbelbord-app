@@ -26,8 +26,8 @@
   import Question from './Question.vue'
   import Instruction from './Instruction.vue'
 
-  // var socket = io()   // use this for production
-  var socket = io('http://localhost:8081')   // use this for local
+  var socket = io()   // use this for production
+  // var socket = io('http://localhost:8081')   // use this for local
 
   export default {
     components: { Question, Instruction },
