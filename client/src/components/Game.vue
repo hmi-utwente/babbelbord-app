@@ -296,19 +296,19 @@
           let message = data.special
 
           // map the old values with the new keywords
-          if(message === "Het"){
+          if(message === "H"){
             message = "Het is je geluksdag er gebeurt niks"
-          } else if(message === "Ga"){
+          } else if(message === "G"){
             message = "Ga terug naar je vorige kleurvak"
-          } else if(message === "Verwijder") {
+          } else if(message === "V") {
             message = "Verwijder een verdiende kleurkaart"
-          } else if(message === "Geef") {
+          } else if(message === "GE") {
             message = "Geef de laast verdiende kaart aan de vorige speler"
-          } else if(message === "START") {
+          } else if(message === "S") {
             message = "Both pawns are at gaan"
-          } else if(message === "MOVEPAWN"){
+          } else if(message === "MP"){
             message = "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje"
-          } else if(message === "MOVEDPAWNTOOFAST") {
+          } else if(message === "MPF") {
             message = "Haal de laatst geplaatste pion alsjeblieft 10 seconden even van het vakje  en plaats het daarna terug"
           }
 
