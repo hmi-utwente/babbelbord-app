@@ -287,7 +287,22 @@
           }
 
           console.log("---- Setting category")
-          self.currentCategory = data.name
+
+          let categoryName = data.name;
+
+          if(categoryName === 1){
+            categoryName = "Familie"
+          } else if(categoryName === 2){
+            categoryName = "Liefde"
+          } else if(categoryName === 3) {
+            categoryName = "Tienertijd"
+          } else if(categoryName === 4) {
+            categoryName = "Kindertijd"
+          } else if(message === 5) {
+            categoryName = "Hobbies"
+          }
+
+          self.currentCategory = categoryName;
           self.isDieInstruction = !self.isDieInstruction
         }
         else if(data.special){
@@ -301,7 +316,7 @@
           } else if(message === "G"){
             message = "Ga terug naar je vorige kleurvak"
           } else if(message === "V") {
-            message = "Verwijder een verdiende kleurkaart"
+            message = "Verwijder een verd iende kleurkaart"
           } else if(message === "GE") {
             message = "Geef de laast verdiende kaart aan de vorige speler"
           } else if(message === "S") {
