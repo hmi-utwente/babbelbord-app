@@ -290,15 +290,15 @@
 
           let categoryName = data.name;
 
-          if(categoryName === 1){
+          if(categoryName == 1){
             categoryName = "Familie"
-          } else if(categoryName === 2){
+          } else if(categoryName == 2){
             categoryName = "Liefde"
-          } else if(categoryName === 3) {
+          } else if(categoryName == 3) {
             categoryName = "Tienertijd"
-          } else if(categoryName === 4) {
+          } else if(categoryName == 4) {
             categoryName = "Kindertijd"
-          } else if(message === 5) {
+          } else if(categoryName == 5) {
             categoryName = "Hobbies"
           }
 
