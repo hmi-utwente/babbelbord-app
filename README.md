@@ -11,3 +11,9 @@ Go to the `./server` folder and run:
 ```
 npm install
 ```
+
+## Running
+In the `./server` folder run the command
+```
+npm start
+```
