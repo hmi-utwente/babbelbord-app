@@ -1,5 +1,5 @@
  # Welcome to the Babbelbord project!
-The Babbelbord Project is about creating a game with conversation starters, where we combine competitive gameplay with getting to know each other.
+The Babbelbord Project is about creating a game with conversation starters, where we combine competitive gameplay with getting to know each other. This repository contains the code for the game. The other component that is necessary is the Babbelbord-Board code, which you can find [here](https://github.com/hmi-utwente/babbelbord-board)
 
 ## Technology stack
 [TBD]
