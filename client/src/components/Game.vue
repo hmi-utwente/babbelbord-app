@@ -40,12 +40,12 @@
         currentCategory: '',
         showInstructions: true,
         instructions: [
-          {message: 'Zet de twee pionnen op het vakje “gaan”'},
+          {message: 'Zet de twee pionnen op het vakje “Gaan”'},
           {message: 'Gooi de dobbelsteen opnieuw'},
-          {message: 'Zet de pion naar de bijpassende kleur op de dobbelsteen'},
-          {message: 'Pak een kaart met dezelfde kleur als de  categorie waarop uw pion nu staat, bijvoorbeeld Familie(geel)'},
-          {message: 'Je hebt twee kaarten van dezelfde kleur/ categorie. Wil je deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit het dek van je tegenstander?'},
-          {message: 'Kies de gekleurde kaarten die je wilt inleveren voor het verwijderen van de kaart vanuit het dek van je tegenstander.'},
+          {message: 'Zet de pion naar een vakje met dezelfde kleur als op de dobbelsteen'},
+          {message: 'Pak een kaart met dezelfde kleur als de categorie waarop uw pion nu staat, bijvoorbeeld Familie (Geel)'},
+          {message: 'Je hebt twee kaarten van dezelfde kleur/categorie. Wilt u deze kaarten gebruiken om 1 kaart van dezelfde categorie te verwijderen uit de hand van uw tegenstander?'},
+          {message: 'Kies de gekleurde kaarten die u wilt inleveren voor het verwijderen van de kaart in de hand van uw tegenstander.'},
           {message: 'Vergeet niet om de kaarten in te leveren'},
           {message: 'Prova'}
         ],
@@ -311,32 +311,37 @@
           let message = data.special
 
           // map the old values with the new keywords
-          if(message === "H"){
-            message = "Het is je geluksdag er gebeurt niks"
-          } else if(message === "G"){
-            message = "Ga terug naar je vorige kleurvak"
-          } else if(message === "V") {
-            message = "Verwijder een verd iende kleurkaart"
-          } else if(message === "GE") {
-            message = "Geef de laast verdiende kaart aan de vorige speler"
-          } else if(message === "S") {
-            message = "Both pawns are at gaan"
-          } else if(message === "MP"){
+          if(message == "H"){
+            message = "Het is uw geluksdag, er gebeurt niks!"
+          } else if(message == "G"){
+            message = "Ga terug naar uw vorige kleurvak"
+          } else if(message == "V") {
+            message = "Verwijder een verdiende kleurkaart"
+          } else if(message == "GE") {
+            message = "Geef de laatst verdiende kaart aan de vorige speler"
+          } else if(message == "S") {
+            message = "Beide pionnen zijn bij gaan"
+          } else if(message == "MP"){
             message = "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje"
-          } else if(message === "MPF") {
-            message = "Haal de laatst geplaatste pion alsjeblieft 10 seconden even van het vakje  en plaats het daarna terug"
+          } else if(message == "MPF") {
+            message = "Haal de laatst geplaatste pion alsjeblieft 10 seconden even van het vakje en plaats het daarna terug"
           }
 
           console.log("After checking the data received, message is now " + message)
 
           // received "Both pawns are at gaan"
-          if(message === "Both pawns are at gaan"){
+          if(message == "Beide pionnen zijn bij gaan"){
             // switch to next instruction, throw the die
             self.isPawnsInstruction = false
             self.isDieInstruction = true
             self.isMoveToColorInstruction= false
             console.log("---- Inside both pawns are at gaan")
-          } else if(message === "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje" || message === "Ga terug naar je vorige kleurvak" || message === "Verwijder een verdiende kleurkaart" || message === "Geef de laast verdiende kaart aan de vorige speler" || message === "Het is je geluksdag er gebeurt niks") {
+          } else if(message == "Verplaats de pion alsjeblieft iets meer naar het midden van het vakje" || 
+                    message == "Ga terug naar uw vorige kleurvak" || 
+                    message == "Verwijder een verdiende kleurkaart" || 
+                    message == "Geef de laatst verdiende kaart aan de vorige speler" || 
+                    message == "Haal de laatst geplaatste pion alsjeblieft 10 seconden even van het vakje en plaats het daarna terug" ||
+                    message == "Het is uw geluksdag, er gebeurt niks!") {
             self.errorMessage = message
             console.log("---- Inside move pawn square")
             // self.toggleQuestionsInstructions()
