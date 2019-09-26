@@ -2,7 +2,7 @@
  * Created by ale on 09/12/2017.
  */
 
-const Joi = require('@hapi/joi')
+const Joi = require('joi')
 
 module.exports = {
   register (req, res, next) {

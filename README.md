@@ -1,19 +1,26 @@
  # Welcome to the Babbelbord project!
-The Babbelbord Project is about creating a game with conversation starters, where we combine competitive gameplay with getting to know each other. This repository contains the code for the game. The other component that is necessary is the Babbelbord-Board code, which you can find [here](https://github.com/hmi-utwente/babbelbord-board)
+Here goes a description of the project
 
 ## Technology stack
-[TBD]
+Here we describe the frameworks we use and perhaps add the image that shows how the whole system works.
 
 ## Get started with development
-First, install the dependencies using the terminal. If you do not have npm installed on your system, you can refer to [this tutorial](http://blog.npmjs.org/post/85484771375/how-to-install-npm). 
+First, install the dependencies using the terminal. If you do not have npm installed on your system, you can refer to [this tutorial](http://blog.npmjs.org/post/85484771375/how-to-install-npm). After installing npm, you also need to install bower (another package manager for dependencies).
 
-Go to the `./server` folder and run:
 ```
-npm install
+npm install bower -g
 ```
 
-## Running
-In the `./server` folder run the command
+Now it is time to install all the dependencies needed for the project:
 ```
-npm start
+npm install 
+bower install
 ```
+
+To work on the app locally while developing, type this in the terminal:
+
+```
+DEBUG=babbelbord:* npm start
+```
+
+
